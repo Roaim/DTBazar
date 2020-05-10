@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="100" height="100" src="https://github.com/Roaim/DTBazar/raw/readme/icon/dtbazar_icon.png">
+  <img width="100" height="100" src="https://github.com/Roaim/DTBazar/raw/readme/icon/dtbazar-icon.png">
 </p>
 
 # DT Bazar (Dosh Takar Bazar or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Roaim/DTBazar/blob/readme/LICENSE)
