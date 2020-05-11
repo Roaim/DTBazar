@@ -1,7 +1,7 @@
 <img width="100" height="100" src="icon/dtbazar-icon.png">
 
-# DT Bazar (Dosh Takar Bazar or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate.
+# DT Bazar (দশ টাকার বাজার or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types.
 
 ### The 3 simple steps:
 1. Store owner creates store and adds food that will receive donation
@@ -57,4 +57,4 @@ before merging to **master**.
 
 #### Commit Message Pattern
 * In general ***(except for api)*** commit message pattern should be, **"{platform_name}: {commit_message}"**. *Ex. `android: fix crash due to internet permission`*
-* For **api**, commit message pattern should be, **"#{service_name}-service# {commit_message}"**. *Ex. `#auth-service# integrate facebook login`*
+* For **api**, commit message pattern should be, **"#{service_name}-service# {commit_message}"**. *Ex. `#auth-service# integrate facebook login`*. This will help git **post-receive** hook to restart that particular service. If your commit is not intend for restarting any service then the commit message should start with **`api: `** instead.
