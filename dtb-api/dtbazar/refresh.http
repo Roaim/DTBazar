@@ -1,0 +1,21 @@
+### GATEWAY
+POST /actuator/refresh
+Host: localhost:8000
+Content-Type: application/json
+
+### AUTH
+POST /actuator/refresh
+Host: localhost:8001
+Content-Type: application/json
+
+### STORE
+POST /actuator/refresh
+Host: localhost:8002
+Content-Type: application/json
+
+### MEDIA
+POST /actuator/refresh
+Host: localhost:8002
+Content-Type: application/json
+
+###
