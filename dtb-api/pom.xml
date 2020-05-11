@@ -13,6 +13,7 @@
         <module>config-server</module>
         <module>discovery-server</module>
         <module>hystrix-dashboard-service</module>
+        <module>gateway-service</module>
     </modules>
 
 </project>
