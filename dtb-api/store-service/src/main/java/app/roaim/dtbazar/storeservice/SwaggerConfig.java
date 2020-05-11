@@ -1,6 +1,7 @@
 package app.roaim.dtbazar.storeservice;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
@@ -11,12 +12,13 @@ import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.Contact;
 import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +32,8 @@ public class SwaggerConfig {
 
     @Value("${spring.application.name}")
     private String appName;
+    @Value("${dtbazar.url.scheme}")
+    private String scheme;
     @Value("${dtbazar.gateway.host}")
     private String host;
     @Value("${dtbazar.api.version}")
@@ -37,13 +41,26 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
+        String gatewayUrl = format("%s/api/%s", host, apiVersion);
+        String termsUrl = format("%s://%s/terms.html", scheme, gatewayUrl);
         return new Docket(DocumentationType.SWAGGER_2)
-                .host(format("%s/api/%s", host, apiVersion))
+                .host(gatewayUrl)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("app.roaim.dtbazar.storeservice.controller"))
                 .paths(PathSelectors.any())
                 .build()
-                .apiInfo(new ApiInfoBuilder().version(apiVersion).title(appName.toUpperCase() + " API Documentation").build())
+                .apiInfo(new ApiInfoBuilder()
+                        .version(apiVersion)
+                        .title(appName.toUpperCase() + " API Documentation")
+                        .description("Expand the following controllers to view list of endpoints. " +
+                                "Expand a endpoint to view its request details or try testing on the fly. The locked endpoints must be authorized with Bearer token." +
+                                "You can switch across different services' documentations from the dropdown menu in the top right corner.")
+                        .contact(new Contact("Roaim Ahmed Hridoy", "https://www.linkedin.com/in/roaim", "roaimahmed@ymail.com"))
+                        .termsOfServiceUrl(termsUrl)
+                        .license("GNU General Public License v3.0")
+                        .licenseUrl("https://github.com/Roaim/DTBazar/blob/master/LICENSE")
+                        .build()
+                )
                 .genericModelSubstitutes(ResponseEntity.class)
                 .genericModelSubstitutes(Mono.class)
                 .genericModelSubstitutes(Flux.class)
