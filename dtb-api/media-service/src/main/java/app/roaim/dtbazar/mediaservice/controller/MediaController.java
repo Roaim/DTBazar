@@ -5,11 +5,7 @@ import app.roaim.dtbazar.mediaservice.jwt.JWTUtil;
 import app.roaim.dtbazar.mediaservice.service.StorageService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +23,7 @@ public class MediaController {
     private final JWTUtil jwtUtil;
 
     @PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.CREATED)
     Mono<MediaFile> uploadFile(@ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
                                @ApiIgnore @RequestPart("file") FilePart file,
                                @RequestParam(value = "file", required = false) MultipartFile ignore /*used for swagger doc*/) {
@@ -37,21 +33,31 @@ public class MediaController {
 
     @GetMapping("/{id}")
     ResponseEntity<Resource> getFile(@PathVariable String id) {
-		return storageService.getContentType(id).flatMap(contentType -> 
-					storageService.getFile(id).map(resource -> ResponseEntity.ok()
-						.contentType(MediaType.parseMediaType(contentType))
-						.cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS))
-						// Uncomment to make the file downloadable instead of inline
-                		.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-						.body(resource)
-					)
-				).block();
+        return storageService.getMediaFileById(id).flatMap(mediaFile ->
+                storageService.getFile(id).map(resource -> ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(mediaFile.getContentType()))
+                        .cacheControl(CacheControl.maxAge(7, TimeUnit.DAYS))
+                        // Uncomment to make the file downloadable instead of inline
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + getDownloadFileName(mediaFile) + "\"")
+                        .body(resource)
+                )
+        ).block();
     }
-	
-	@GetMapping
+
+    private static String getDownloadFileName(MediaFile mediaFile) {
+        String extension = "";
+        String[] nameParts = mediaFile.getName().split("[.]");
+        int namePartLen = nameParts.length;
+        if (namePartLen > 1) {
+            extension = "." + nameParts[namePartLen - 1];
+        }
+        return String.format("%s%s", mediaFile.getId(), extension);
+    }
+
+    @GetMapping
     Flux<MediaFile> getAllUserMedia(@ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
-							@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size
-	) {
+                                    @RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "20") int size) {
         String uid = jwtUtil.decode(bearerToken).getSub();
         return storageService.getAllByUid(uid, page, size);
     }

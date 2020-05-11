@@ -10,7 +10,7 @@ public interface StorageService {
 
     void init();
 
-    Mono<String> getContentType(String id);
+    Mono<MediaFile> getMediaFileById(String id);
 
     Mono<MediaFile> saveFile(FilePart file, String uid);
 

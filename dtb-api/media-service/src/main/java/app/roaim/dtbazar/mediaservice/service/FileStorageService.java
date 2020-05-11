@@ -3,17 +3,18 @@ package app.roaim.dtbazar.mediaservice.service;
 import app.roaim.dtbazar.mediaservice.domain.MediaFile;
 import app.roaim.dtbazar.mediaservice.repository.MediaRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLConnection;
@@ -58,19 +59,14 @@ public class FileStorageService implements StorageService {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Could not create the directory where the uploaded files will be stored.", ex);
         }
     }
-	
-	private Mono<MediaFile> getMediaFileById(String id) {
-		return mediaRepository.findById(id)
-					.switchIfEmpty(Mono.error(
-						new ResponseStatusException(HttpStatus.NOT_FOUND, "MediaFile does not exist")
-					)
-		);
-	}
 
     @Override
-    public Mono<String> getContentType(String id) {
-        return getMediaFileById(id)
-					.map(MediaFile::getContentType);
+    public Mono<MediaFile> getMediaFileById(String id) {
+        return mediaRepository.findById(id)
+                .switchIfEmpty(Mono.error(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "MediaFile does not exist")
+                        )
+                );
     }
 
     @Override
@@ -106,12 +102,12 @@ public class FileStorageService implements StorageService {
             return urlResource;
         });
     }
-	
-	@Override
-	public Flux<MediaFile> getAllByUid(String uid, int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		return mediaRepository.findAllByUid(uid, pageable);
-	}
+
+    @Override
+    public Flux<MediaFile> getAllByUid(String uid, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return mediaRepository.findAllByUid(uid, pageable);
+    }
 
     @Override
     public Flux<MediaFile> deleteAllByUid(String uid) {
