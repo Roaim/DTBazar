@@ -1,6 +1,6 @@
 <img width="100" height="100" src="icon/dtbazar-icon.png">
 
-# DT Bazar (Dosh Takar Bazar or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://github.com/Roaim/DTBazar/blob/readme/LICENSE)
+# DT Bazar (Dosh Takar Bazar or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate.
 
 ### The 3 simple steps:
@@ -18,7 +18,8 @@ card at that store
 
 ### API Overview
 The **API** is developed using **Spring Boot** (Java) and **Micro 
-Services** architecture.
+Services** architecture. 
+* Click on, [dtb-api](dtb-api) folder, to know details about API, .
 ##### API Documentation: https://vm03.hidayahsmart.solutions/dtbazar
 ##### Preview
 ![API Doc Preview](preview/api_doc_preview.gif)
