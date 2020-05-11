@@ -2,6 +2,8 @@ package app.roaim.dtbazar
 
 import android.app.Application
 import app.roaim.dtbazar.di.AppInjector
+import com.facebook.FacebookSdk
+import com.facebook.appevents.AppEventsLogger
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -16,6 +18,8 @@ class DtBazarApp : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
+        FacebookSdk.sdkInitialize(applicationContext)
+        AppEventsLogger.activateApp(this)
     }
 
 }

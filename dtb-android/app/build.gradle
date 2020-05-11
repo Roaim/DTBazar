@@ -49,6 +49,7 @@ dependencies {
     implementation deps.room.values()
     implementation deps.retrofit.values()
     implementation deps.dagger.values()
+    implementation deps.misc.facebook
 
     kapt deps.kapt.values()
 

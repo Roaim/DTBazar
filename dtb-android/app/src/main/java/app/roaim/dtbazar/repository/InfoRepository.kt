@@ -6,6 +6,8 @@ import androidx.lifecycle.liveData
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.db.IpInfoDao
 import app.roaim.dtbazar.model.IpInfo
+import app.roaim.dtbazar.model.Profile
+import app.roaim.dtbazar.model.Token
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -38,5 +40,31 @@ class InfoRepository @Inject constructor(
     private suspend fun saveIpInfo(ipInfo: IpInfo) {
         ipInfoDao.insert(ipInfo)
         pref.edit().putString(KEY_IP, ipInfo.ip).apply()
+    }
+
+    fun createToken(fbAccessToken: String): LiveData<String> = liveData {
+        try {
+            apiService.getToken(fbAccessToken)
+                .takeIf { it.isSuccessful }
+                ?.body()
+                ?.token?.also {
+                    emit(it)
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getProfile(token: String): LiveData<Profile> = liveData {
+        try {
+            apiService.getProfile("Bearer $token")
+                .takeIf { it.isSuccessful }
+                ?.body()
+                ?.also {
+                    emit(it)
+                }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }
