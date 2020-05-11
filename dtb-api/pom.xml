@@ -15,6 +15,7 @@
         <module>hystrix-dashboard-service</module>
         <module>gateway-service</module>
         <module>auth-service</module>
+        <module>store-service</module>
     </modules>
 
 </project>
