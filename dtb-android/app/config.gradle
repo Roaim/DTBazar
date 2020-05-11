@@ -1,0 +1,83 @@
+ext.appName = 'DTBazar'
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 0
+ext.vars = [
+        apiHost          : 'API_HOST',
+        apiVersion       : 'API_VERSION',
+        apiEndpointPrefix: 'API_ENDPOINT_PREFIX',
+        // Variable Types
+        types            : [
+                str   : 'String',
+                int   : 'int',
+                bool  : 'boolean',
+                long  : 'long',
+                double: 'double'
+        ],
+]
+
+@SuppressWarnings("GrMethodMayBeStatic")
+private String getAppName() {
+    return ext.appName
+}
+
+@SuppressWarnings("GrMethodMayBeStatic")
+private Integer generateVersionCode() {
+    return ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+@SuppressWarnings("GrMethodMayBeStatic")
+private String generateVersionName() {
+    return "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+}
+
+android {
+    defaultConfig {
+        versionCode generateVersionCode()
+        versionName generateVersionName()
+
+        buildConfigField(vars.types.str, vars.apiEndpointPrefix, API_ENDPOINT_PREFIX)
+    }
+
+    flavorDimensions 'apiServer', 'apiVersion'
+    productFlavors {
+        Hidayah {
+            dimension 'apiServer'
+            applicationIdSuffix = '.demo'
+
+            buildConfigField(vars.types.str, vars.apiHost, API_HOST_HIDAYAH)
+            buildConfigField(vars.types.str, vars.apiEndpointPrefix, API_ENDPOINT_PREFIX_HIDAYAH)
+        }
+        Local {
+            dimension 'apiServer'
+            applicationIdSuffix = '.local'
+
+            buildConfigField(vars.types.str, vars.apiHost, API_HOST_LOCAL)
+        }
+        v1 {
+            dimension 'apiVersion'
+
+            def version = '1'
+            buildConfigField(vars.types.int, vars.apiVersion, version)
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${appName}-${defaultConfig.versionName}-${variant.name}.apk"
+        }
+    }
+}
