@@ -16,6 +16,7 @@
         <module>gateway-service</module>
         <module>auth-service</module>
         <module>store-service</module>
+        <module>media-service</module>
     </modules>
 
 </project>
