@@ -9,4 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>config-server</module>
+    </modules>
+
 </project>
