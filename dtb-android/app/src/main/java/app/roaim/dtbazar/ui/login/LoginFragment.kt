@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.LoginFragmentBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Status
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -46,19 +47,26 @@ class LoginFragment : Fragment(), Injectable {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.ipInfo.observe(viewLifecycleOwner, Observer {
-            log("$it")
-            binding?.info?.text = "$it"
+            log("${it.data}")
+            binding?.ipInfo = it
         })
 
         viewModel.token.observe(viewLifecycleOwner, Observer {
             log("TOKEN $it")
-            findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+            binding?.status = it.status
+            if (it.status == Status.SUCCESS) {
+                findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
+            } else if (it.status == Status.FAILED) {
+                binding?.info?.append(it.e?.message)
+                binding?.loginButton?.visibility = View.VISIBLE
+            }
         })
 
         initFbLogin()
     }
 
     private fun onGetFbAccessToken(fbAccessToken: String) {
+        binding?.loginButton?.visibility = View.INVISIBLE
         viewModel.getToken(fbAccessToken)
     }
 
@@ -97,8 +105,6 @@ class LoginFragment : Fragment(), Injectable {
                 val token = result?.accessToken?.token
                 log("LoginSuccess: $token")
                 token?.also {
-                    loginButton.visibility = View.INVISIBLE
-                    binding?.progress?.visibility = View.VISIBLE
                     onGetFbAccessToken(it)
                 }
             }

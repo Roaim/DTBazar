@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.roaim.dtbazar.model.Profile
+import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.repository.AuthProfileRepository
 import app.roaim.dtbazar.utils.AbsentLiveData
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class HomeViewModel @Inject constructor(
 
     val text: LiveData<String> = _text
 
-    val profile: LiveData<Profile> = Transformations.switchMap(_profileToken) {
+    val profile: LiveData<Result<Profile>> = Transformations.switchMap(_profileToken) {
         if (it.isNullOrBlank()) {
             AbsentLiveData.create()
         } else {

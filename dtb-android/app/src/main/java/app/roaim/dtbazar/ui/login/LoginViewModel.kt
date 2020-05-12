@@ -1,13 +1,17 @@
 package app.roaim.dtbazar.ui.login
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.repository.AuthProfileRepository
 import app.roaim.dtbazar.repository.InfoRepository
 import app.roaim.dtbazar.utils.AbsentLiveData
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
-    private val infoRepository: InfoRepository,
+    infoRepository: InfoRepository,
     private val authProfileRepository: AuthProfileRepository
 ) : ViewModel() {
 
@@ -15,7 +19,7 @@ class LoginViewModel @Inject constructor(
 
     val ipInfo = infoRepository.getIpInfo()
 
-    val token: LiveData<String> = Transformations.switchMap(_fbAccessToken) {
+    val token: LiveData<Result<String>> = Transformations.switchMap(_fbAccessToken) {
         if (it.isNullOrBlank()) {
             AbsentLiveData.create()
         } else {

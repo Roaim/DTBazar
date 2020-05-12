@@ -3,10 +3,14 @@ package app.roaim.dtbazar.repository
 import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.db.IpInfoDao
 import app.roaim.dtbazar.model.IpInfo
-import app.roaim.dtbazar.model.Profile
+import app.roaim.dtbazar.model.Result
+import app.roaim.dtbazar.model.Result.Companion.failed
+import app.roaim.dtbazar.model.Result.Companion.loading
+import app.roaim.dtbazar.model.Result.Companion.success
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,19 +24,23 @@ class InfoRepository @Inject constructor(
         const val KEY_IP = "ip"
     }
 
-    fun getIpInfo(): LiveData<IpInfo> = pref.getString(KEY_IP, null)?.let {
-        ipInfoDao.findById(it)
+    fun getIpInfo(): LiveData<Result<IpInfo>> = pref.getString(KEY_IP, null)?.let { ip ->
+        ipInfoDao.findById(ip).map { ipInfo ->
+            success(ipInfo)
+        }
     } ?: liveData {
+        emit(loading())
         try {
             apiService.getIpInfo()
                 .takeIf { it.isSuccessful }
                 ?.body()
                 ?.also {
                     saveIpInfo(it)
-                    emit(it)
+                    emit(success(it))
                 }
         } catch (e: Exception) {
             e.printStackTrace()
+            emit(failed(e))
         }
     }
 

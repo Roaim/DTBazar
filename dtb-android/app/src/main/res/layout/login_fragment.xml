@@ -5,6 +5,21 @@
 
     <data>
 
+        <import type="android.view.View" />
+
+        <import type="app.roaim.dtbazar.model.Result" />
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <import type="app.roaim.dtbazar.model.IpInfo" />
+
+        <variable
+            name="ipInfo"
+            type="Result&lt;IpInfo>" />
+
+        <variable
+            name="status"
+            type="Status" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,6 +36,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:fontFamily="serif"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
 
         <app.roaim.dtbazar.utils.FacebookLoginButton
             android:id="@+id/login_button"
@@ -41,8 +69,9 @@
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:gravity="center"
+            android:text="@{ipInfo.status == Status.SUCCESS ? ipInfo.data.toString() : ipInfo.e.message}"
             android:textAlignment="center"
-            android:textSize="16sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -50,11 +79,19 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{status == Status.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/login_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/info" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{ipInfo.status == Status.LOADING ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/login_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/info" />
