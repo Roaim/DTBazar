@@ -1,14 +1,14 @@
-package app.roaim.dtbazar.ui.dashboard
+package app.roaim.dtbazar.ui.store
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import javax.inject.Inject
 
-class DashboardViewModel @Inject constructor() : ViewModel() {
+class StoreViewModel @Inject constructor() : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is store Fragment"
     }
     val text: LiveData<String> = _text
 }

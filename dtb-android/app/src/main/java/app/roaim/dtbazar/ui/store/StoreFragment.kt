@@ -1,4 +1,4 @@
-package app.roaim.dtbazar.ui.dashboard
+package app.roaim.dtbazar.ui.store
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,21 +13,21 @@ import app.roaim.dtbazar.R
 import app.roaim.dtbazar.di.Injectable
 import javax.inject.Inject
 
-class DashboardFragment : Fragment(), Injectable {
+class StoreFragment : Fragment(), Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val dashboardViewModel: DashboardViewModel by viewModels { viewModelFactory }
+    private val storeViewModel: StoreViewModel by viewModels { viewModelFactory }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        val root = inflater.inflate(R.layout.fragment_store, container, false)
+        val textView: TextView = root.findViewById(R.id.text_store)
+        storeViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
