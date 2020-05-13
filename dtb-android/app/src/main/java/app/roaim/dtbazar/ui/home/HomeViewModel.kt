@@ -6,15 +6,13 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
-import app.roaim.dtbazar.repository.AuthProfileRepository
+import app.roaim.dtbazar.repository.InfoRepository
 import app.roaim.dtbazar.utils.AbsentLiveData
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val authProfileRepository: AuthProfileRepository
+    private val infoRepository: InfoRepository
 ) : ViewModel() {
-
-    private val _profileToken: MutableLiveData<String> = MutableLiveData<String>()
 
     private val _text = MutableLiveData<String>().apply {
         value = "This is home Fragment"
@@ -22,16 +20,6 @@ class HomeViewModel @Inject constructor(
 
     val text: LiveData<String> = _text
 
-    val profile: LiveData<Result<Profile>> = Transformations.switchMap(_profileToken) {
-        if (it.isNullOrBlank()) {
-            AbsentLiveData.create()
-        } else {
-            authProfileRepository.getProfile(it)
-        }
-    }
+    val profile: LiveData<Result<Profile>> = infoRepository.getProfile()
 
-    fun getProfile(token: String? = authProfileRepository.token.value) {
-        if (token == _profileToken.value) return
-        _profileToken.value = token
-    }
 }

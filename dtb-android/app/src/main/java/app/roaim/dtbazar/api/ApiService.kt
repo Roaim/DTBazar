@@ -2,7 +2,7 @@ package app.roaim.dtbazar.api
 
 import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Profile
-import app.roaim.dtbazar.model.Token
+import app.roaim.dtbazar.model.ApiToken
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -15,9 +15,9 @@ interface ApiService {
 
     @POST("auth/token")
     @Throws(Exception::class)
-    suspend fun getToken(@Header("X-Facebook-Access-Token") fbAccessToken: String): Response<Token>
+    suspend fun getToken(@Header("X-Facebook-Access-Token") fbAccessToken: String): Response<ApiToken>
 
     @GET("auth/profile")
     @Throws(Exception::class)
-    suspend fun getProfile(@Header("Authorization") bearerToken: String): Response<Profile>
+    suspend fun getProfile(): Response<Profile>
 }

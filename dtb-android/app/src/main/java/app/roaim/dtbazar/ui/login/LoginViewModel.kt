@@ -5,25 +5,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.roaim.dtbazar.model.Result
-import app.roaim.dtbazar.repository.AuthProfileRepository
+import app.roaim.dtbazar.repository.AuthRepository
 import app.roaim.dtbazar.repository.InfoRepository
-import app.roaim.dtbazar.utils.AbsentLiveData
+import app.roaim.dtbazar.utils.Constants
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
     infoRepository: InfoRepository,
-    private val authProfileRepository: AuthProfileRepository
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    private val _fbAccessToken = MutableLiveData<String>()
+    private val _fbAccessToken = MutableLiveData<String>().apply { value = Constants.TOKEN_NOT_EXISTS }
 
     val ipInfo = infoRepository.getIpInfo()
 
     val token: LiveData<Result<String>> = Transformations.switchMap(_fbAccessToken) {
-        if (it.isNullOrBlank()) {
-            AbsentLiveData.create()
+        if (Constants.TOKEN_NOT_EXISTS == it) {
+            authRepository.getToken()
         } else {
-            authProfileRepository.createToken(it)
+            authRepository.createToken(it)
         }
     }
 

@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
@@ -14,39 +13,50 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.api.ApiUtils
+import app.roaim.dtbazar.databinding.FragmentHomeBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Status
 import javax.inject.Inject
 
 
 class HomeFragment : Fragment(), Injectable {
 
     @Inject
+    lateinit var apiUtils: ApiUtils
+
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
+
+    private var binding: FragmentHomeBinding? = null
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
+        binding = FragmentHomeBinding.inflate(inflater)
+        handleBackButtonEvent()
+        return binding?.root
+    }
 
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding?.info = homeViewModel.text
 
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
             log(it.toString())
-            textView.append("\n\n$it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
+            binding?.profile = it
         })
-
-        homeViewModel.getProfile()
-
-        handleBackButtonEvent()
-
-        return root
     }
 
     private fun handleBackButtonEvent() {

@@ -2,7 +2,7 @@ package app.roaim.dtbazar.model
 
 import com.google.gson.annotations.SerializedName
 
-data class Token(
+data class ApiToken(
 
 	@field:SerializedName("expires")
 	val expires: String? = null,

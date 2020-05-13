@@ -1,12 +1,14 @@
 package app.roaim.dtbazar.repository
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
+import app.roaim.dtbazar.api.ApiUtils
+import app.roaim.dtbazar.data.PrefDataSource
 import app.roaim.dtbazar.db.IpInfoDao
 import app.roaim.dtbazar.model.IpInfo
+import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
@@ -18,34 +20,52 @@ import javax.inject.Singleton
 class InfoRepository @Inject constructor(
     private val ipInfoDao: IpInfoDao,
     private val apiService: ApiService,
-    private val pref: SharedPreferences
+    private val prefDataSource: PrefDataSource,
+    private val apiUtils: ApiUtils
 ) {
-    companion object {
-        const val KEY_IP = "ip"
+
+    fun getProfile(): LiveData<Result<Profile>> = liveData {
+        emit(loading())
+        emit(
+            try {
+                val profileResponse = apiService.getProfile()
+                profileResponse
+                    .takeIf { it.isSuccessful }
+                    ?.body()
+                    ?.let { success(it) }
+                    ?: apiUtils.getErrorResult(profileResponse, Profile::class.java)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<Profile>(e.message)
+            }
+        )
     }
 
-    fun getIpInfo(): LiveData<Result<IpInfo>> = pref.getString(KEY_IP, null)?.let { ip ->
-        ipInfoDao.findById(ip).map { ipInfo ->
+    fun getIpInfo(): LiveData<Result<IpInfo>> = prefDataSource.getIp()
+        ?.let { ip ->
+            ipInfoDao.findByIp(ip).map { ipInfo ->
             success(ipInfo)
         }
     } ?: liveData {
         emit(loading())
-        try {
-            apiService.getIpInfo()
-                .takeIf { it.isSuccessful }
-                ?.body()
-                ?.also {
-                    saveIpInfo(it)
-                    emit(success(it))
-                }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            emit(failed(e))
-        }
+        emit(
+            try {
+                val ipInfoResponse = apiService.getIpInfo()
+                ipInfoResponse.takeIf { it.isSuccessful }
+                    ?.body()
+                    ?.let {
+                        saveIpInfo(it)
+                        success(it)
+                    } ?: apiUtils.getErrorResult(ipInfoResponse, IpInfo::class.java)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<IpInfo>(e.message)
+            }
+        )
     }
 
     private suspend fun saveIpInfo(ipInfo: IpInfo) {
         ipInfoDao.insert(ipInfo)
-        pref.edit().putString(KEY_IP, ipInfo.ip).apply()
+        prefDataSource.saveIp(ipInfo.ip)
     }
 }

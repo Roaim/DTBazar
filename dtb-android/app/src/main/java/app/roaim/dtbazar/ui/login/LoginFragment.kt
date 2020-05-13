@@ -57,12 +57,13 @@ class LoginFragment : Fragment(), Injectable {
             if (it.status == Status.SUCCESS) {
                 findNavController().navigate(R.id.action_loginFragment_to_navigation_home)
             } else if (it.status == Status.FAILED) {
-                binding?.info?.append(it.e?.message)
+                binding?.info?.append(it.msg)
                 binding?.loginButton?.visibility = View.VISIBLE
+                if (!this::callbackManager.isInitialized) {
+                    initFbLogin()
+                }
             }
         })
-
-        initFbLogin()
     }
 
     private fun onGetFbAccessToken(fbAccessToken: String) {
@@ -72,7 +73,9 @@ class LoginFragment : Fragment(), Injectable {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        binding?.loginButton?.unregisterCallback(callbackManager)
+        if (this::callbackManager.isInitialized) {
+            binding?.loginButton?.unregisterCallback(callbackManager)
+        }
         binding = null
     }
 

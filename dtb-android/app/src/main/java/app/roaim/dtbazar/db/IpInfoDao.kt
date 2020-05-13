@@ -13,5 +13,5 @@ interface IpInfoDao {
     suspend fun insert(ipInfo: IpInfo)
 
     @Query("select * from ipinfo where ip = :ip limit 1")
-    fun findById(ip: String): LiveData<IpInfo>
+    fun findByIp(ip: String): LiveData<IpInfo>
 }

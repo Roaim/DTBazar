@@ -1,6 +1,5 @@
 package app.roaim.dtbazar
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,7 +9,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.facebook.login.LoginManager
+import app.roaim.dtbazar.api.ApiUtils
+import app.roaim.dtbazar.di.Injectable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -21,6 +21,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    @Inject
+    lateinit var apiUtils: ApiUtils
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,21 +59,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.menu_logout -> {
-            LoginManager.getInstance().logOut().run {
-                restartApp()
-                true
-            }
-        }
+        R.id.menu_logout -> apiUtils.logout()
         else -> super.onOptionsItemSelected(item)
-    }
-
-    private fun restartApp() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("lang", true)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
     }
 
     override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector

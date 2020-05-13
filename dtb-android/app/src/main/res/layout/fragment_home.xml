@@ -1,22 +1,373 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/rootHome"
-    tools:context=".ui.home.HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:id="@+id/text_home"
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="app.roaim.dtbazar.model.Result" />
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <import type="app.roaim.dtbazar.model.Profile" />
+
+        <variable
+            name="info"
+            type="LiveData&lt;String>" />
+
+        <variable
+            name="profile"
+            type="Result&lt;Profile>" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent"
+        android:background="#0B2535"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:backgroundTint="#bf061C29"
+            app:cardCornerRadius="4dp"
+            android:layout_marginBottom="4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/iv"
+                    imgUrl="@{profile.data.fbProfilePicture}"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="2dp"
+                    android:text="@{profile.data.name}"
+                    android:textColor="@color/text_home_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Roaim Ahmed Hridoy" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvName"
+                    android:layout_toEndOf="@id/iv"
+                    android:paddingTop="2dp"
+                    android:text="@{profile.data.email}"
+                    android:textColor="@color/text_home_subtitle"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="roaimahmed@yamail.com" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/rootHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:context=".ui.home.HomeFragment">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp"
+                    android:text="MY STORES"
+                    android:textColor="@color/text_home_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#50ffffff" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    app:cardCornerRadius="4dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv1"
+                            imgUrl="@{profile.data.fbProfilePicture}"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvName1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/iv1"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="2dp"
+                            android:text="@{profile.data.name}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_title"
+                            tools:text="Roaim Ahmed Hridoy" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvName1"
+                            android:layout_toEndOf="@id/iv1"
+                            android:paddingTop="2dp"
+                            android:text="@{profile.data.email}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_subtitle"
+                            tools:text="roaimahmed@yamail.com" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <!--<androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    app:cardCornerRadius="4dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv2"
+                            imgUrl="@{profile.data.fbProfilePicture}"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvName2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/iv2"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="2dp"
+                            android:text="@{profile.data.name}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="Roaim Ahmed Hridoy" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvName2"
+                            android:layout_toEndOf="@id/iv2"
+                            android:paddingTop="2dp"
+                            android:text="@{profile.data.email}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:text="roaimahmed@yamail.com" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>-->
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:textColor="@color/text_home_title"
+                    android:foregroundTint="@color/colorAccent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="Add New Store"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:padding="8dp"
+                    android:text="MY DONATIONS"
+                    android:textColor="@color/text_home_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#50ffffff" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    app:cardCornerRadius="4dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv3"
+                            imgUrl="@{profile.data.fbProfilePicture}"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvName3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/iv3"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="2dp"
+                            android:text="@{profile.data.name}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_title"
+                            tools:text="Roaim Ahmed Hridoy" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvName3"
+                            android:layout_toEndOf="@id/iv3"
+                            android:paddingTop="2dp"
+                            android:text="@{profile.data.email}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_subtitle"
+                            tools:text="roaimahmed@yamail.com" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    app:cardCornerRadius="4dp"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:id="@+id/iv4"
+                            imgUrl="@{profile.data.fbProfilePicture}"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvName4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@id/iv4"
+                            android:paddingTop="4dp"
+                            android:paddingBottom="2dp"
+                            android:text="@{profile.data.name}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_title"
+                            tools:text="Roaim Ahmed Hridoy" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tvName4"
+                            android:layout_toEndOf="@id/iv4"
+                            android:paddingTop="2dp"
+                            android:text="@{profile.data.email}"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/text_home_list_subtitle"
+                            tools:text="roaimahmed@yamail.com" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:text="Make a donation"
+                    android:textColor="@color/text_home_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp" />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>
