@@ -31,6 +31,14 @@ public class StoreController {
         return service.saveStore(storeDto.toStore(jwtData.getSub(), jwtData.getName()));
     }
 
+    @GetMapping("/my")
+    Flux<Store> getMyStores(
+            @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+        JwtData jwtData = jwtUtil.decode(bearerToken);
+        return service.getMyStores(jwtData.getSub(), page, size);
+    }
+
     @GetMapping
     Flux<Store> getStores(@RequestParam(required = false) String name,
                           @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {

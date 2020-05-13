@@ -22,6 +22,11 @@ public class StoreService {
         return repository.save(store);
     }
 
+    public Flux<Store> getMyStores(String sub, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return repository.findAllByUid(sub, pageable);
+    }
+
     public Flux<Store> getAllStores(int page, int size) {
         return repository.findAllBy(PageRequest.of(page, size));
     }
