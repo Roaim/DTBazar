@@ -7,12 +7,12 @@ import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.data.PrefDataSource
 import app.roaim.dtbazar.db.IpInfoDao
-import app.roaim.dtbazar.model.IpInfo
-import app.roaim.dtbazar.model.Profile
-import app.roaim.dtbazar.model.Result
+import app.roaim.dtbazar.db.StoreDao
+import app.roaim.dtbazar.model.*
 import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
 import app.roaim.dtbazar.model.Result.Companion.success
+import com.google.gson.reflect.TypeToken
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,7 +21,8 @@ class InfoRepository @Inject constructor(
     private val ipInfoDao: IpInfoDao,
     private val apiService: ApiService,
     private val prefDataSource: PrefDataSource,
-    private val apiUtils: ApiUtils
+    private val apiUtils: ApiUtils,
+    private val storeDao: StoreDao
 ) {
 
     fun getProfile(): LiveData<Result<Profile>> = liveData {
@@ -67,5 +68,50 @@ class InfoRepository @Inject constructor(
     private suspend fun saveIpInfo(ipInfo: IpInfo) {
         ipInfoDao.insert(ipInfo)
         prefDataSource.saveIp(ipInfo.ip)
+    }
+
+    //    TODO move to store repository
+
+    fun getMyStores(): LiveData<Result<List<Store>>> = liveData {
+        emit(loading())
+        emit(
+            try {
+                val response = apiService.getMyStores()
+                response.takeIf { it.isSuccessful }
+                    ?.body()
+                    ?.let {
+                        saveStoreToDb(*it.toTypedArray())
+                        success(it)
+                    } ?: apiUtils.getErrorResult(
+                    response,
+                    object : TypeToken<List<Store>>() {}.type
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<List<Store>>(e.message)
+            }
+        )
+    }
+
+    fun saveStore(storeBody: StorePostBody): LiveData<Result<Store>> = liveData {
+        emit(loading())
+        emit(
+            try {
+                val storeResponse = apiService.saveStore(storeBody)
+                storeResponse.takeIf { it.isSuccessful }
+                    ?.body()
+                    ?.let {
+                        saveStoreToDb(it)
+                        success(it)
+                    } ?: apiUtils.getErrorResult(storeResponse, Store::class.java)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<Store>(e.message)
+            }
+        )
+    }
+
+    private suspend fun saveStoreToDb(vararg store: Store) {
+        storeDao.insert(*store)
     }
 }

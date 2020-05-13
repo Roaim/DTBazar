@@ -16,8 +16,8 @@
         <import type="app.roaim.dtbazar.model.Profile" />
 
         <variable
-            name="info"
-            type="LiveData&lt;String>" />
+            name="listener"
+            type="app.roaim.dtbazar.ui.home.HomeButtonClickListener" />
 
         <variable
             name="profile"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:backgroundTint="#bf061C29"
+            android:backgroundTint="#BF073135"
             app:cardCornerRadius="4dp"
             android:layout_marginBottom="4dp"
             app:cardUseCompatPadding="true"
@@ -227,6 +227,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:text="Add New Store"
+                    android:onClick="@{()-> listener.onAddNewStoreClick()}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -360,6 +361,7 @@
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:text="Make a donation"
                     android:textColor="@color/text_home_title"
+                    android:onClick="@{()-> listener.onMakeDonationClick()}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

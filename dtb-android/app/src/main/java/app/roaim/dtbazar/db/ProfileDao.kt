@@ -10,7 +10,7 @@ import app.roaim.dtbazar.model.Profile
 @Dao
 interface ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(profile: Profile)
+    suspend fun insert(profile: Profile)
 
     @Query("select * from profile where id = :id")
     fun findById(id: String): LiveData<Profile>

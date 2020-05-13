@@ -1,25 +1,34 @@
 package app.roaim.dtbazar.ui.home
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
+import app.roaim.dtbazar.model.Store
+import app.roaim.dtbazar.model.StorePostBody
 import app.roaim.dtbazar.repository.InfoRepository
-import app.roaim.dtbazar.utils.AbsentLiveData
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val infoRepository: InfoRepository
 ) : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-
-    val text: LiveData<String> = _text
-
     val profile: LiveData<Result<Profile>> = infoRepository.getProfile()
+
+    val ipInfo = infoRepository.getIpInfo()
+
+    val myStores = infoRepository.getMyStores()
+
+    fun saveStore(name: String, mobile: String): LiveData<Result<Store>> =
+        Transformations.switchMap(ipInfo) {
+            infoRepository.saveStore(
+                StorePostBody(
+                    name = name,
+                    mobile = mobile,
+                    location = listOf(it.data?.lat, it.data?.lon)
+                )
+            )
+        }
 
 }

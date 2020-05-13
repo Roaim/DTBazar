@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
-@Entity(primaryKeys = ["ip"])
+@Entity(tableName = "ipinfo", primaryKeys = ["ip"])
 data class IpInfo(
 
     @field:SerializedName("zip")

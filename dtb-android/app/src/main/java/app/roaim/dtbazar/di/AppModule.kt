@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class])
+@Module(includes = [ViewModelModule::class, DbModule::class])
 class AppModule {
 
     @Provides
@@ -60,15 +60,4 @@ class AppModule {
             .build()
             .create(ApiService::class.java)
     }
-
-    @Provides
-    @Singleton
-    fun provideDb(app: Application): CacheDb = Room
-        .databaseBuilder(app, CacheDb::class.java, "dtb_cache.db")
-        .fallbackToDestructiveMigration()
-        .build()
-
-    @Provides
-    @Singleton
-    fun provideProfileDao(db: CacheDb): IpInfoDao = db.ipInfoDao()
 }

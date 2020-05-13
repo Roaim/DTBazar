@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import retrofit2.Response
+import java.lang.reflect.Type
 import javax.inject.Inject
 
 class ApiUtils @Inject constructor(
@@ -30,6 +31,8 @@ class ApiUtils @Inject constructor(
         e.printStackTrace()
         false
     }
+
+    suspend fun <T> getErrorResult(response: Response<*>, type: Type): Result<T> = getErrorResult(response, type)
 
     suspend fun <T> getErrorResult(response: Response<*>, clazz: Class<T>): Result<T> =
         if (response.code() == 400) {
