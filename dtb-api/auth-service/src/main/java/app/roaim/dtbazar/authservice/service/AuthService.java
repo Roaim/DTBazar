@@ -58,22 +58,20 @@ public class AuthService {
         return userRepository.findById(id);
     }
 
-    public Mono<User> saveOrGetUser(FbUserProfile fbUserProfile, String facebookAccessToken, String xForwardedFor) {
-        String locationId = fbUserProfile.getLocation() == null ? null :
-                fbUserProfile.getLocation().getId();
-        String locationName = fbUserProfile.getLocation() == null ? null :
-                fbUserProfile.getLocation().getName();
-        String fbProfilePicture = null;
-        if (fbUserProfile.getPicture() != null && fbUserProfile.getPicture().getData() != null) {
-            fbProfilePicture = fbUserProfile.getPicture().getData().getUrl();
-        }
+    public Mono<User> saveGetUser(FbUserProfile fbUserProfile, String facebookAccessToken, String xForwardedFor) {
         return userRepository.findTopByFbId(fbUserProfile.getId()).switchIfEmpty(
-                Mono.just(new User(fbUserProfile.getId(),
-                        fbUserProfile.getName(), fbUserProfile.getEmail(), fbUserProfile.getGender(),
-                        locationId, locationName, fbProfilePicture, facebookAccessToken, xForwardedFor)
-                )
+                Mono.just(new User())
         ).map(user -> {
-            user.setFbAccessToken(facebookAccessToken);
+            String locationId = fbUserProfile.getLocation() == null ? null :
+                    fbUserProfile.getLocation().getId();
+            String locationName = fbUserProfile.getLocation() == null ? null :
+                    fbUserProfile.getLocation().getName();
+            String fbProfilePicture = null;
+            if (fbUserProfile.getPicture() != null && fbUserProfile.getPicture().getData() != null) {
+                fbProfilePicture = fbUserProfile.getPicture().getData().getUrl();
+            }
+            user.update(fbUserProfile.getId(), fbUserProfile.getName(), fbUserProfile.getEmail(), fbUserProfile.getGender(),
+                    locationId, locationName, fbProfilePicture, facebookAccessToken, xForwardedFor);
             return user;
         }).flatMap(this::saveUser);
     }
