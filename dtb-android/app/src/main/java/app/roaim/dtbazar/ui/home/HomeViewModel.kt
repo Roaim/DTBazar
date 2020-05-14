@@ -18,7 +18,13 @@ class HomeViewModel @Inject constructor(
 
     val ipInfo = infoRepository.getIpInfo()
 
-    val myStores = infoRepository.getMyStores()
+    private val myDonations = infoRepository.getMyDonations()
+
+    val myCachedDonations = Transformations.switchMap(myDonations) { infoRepository.getMyCachedDonations() }
+
+    private val myStores = infoRepository.getMyStores()
+
+    val myCachedStores = Transformations.switchMap(myStores) { infoRepository.getMyCachedStores() }
 
     fun saveStore(name: String, mobile: String): LiveData<Result<Store>> =
         Transformations.switchMap(ipInfo) {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="app.roaim.dtbazar.model.Store" />
+
+        <variable
+            name="store"
+            type="Store" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:selectableItemBackground">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:visibility="visible"
+            app:cardCornerRadius="4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    imgUrl="@{store.storeFrontImage.url}"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    tools:src="@drawable/ic_store_black_24dp" />
+
+                <TextView
+                    android:id="@+id/tvName1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv1"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="2dp"
+                    android:text="@{store.name}"
+                    android:textColor="@color/text_home_list_title"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    tools:text="Oneplus 6 Store" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvName1"
+                    android:layout_toEndOf="@id/iv1"
+                    android:paddingTop="2dp"
+                    android:text="@{store.createdAt}"
+                    android:textColor="@color/text_home_list_subtitle"
+                    android:textSize="16sp"
+                    tools:text="Roaim Ahmed Hriody" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</layout>

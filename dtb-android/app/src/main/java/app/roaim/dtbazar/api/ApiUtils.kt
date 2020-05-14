@@ -22,7 +22,7 @@ class ApiUtils @Inject constructor(
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         app.startActivity(intent)
-        prefDataSource.clearToken()
+        prefDataSource.clearSession()
     } catch (e: Exception) {
         e.printStackTrace()
         false

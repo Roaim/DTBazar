@@ -27,4 +27,8 @@ interface ApiService {
     @GET("store/my")
     @Throws(Exception::class)
     suspend fun getMyStores(): Response<List<Store>>
+
+    @GET("donation/my")
+    @Throws(Exception::class)
+    suspend fun getMyDonations(): Response<List<Donation>>
 }

@@ -2,10 +2,7 @@ package app.roaim.dtbazar.di
 
 import android.app.Application
 import androidx.room.Room
-import app.roaim.dtbazar.db.CacheDb
-import app.roaim.dtbazar.db.IpInfoDao
-import app.roaim.dtbazar.db.ProfileDao
-import app.roaim.dtbazar.db.StoreDao
+import app.roaim.dtbazar.db.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -30,4 +27,8 @@ class DbModule {
     @Provides
     @Singleton
     fun provideStoreDao(db: CacheDb): StoreDao = db.storeDao()
+
+    @Provides
+    @Singleton
+    fun provideDonationDao(db: CacheDb): DonationDao = db.donationDao()
 }

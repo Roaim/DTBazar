@@ -54,13 +54,22 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.listener = this
+        val storeAdapter = HomeStoreAdapter()
+        val donationAdapter = HomeDonationAdapter()
+        binding?.rvStore?.adapter = storeAdapter
+        binding?.rvDonation?.adapter = donationAdapter
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
             log(it.toString())
             if (it.status == Status.LOGOUT) apiUtils.logout()
             binding?.profile = it
         })
-        homeViewModel.myStores.observe(viewLifecycleOwner, Observer {
-            log(it.toString())
+
+        homeViewModel.myCachedStores.observe(viewLifecycleOwner, Observer {
+            storeAdapter.reload(it)
+        })
+
+        homeViewModel.myCachedDonations.observe(viewLifecycleOwner, Observer {
+            donationAdapter.reload(it)
         })
     }
 

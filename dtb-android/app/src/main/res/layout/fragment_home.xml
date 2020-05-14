@@ -37,7 +37,6 @@
             android:layout_gravity="start"
             android:backgroundTint="#75000000"
             app:cardCornerRadius="4dp"
-            android:layout_marginBottom="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +78,6 @@
                     android:text="@{profile.data.email}"
                     android:textColor="@color/text_home_subtitle"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     tools:text="roaimahmed@yamail.com" />
 
             </RelativeLayout>
@@ -92,6 +90,7 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
+                android:paddingTop="8dp"
                 android:id="@+id/rootHome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,110 +115,20 @@
                     android:layout_marginBottom="16dp"
                     android:background="#58888888" />
 
-                <androidx.cardview.widget.CardView
-                    android:visibility="gone"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStore"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/view_item_store" />
 
-                        <ImageView
-                            android:id="@+id/iv1"
-                            imgUrl="@{profile.data.fbProfilePicture}"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="20dp" />
-
-                        <TextView
-                            android:id="@+id/tvName1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/iv1"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="2dp"
-                            android:text="@{profile.data.name}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_title"
-                            tools:text="Roaim Ahmed Hridoy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvName1"
-                            android:layout_toEndOf="@id/iv1"
-                            android:paddingTop="2dp"
-                            android:text="@{profile.data.email}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_subtitle"
-                            tools:text="roaimahmed@yamail.com" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <!--<androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:id="@+id/iv2"
-                            imgUrl="@{profile.data.fbProfilePicture}"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="20dp" />
-
-                        <TextView
-                            android:id="@+id/tvName2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/iv2"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="2dp"
-                            android:text="@{profile.data.name}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            tools:text="Roaim Ahmed Hridoy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvName2"
-                            android:layout_toEndOf="@id/iv2"
-                            android:paddingTop="2dp"
-                            android:text="@{profile.data.email}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            tools:text="roaimahmed@yamail.com" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>-->
+                </RelativeLayout>
 
                 <Button
                     style="@style/Widget.AppCompat.Button.Borderless"
@@ -250,113 +159,20 @@
                     android:layout_marginBottom="16dp"
                     android:background="#58888888" />
 
-                <androidx.cardview.widget.CardView
-                    android:visibility="gone"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="wrap_content">
 
-                    <RelativeLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvDonation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="12dp">
+                        android:nestedScrollingEnabled="false"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="2"
+                        tools:listitem="@layout/view_item_donation" />
 
-                        <ImageView
-                            android:id="@+id/iv3"
-                            imgUrl="@{profile.data.fbProfilePicture}"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="20dp" />
-
-                        <TextView
-                            android:id="@+id/tvName3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/iv3"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="2dp"
-                            android:text="@{profile.data.name}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_title"
-                            tools:text="Roaim Ahmed Hridoy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvName3"
-                            android:layout_toEndOf="@id/iv3"
-                            android:paddingTop="2dp"
-                            android:text="@{profile.data.email}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_subtitle"
-                            tools:text="roaimahmed@yamail.com" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start"
-                    app:cardCornerRadius="4dp"
-                    app:cardUseCompatPadding="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:id="@+id/iv4"
-                            imgUrl="@{profile.data.fbProfilePicture}"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="20dp" />
-
-                        <TextView
-                            android:id="@+id/tvName4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_toEndOf="@id/iv4"
-                            android:paddingTop="4dp"
-                            android:paddingBottom="2dp"
-                            android:text="@{profile.data.name}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_title"
-                            tools:text="Roaim Ahmed Hridoy" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/tvName4"
-                            android:layout_toEndOf="@id/iv4"
-                            android:paddingTop="2dp"
-                            android:text="@{profile.data.email}"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/text_home_list_subtitle"
-                            tools:text="roaimahmed@yamail.com" />
-
-                    </RelativeLayout>
-
-                </androidx.cardview.widget.CardView>
+                </RelativeLayout>
 
                 <Button
                     android:layout_marginTop="16dp"

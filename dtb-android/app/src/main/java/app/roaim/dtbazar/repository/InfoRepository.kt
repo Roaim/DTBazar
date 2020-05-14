@@ -6,7 +6,9 @@ import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.PrefDataSource
+import app.roaim.dtbazar.db.DonationDao
 import app.roaim.dtbazar.db.IpInfoDao
+import app.roaim.dtbazar.db.ProfileDao
 import app.roaim.dtbazar.db.StoreDao
 import app.roaim.dtbazar.model.*
 import app.roaim.dtbazar.model.Result.Companion.failed
@@ -19,15 +21,25 @@ import javax.inject.Singleton
 @Singleton
 class InfoRepository @Inject constructor(
     private val ipInfoDao: IpInfoDao,
+    private val storeDao: StoreDao,
+    private val donationDao: DonationDao,
+    private val profileDao: ProfileDao,
     private val apiService: ApiService,
-    private val prefDataSource: PrefDataSource,
-    private val storeDao: StoreDao
+    private val prefDataSource: PrefDataSource
 ) {
 
-    fun getProfile(): LiveData<Result<Profile>> = liveData {
+    fun getProfile(): LiveData<Result<Profile>> =
+        prefDataSource.getUid()?.let { uid ->
+            profileDao.findById(uid).map {
+                success(it)
+            }
+        } ?: liveData {
         emit(loading())
         val result = try {
-            apiService.getProfile().getResult()
+            apiService.getProfile().getResult {
+                profileDao.insert(it)
+                prefDataSource.saveUid(it.id)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             failed<Profile>(e.message)
@@ -56,18 +68,35 @@ class InfoRepository @Inject constructor(
         prefDataSource.saveIp(ipInfo.ip)
     }
 
-    //    TODO move to store repository
+    //    TODO move to another repository
 
-    fun getMyStores(): LiveData<Result<List<Store>>> = liveData {
-        emit(loading())
-        val result = try {
-            apiService.getMyStores().getResult { storeDao.insert(*it.toTypedArray()) }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            failed<List<Store>>(e.message)
+    fun getMyCachedDonations() = donationDao.findAll()
+
+    fun getMyDonations(): LiveData<Result<List<Donation>>> =
+        liveData {
+            emit(loading())
+            val result = try {
+                apiService.getMyDonations().getResult { donationDao.insert(*it.toTypedArray()) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<List<Donation>>(e.message)
+            }
+            emit(result)
         }
-        emit(result)
-    }
+
+    fun getMyCachedStores() = storeDao.findAll()
+
+    fun getMyStores(): LiveData<Result<List<Store>>> =
+        liveData {
+            emit(loading())
+            val result = try {
+                apiService.getMyStores().getResult { storeDao.insert(*it.toTypedArray()) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                failed<List<Store>>(e.message)
+            }
+            emit(result)
+        }
 
     fun saveStore(storeBody: StorePostBody): LiveData<Result<Store>> = liveData {
         emit(loading())
