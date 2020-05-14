@@ -1,24 +1,27 @@
 package app.roaim.dtbazar.storeservice;
 
+import app.roaim.dtbazar.storeservice.model.ErrorBody;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMethod;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.service.ApiKey;
-import springfox.documentation.service.AuthorizationScope;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.SecurityReference;
+import springfox.documentation.builders.ResponseMessageBuilder;
+import springfox.documentation.schema.ModelRef;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebFlux;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -40,7 +43,7 @@ public class SwaggerConfig {
     private String apiVersion;
 
     @Bean
-    public Docket api() {
+    public Docket api(TypeResolver typeResolver) {
         String gatewayUrl = format("%s/api/%s", host, apiVersion);
         String termsUrl = format("%s://%s/terms.html", scheme, gatewayUrl);
         return new Docket(DocumentationType.SWAGGER_2)
@@ -66,7 +69,38 @@ public class SwaggerConfig {
                 .genericModelSubstitutes(Flux.class)
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
+                .additionalModels(typeResolver.resolve(ErrorBody.class))
+                .globalResponseMessage(RequestMethod.GET, getResponseMegList())
+                .globalResponseMessage(RequestMethod.POST, getResponseMegList())
+                .globalResponseMessage(RequestMethod.PUT, getResponseMegList())
+                .globalResponseMessage(RequestMethod.DELETE, getResponseMegList())
+                .globalResponseMessage(RequestMethod.PATCH, getResponseMegList())
                 .useDefaultResponseMessages(false);
+    }
+
+    private List<ResponseMessage> getResponseMegList() {
+        return Arrays.asList(
+                getResponseMsg(400, "Bad Request"),
+                getResponseMsg(401, "Unauthorized"),
+                getResponseMsg(403, "Forbidden"),
+                getResponseMsg(404, "Not Found"),
+                getResponseMsg(500, "Internal Server Error"),
+                getResponseMsg(503, "Service Unavailable", "ErrorBody")
+        );
+    }
+
+    private ResponseMessage getResponseMsg(int code, String msg) {
+        return getResponseMsg(code, msg, null);
+    }
+
+    private ResponseMessage getResponseMsg(int code, String msg, String modelRef) {
+        ResponseMessageBuilder messageBuilder = new ResponseMessageBuilder()
+                .code(code)
+                .message(msg);
+        if (modelRef != null) {
+            messageBuilder.responseModel(new ModelRef(modelRef));
+        }
+        return messageBuilder.build();
     }
 
     private ApiKey apiKey() {

@@ -3,6 +3,7 @@ package app.roaim.dtbazar.mediaservice.controller;
 import app.roaim.dtbazar.mediaservice.domain.MediaFile;
 import app.roaim.dtbazar.mediaservice.jwt.JWTUtil;
 import app.roaim.dtbazar.mediaservice.service.StorageService;
+import io.swagger.annotations.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -32,7 +33,7 @@ public class MediaController {
     }
 
     @GetMapping("/{id}")
-    ResponseEntity<Resource> getFile(@PathVariable String id) {
+    ResponseEntity<?> getFile(@PathVariable String id) {
         return storageService.getMediaFileById(id).flatMap(mediaFile ->
                 storageService.getFile(id).map(resource -> ResponseEntity.ok()
                         .contentType(MediaType.parseMediaType(mediaFile.getContentType()))
