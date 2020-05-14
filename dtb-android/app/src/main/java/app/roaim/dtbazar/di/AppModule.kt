@@ -3,12 +3,9 @@ package app.roaim.dtbazar.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import androidx.room.Room
 import app.roaim.dtbazar.BuildConfig
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.data.PrefDataSource
-import app.roaim.dtbazar.db.CacheDb
-import app.roaim.dtbazar.db.IpInfoDao
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -41,17 +38,14 @@ class AppModule {
         prefDataSource: PrefDataSource
     ): ApiService {
         val clientBuilder = OkHttpClient.Builder()
-            .addInterceptor {
-                it.proceed(
-                    it.request().newBuilder()
-                        .addHeader("Authorization", "Bearer ${prefDataSource.getToken().token}")
-                        .build()
-                )
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer ${prefDataSource.getToken().token}")
+                    .build()
+                chain.proceed(request)
             }
         if (BuildConfig.DEBUG) {
-            val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            clientBuilder.addInterceptor(loggingInterceptor)
+            clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         }
         return Retrofit.Builder()
             .client(clientBuilder.build())

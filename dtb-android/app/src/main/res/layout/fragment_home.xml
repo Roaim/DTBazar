@@ -35,9 +35,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:backgroundTint="#BF073135"
+            android:backgroundTint="#75000000"
             app:cardCornerRadius="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,9 +114,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#50ffffff" />
+                    android:background="#58888888" />
 
                 <androidx.cardview.widget.CardView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -247,9 +248,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginBottom="16dp"
-                    android:background="#50ffffff" />
+                    android:background="#58888888" />
 
                 <androidx.cardview.widget.CardView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
@@ -303,6 +305,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"

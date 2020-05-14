@@ -1,10 +1,9 @@
 package app.roaim.dtbazar.ui.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import app.roaim.dtbazar.model.Result
+import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.model.map
 import app.roaim.dtbazar.repository.AuthRepository
 import app.roaim.dtbazar.repository.InfoRepository
 import app.roaim.dtbazar.utils.Constants
@@ -23,7 +22,10 @@ class LoginViewModel @Inject constructor(
         if (Constants.TOKEN_NOT_EXISTS == it) {
             authRepository.getToken()
         } else {
-            authRepository.createToken(it)
+            authRepository.createToken(it).map { result ->
+                if (result.status==Status.SUCCESS) result.map { apiToken -> apiToken?.token!! }
+                else result.map { "error: create token" }
+            }
         }
     }
 

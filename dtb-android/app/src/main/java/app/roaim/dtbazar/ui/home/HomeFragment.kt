@@ -70,12 +70,15 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
             .setView(addStoreBinding?.root)
             .create()
         addStoreBinding?.listener = object : ViewAddStoreButtonClickListener {
-            override fun onAddStoreClick(storeName: String, mobile: String) {
-                homeViewModel.saveStore(storeName, mobile).observe(viewLifecycleOwner, Observer {
-                    log("SaveStore: $it")
-                    addStoreBinding?.store = it
-                    if (it.status == Status.SUCCESS) onCancelClick()
-                })
+            override fun onAddStoreClick(storeName: String?, mobile: String?) {
+                if (storeName != null && mobile != null) {
+                    homeViewModel.saveStore(storeName, mobile)
+                        .observe(viewLifecycleOwner, Observer {
+                            log("SaveStore: $it")
+                            addStoreBinding?.store = it
+                            if (it.status == Status.SUCCESS) onCancelClick()
+                        })
+                }
             }
 
             override fun onCancelClick() {
