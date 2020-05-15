@@ -20,6 +20,7 @@ public class Store {
     private String name;
     private String proprietor;
     private String mobile;
+    private String address;
     private Image storeFrontImage;
     private String uid;
     @GeoSpatialIndexed
@@ -47,23 +48,24 @@ public class Store {
     }
 
     @PersistenceConstructor
-    public Store(String name, String proprietor, String mobile, Image storeFrontImage, String uid, double[] location) {
+    public Store(String name, String proprietor, String mobile, String address, Image storeFrontImage, String uid, double[] location) {
         super();
-        update(name, proprietor, mobile, storeFrontImage, uid, location);
+        update(name, proprietor, mobile, address, storeFrontImage, uid, location);
     }
 
-    public Store(String name, String proprietor, String mobile, Image storeFrontImage, String uid, double x, double y) {
-        this(name, proprietor, mobile, storeFrontImage, uid, new double[]{x, y});
+    public Store(String name, String proprietor, String mobile, String address, Image storeFrontImage, String uid, double x, double y) {
+        this(name, proprietor, mobile, address, storeFrontImage, uid, new double[]{x, y});
     }
 
     public void update(Store store) {
-        update(store.getName(), store.getProprietor(), store.getMobile(), store.getStoreFrontImage(), store.getUid(), store.getLocation());
+        update(store.getName(), store.getProprietor(), store.getMobile(), store.getAddress(), store.getStoreFrontImage(), store.getUid(), store.getLocation());
     }
 
-    private void update(String name, String proprietor, String mobile, Image storeFrontImage, String uid, double[] location) {
+    private void update(String name, String proprietor, String mobile, String address, Image storeFrontImage, String uid, double[] location) {
         this.name = name;
         this.proprietor = proprietor;
         this.mobile = mobile;
+        this.address = address;
         this.storeFrontImage = storeFrontImage;
         this.uid = uid;
         this.location = location;

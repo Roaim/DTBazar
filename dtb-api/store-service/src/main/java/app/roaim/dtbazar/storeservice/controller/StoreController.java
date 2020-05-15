@@ -69,7 +69,8 @@ public class StoreController {
                             @PathVariable String storeId) {
         JwtData jwtData = jwtUtil.decode(bearerToken);
         return service.deleteStoreById(storeId, jwtData.getSub()).doOnSuccess(store -> {
-            if (store != null) mediaDeleteService.delete(store.getStoreFrontImage().getId(), bearerToken);
+            if (store != null && store.getStoreFrontImage() != null)
+                mediaDeleteService.delete(store.getStoreFrontImage().getId(), bearerToken);
         });
     }
 }

@@ -8,10 +8,11 @@ import lombok.Value;
 public class StoreDto {
     String name;
     String mobile;
+    String address;
     Image storeFrontImage;
     double[] location;
 
     public Store toStore(String uid, String proprietor) {
-        return new Store(name, proprietor, mobile, storeFrontImage, uid, location);
+        return new Store(name, proprietor, mobile, address, storeFrontImage, uid, location);
     }
 }
