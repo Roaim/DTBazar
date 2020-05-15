@@ -23,7 +23,7 @@ class HomeDonationAdapter :
 
 class HomeDonationViewHolder(binding: ViewItemDonationBinding) :
     RecyclerBindingViewHolder<Donation, ViewItemDonationBinding>(binding) {
-    override fun bind(item: Donation) {
+    override fun bind(item: Donation?) {
         binding.donation = item
     }
 }

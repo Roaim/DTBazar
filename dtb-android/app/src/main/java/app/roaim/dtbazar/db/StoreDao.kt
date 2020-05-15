@@ -1,10 +1,7 @@
 package app.roaim.dtbazar.db
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import app.roaim.dtbazar.model.Store
 
 @Dao
@@ -12,7 +9,7 @@ interface StoreDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg store: Store)
 
-    @Query("select * from store order by id desc")
+    @Query("select * from store")
     fun findAll(): LiveData<List<Store>>
 
     @Query("select * from store where uid = :uid order by id desc")
@@ -20,4 +17,17 @@ interface StoreDao {
 
     @Query("select * from store where id = :id")
     fun findById(id: String): LiveData<Store>
+
+    @Delete
+    suspend fun delete(id: Store)
+
+    @Query("delete from store")
+    suspend fun deleteAll()
+
+    @Transaction
+    suspend fun refresh(vararg stores: Store) {
+        deleteAll()
+        insert(*stores)
+    }
+
 }

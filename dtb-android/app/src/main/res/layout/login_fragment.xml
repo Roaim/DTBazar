@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="androidx.lifecycle.LiveData" />
+
         <import type="app.roaim.dtbazar.model.Result" />
 
         <import type="app.roaim.dtbazar.model.Status" />
@@ -15,11 +17,11 @@
 
         <variable
             name="ipInfo"
-            type="Result&lt;IpInfo>" />
+            type="LiveData&lt;Result&lt;IpInfo>>" />
 
         <variable
-            name="status"
-            type="Status" />
+            name="token"
+            type="LiveData&lt;Result&lt;String>>" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,13 +43,13 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="48dp"
             android:fontFamily="serif"
             android:text="@string/app_name"
             android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+            app:layout_constraintBottom_toTopOf="@+id/progressBar3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -56,7 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="32dp"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -65,38 +67,32 @@
 
         <TextView
             android:id="@+id/info"
-            android:layout_width="match_parent"
+            ipInfoError="@{ipInfo}"
+            tokenError="@{token}"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
             android:gravity="center"
-            android:text="@{ipInfo.status == Status.SUCCESS ? ipInfo.data.toString() : ipInfo.msg}"
             android:textAlignment="center"
             android:textSize="14sp"
+            android:textColor="@color/colorAccent"
+            tools:text="Socket timeout exception"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/login_button" />
 
         <ProgressBar
             android:id="@+id/progressBar3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
-            android:visibility="@{status == Status.LOADING ? View.VISIBLE : View.GONE}"
+            android:layout_marginTop="32dp"
+            android:visibility="@{token.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/info" />
-
-        <ProgressBar
-            android:id="@+id/progressBar2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{ipInfo.status == Status.LOADING ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/info"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

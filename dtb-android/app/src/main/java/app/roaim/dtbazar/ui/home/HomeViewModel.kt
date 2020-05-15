@@ -26,15 +26,18 @@ class HomeViewModel @Inject constructor(
 
     val myCachedStores = Transformations.switchMap(myStores) { infoRepository.getMyCachedStores() }
 
-    fun saveStore(name: String, mobile: String): LiveData<Result<Store>> =
+    fun saveStore(name: String, address: String, mobile: String): LiveData<Result<Store>> =
         Transformations.switchMap(ipInfo) {
             infoRepository.saveStore(
                 StorePostBody(
                     name = name,
+                    address = address,
                     mobile = mobile,
                     location = listOf(it.data?.lat, it.data?.lon)
                 )
             )
         }
+
+    fun deleteStore(store: Store): LiveData<Result<Store>> = infoRepository.deleteStore(store)
 
 }

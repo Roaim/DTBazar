@@ -43,6 +43,23 @@
                 android:imeOptions="actionNext"
                 android:inputType="textPersonName|textCapWords"
                 android:maxLines="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nextFocusDown="@id/etAddress"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Store Address">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddress"
+                android:imeOptions="actionNext"
+                android:inputType="textPostalAddress|textCapWords"
+                android:maxLines="1"
                 android:nextFocusDown="@id/etMobile"
                 android:singleLine="true"
                 android:layout_width="match_parent"
@@ -53,7 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Mobile Name. Ex. +8801XXXXXXXXX">
+            android:hint="Mobile Number">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etMobile"
@@ -77,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:enabled="@{store.status != Status.LOADING}"
-            android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etName), ExtensionsKt.value(etMobile))}"
+            android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etMobile), ExtensionsKt.value(etAddress), ExtensionsKt.value(etName))}"
             android:text="Add New Store" />
 
         <Button

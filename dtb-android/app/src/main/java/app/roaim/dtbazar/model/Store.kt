@@ -7,6 +7,9 @@ import com.google.gson.annotations.SerializedName
 @Entity(tableName = "store", primaryKeys = ["id"])
 data class Store(
 
+    @field:SerializedName("address")
+    val address: String? = null,
+
     @field:SerializedName("uid")
     val uid: String? = null,
 
@@ -55,6 +58,9 @@ data class StoreFrontImage(
 )
 
 data class StorePostBody(
+
+    @field:SerializedName("address")
+    val address: String? = null,
 
     @field:SerializedName("mobile")
     val mobile: String? = null,

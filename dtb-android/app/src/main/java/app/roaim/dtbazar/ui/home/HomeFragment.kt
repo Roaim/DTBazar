@@ -1,13 +1,11 @@
 package app.roaim.dtbazar.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,13 +14,16 @@ import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
-import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.ui.StoreListAdapter
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.log
+import app.roaim.dtbazar.utils.snackbar
 import javax.inject.Inject
 
 
-class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
+class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
     @Inject
     lateinit var apiUtils: ApiUtils
@@ -33,7 +34,6 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
     private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
 
     private var binding: FragmentHomeBinding? = null
-    private var addStoreBinding: ViewAddNewStoreBinding? = null
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -48,13 +48,29 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
-        addStoreBinding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding?.listener = this
-        val storeAdapter = HomeStoreAdapter()
+        val storeAdapter = StoreListAdapter().apply {
+            itemClickListener = { item, itemView, isLongClick ->
+                if (isLongClick) {
+                    itemView.snackbar("Delete: ${item?.name}?") {
+                        if (item != null) {
+                            homeViewModel.deleteStore(item).observe(viewLifecycleOwner, Observer {
+                                log("DELETE_STORE: $it")
+                                if (it.status == Status.FAILED) Toast.makeText(
+                                    requireContext(),
+                                    it.msg,
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            })
+                        }
+                    }
+                }
+            }
+        }
         val donationAdapter = HomeDonationAdapter()
         binding?.rvStore?.adapter = storeAdapter
         binding?.rvDonation?.adapter = donationAdapter
@@ -65,7 +81,7 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
         })
 
         homeViewModel.myCachedStores.observe(viewLifecycleOwner, Observer {
-            storeAdapter.reload(it)
+            storeAdapter.submitList(it)
         })
 
         homeViewModel.myCachedDonations.observe(viewLifecycleOwner, Observer {
@@ -74,27 +90,9 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
     }
 
     override fun onAddNewStoreClick() {
-        addStoreBinding = ViewAddNewStoreBinding.inflate(LayoutInflater.from(requireContext()))
-        val dialog = AlertDialog.Builder(requireContext())
-            .setView(addStoreBinding?.root)
-            .create()
-        addStoreBinding?.listener = object : ViewAddStoreButtonClickListener {
-            override fun onAddStoreClick(storeName: String?, mobile: String?) {
-                if (storeName != null && mobile != null) {
-                    homeViewModel.saveStore(storeName, mobile)
-                        .observe(viewLifecycleOwner, Observer {
-                            log("SaveStore: $it")
-                            addStoreBinding?.store = it
-                            if (it.status == Status.SUCCESS) onCancelClick()
-                        })
-                }
-            }
-
-            override fun onCancelClick() {
-                dialog.dismiss()
-            }
+        showAddStoreDialog { name, address, mobile ->
+            homeViewModel.saveStore(name, address, mobile)
         }
-        dialog.show()
     }
 
     override fun onMakeDonationClick() {
@@ -121,9 +119,5 @@ class HomeFragment : Fragment(), Injectable, HomeButtonClickListener {
             }
         }
         callback.isEnabled = true
-    }
-
-    private fun log(msg: String, e: Throwable? = null) {
-        Log.d(this::class.simpleName, msg, e)
     }
 }

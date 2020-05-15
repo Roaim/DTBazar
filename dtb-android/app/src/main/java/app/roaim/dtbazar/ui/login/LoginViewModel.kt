@@ -7,6 +7,7 @@ import app.roaim.dtbazar.model.map
 import app.roaim.dtbazar.repository.AuthRepository
 import app.roaim.dtbazar.repository.InfoRepository
 import app.roaim.dtbazar.utils.Constants
+import app.roaim.dtbazar.utils.Constants.TOKEN_NOT_CREATED
 import javax.inject.Inject
 
 class LoginViewModel @Inject constructor(
@@ -24,7 +25,7 @@ class LoginViewModel @Inject constructor(
         } else {
             authRepository.createToken(it).map { result ->
                 if (result.status==Status.SUCCESS) result.map { apiToken -> apiToken?.token!! }
-                else result.map { "error: create token" }
+                else result.map { TOKEN_NOT_CREATED }
             }
         }
     }

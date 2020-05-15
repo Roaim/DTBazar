@@ -108,4 +108,16 @@ class InfoRepository @Inject constructor(
         }
         emit(result)
     }
+
+    fun deleteStore(store: Store): LiveData<Result<Store>> = liveData {
+        emit(loading<Store>())
+        val result = try {
+            storeDao.delete(store)
+            apiService.deleteStore(store.id).getResult()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            failed<Store>(e.message)
+        }
+        emit(result)
+    }
 }

@@ -18,7 +18,6 @@ class DtBazarApp : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         AppInjector.init(this)
-        FacebookSdk.sdkInitialize(applicationContext)
         AppEventsLogger.activateApp(this)
     }
 

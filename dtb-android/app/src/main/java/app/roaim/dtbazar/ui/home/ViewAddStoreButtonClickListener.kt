@@ -1,6 +1,7 @@
 package app.roaim.dtbazar.ui.home
 
 interface ViewAddStoreButtonClickListener {
-    fun onAddStoreClick(storeName: String?, mobile: String?)
     fun onCancelClick()
+    // intentionally changed sequence for edittext error focus order
+    fun onAddStoreClick(mobile: String, address: String, name: String)
 }

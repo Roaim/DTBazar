@@ -10,6 +10,7 @@ import app.roaim.dtbazar.ui.notifications.NotificationsViewModel
 
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Suppress("unused")
@@ -28,7 +29,7 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(StoreViewModel::class)
-    abstract fun bindStoreViewModel(searchViewModel: StoreViewModel): ViewModel
+    abstract fun bindStoreViewModel(storeViewModel: StoreViewModel): ViewModel
 
     @Binds
     @IntoMap

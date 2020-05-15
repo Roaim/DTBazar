@@ -2,6 +2,9 @@ package app.roaim.dtbazar.di
 
 import android.app.Application
 import androidx.room.Room
+import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
+import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.db.*
 import dagger.Module
 import dagger.Provides
@@ -11,10 +14,19 @@ import javax.inject.Singleton
 class DbModule {
     @Provides
     @Singleton
-    fun provideDb(app: Application): CacheDb = Room
+    fun provideDb(app: Application, apiUtils: ApiUtils): CacheDb = Room
         .databaseBuilder(app, CacheDb::class.java, "dtb_cache.db")
+        .addCallback(roomCallback(apiUtils))
         .fallbackToDestructiveMigration()
         .build()
+
+    private fun roomCallback(apiUtils: ApiUtils): RoomDatabase.Callback =
+        object : RoomDatabase.Callback() {
+            override fun onDestructiveMigration(db: SupportSQLiteDatabase) {
+                super.onDestructiveMigration(db)
+                apiUtils.logout()
+            }
+        }
 
     @Provides
     @Singleton

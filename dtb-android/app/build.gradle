@@ -47,6 +47,7 @@ dependencies {
     implementation deps.lifecycle.values()
     implementation deps.lifecycleExtra.commonJava8
     implementation deps.room.values()
+    implementation deps.paging.runtime
     implementation deps.retrofit.values()
     implementation deps.dagger.values()
     implementation deps.misc.facebook

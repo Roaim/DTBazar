@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class RecyclerBindingAdapter<T, VH : RecyclerBindingViewHolder<T, B>, B : ViewDataBinding> :
@@ -43,7 +45,7 @@ abstract class RecyclerSimpleViewHolder<T>(view: View) : BaseClickableViewHolder
 
 abstract class BaseClickableRecyclerAdapter<T, VH : BaseClickableViewHolder<T>> :
     BaseRecyclerAdapter<T, VH>() {
-    var itemClickListener: OnItemClickListener<T>? = null
+    var itemClickListener: ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)? = null
 
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH =
         onCreateViewHolder(
@@ -62,18 +64,21 @@ abstract class BaseClickableRecyclerAdapter<T, VH : BaseClickableViewHolder<T>> 
 }
 
 abstract class BaseClickableViewHolder<T>(view: View) : BaseViewHolder<T>(view) {
-    fun setClickListener(clickListener: OnItemClickListener<T>?, item: (Int) -> T) {
-        clickListener?.apply {
+    fun setClickListener(
+        clickListener: ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)? = null,
+        item: (Int) -> T?
+    ) {
+        clickListener?.also { block ->
             // Attach click listener only if there is a consumer
             itemView.setOnClickListener {
-                onItemClicked(item(adapterPosition), it)
+                block(item(adapterPosition), it, false)
+            }
+            itemView.setOnLongClickListener {
+                block(item(adapterPosition), it, true)
+                true
             }
         }
     }
-}
-
-interface OnItemClickListener<T> {
-    fun onItemClicked(item: T, itemView: View)
 }
 
 abstract class BaseRecyclerAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Adapter<VH>() {
@@ -120,5 +125,5 @@ abstract class BaseRecyclerAdapter<T, VH : BaseViewHolder<T>> : RecyclerView.Ada
 }
 
 abstract class BaseViewHolder<T>(view: View) : RecyclerView.ViewHolder(view) {
-    abstract fun bind(item: T)
+    abstract fun bind(item: T?)
 }

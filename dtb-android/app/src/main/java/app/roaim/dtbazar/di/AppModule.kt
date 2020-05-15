@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import app.roaim.dtbazar.BuildConfig
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.data.PrefDataSource
+import com.facebook.appevents.AppEventsLogger
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -50,8 +52,12 @@ class AppModule {
         return Retrofit.Builder()
             .client(clientBuilder.build())
             .baseUrl(apiBaseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .build()
             .create(ApiService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideFbLogger(app: Application): AppEventsLogger = AppEventsLogger.newLogger(app)
 }
