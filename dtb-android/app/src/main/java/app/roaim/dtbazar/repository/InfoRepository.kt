@@ -6,10 +6,8 @@ import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.PrefDataSource
-import app.roaim.dtbazar.db.DonationDao
 import app.roaim.dtbazar.db.IpInfoDao
 import app.roaim.dtbazar.db.ProfileDao
-import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
@@ -25,7 +23,6 @@ import javax.inject.Singleton
 @Singleton
 class InfoRepository @Inject constructor(
     private val ipInfoDao: IpInfoDao,
-    private val donationDao: DonationDao,
     private val profileDao: ProfileDao,
     private val apiService: ApiService,
     private val prefDataSource: PrefDataSource
@@ -70,19 +67,4 @@ class InfoRepository @Inject constructor(
         ipInfoDao.insert(ipInfo)
         prefDataSource.saveIp(ipInfo.ip)
     }
-
-    //    TODO move to another repository
-    fun getMyCachedDonations() = donationDao.findAll()
-
-    fun getMyDonations(): LiveData<Result<List<Donation>>> =
-        liveData {
-            emit(loading())
-            val result = try {
-                apiService.getMyDonations().getResult { donationDao.insert(*it.toTypedArray()) }
-            } catch (e: Exception) {
-                log("getMyDonations", e)
-                failed<List<Donation>>(e.message)
-            }
-            emit(result)
-        }
 }
