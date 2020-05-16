@@ -9,11 +9,15 @@ import app.roaim.dtbazar.data.PrefDataSource
 import app.roaim.dtbazar.db.DonationDao
 import app.roaim.dtbazar.db.IpInfoDao
 import app.roaim.dtbazar.db.ProfileDao
-import app.roaim.dtbazar.db.StoreDao
-import app.roaim.dtbazar.model.*
+import app.roaim.dtbazar.model.Donation
+import app.roaim.dtbazar.model.IpInfo
+import app.roaim.dtbazar.model.Profile
+import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
 import app.roaim.dtbazar.model.Result.Companion.success
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,12 +25,11 @@ import javax.inject.Singleton
 @Singleton
 class InfoRepository @Inject constructor(
     private val ipInfoDao: IpInfoDao,
-    private val storeDao: StoreDao,
     private val donationDao: DonationDao,
     private val profileDao: ProfileDao,
     private val apiService: ApiService,
     private val prefDataSource: PrefDataSource
-) {
+) : Loggable {
 
     fun getProfile(): LiveData<Result<Profile>> =
         prefDataSource.getUid()?.let { uid ->
@@ -41,7 +44,7 @@ class InfoRepository @Inject constructor(
                 prefDataSource.saveUid(it.id)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            log("getProfile", e)
             failed<Profile>(e.message)
         }
         emit(result)
@@ -57,7 +60,7 @@ class InfoRepository @Inject constructor(
             val result = try {
                 apiService.getIpInfo().getResult { saveIpInfo(it) }
             } catch (e: Exception) {
-                e.printStackTrace()
+                log("getIpInfo", e)
                 failed<IpInfo>(e.message)
             }
             emit(result)
@@ -69,7 +72,6 @@ class InfoRepository @Inject constructor(
     }
 
     //    TODO move to another repository
-
     fun getMyCachedDonations() = donationDao.findAll()
 
     fun getMyDonations(): LiveData<Result<List<Donation>>> =
@@ -78,46 +80,9 @@ class InfoRepository @Inject constructor(
             val result = try {
                 apiService.getMyDonations().getResult { donationDao.insert(*it.toTypedArray()) }
             } catch (e: Exception) {
-                e.printStackTrace()
+                log("getMyDonations", e)
                 failed<List<Donation>>(e.message)
             }
             emit(result)
         }
-
-    fun getMyCachedStores() = storeDao.findAll()
-
-    fun getMyStores(): LiveData<Result<List<Store>>> =
-        liveData {
-            emit(loading())
-            val result = try {
-                apiService.getMyStores().getResult { storeDao.insert(*it.toTypedArray()) }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                failed<List<Store>>(e.message)
-            }
-            emit(result)
-        }
-
-    fun saveStore(storeBody: StorePostBody): LiveData<Result<Store>> = liveData {
-        emit(loading())
-        val result = try {
-            apiService.saveStore(storeBody).getResult { storeDao.insert(it) }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            failed<Store>(e.message)
-        }
-        emit(result)
-    }
-
-    fun deleteStore(store: Store): LiveData<Result<Store>> = liveData {
-        emit(loading<Store>())
-        val result = try {
-            storeDao.delete(store)
-            apiService.deleteStore(store.id).getResult()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            failed<Store>(e.message)
-        }
-        emit(result)
-    }
 }

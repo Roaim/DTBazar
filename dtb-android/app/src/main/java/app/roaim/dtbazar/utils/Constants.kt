@@ -7,4 +7,5 @@ object Constants {
     const val KEY_TOKEN = "token"
     const val KEY_UID = "uid"
     const val KEY_TOKEN_EXPIRE = "token.exp"
+    const val STORE_PAGE_LOAD_SIZE = 15
 }

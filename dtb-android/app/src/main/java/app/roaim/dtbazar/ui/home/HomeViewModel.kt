@@ -8,9 +8,11 @@ import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.model.StorePostBody
 import app.roaim.dtbazar.repository.InfoRepository
+import app.roaim.dtbazar.repository.StoreRepository
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
+    private val storeRepository: StoreRepository,
     private val infoRepository: InfoRepository
 ) : ViewModel() {
 
@@ -22,13 +24,13 @@ class HomeViewModel @Inject constructor(
 
     val myCachedDonations = Transformations.switchMap(myDonations) { infoRepository.getMyCachedDonations() }
 
-    private val myStores = infoRepository.getMyStores()
+    private val myStores = storeRepository.getMyStores()
 
-    val myCachedStores = Transformations.switchMap(myStores) { infoRepository.getMyCachedStores() }
+    val myCachedStores = Transformations.switchMap(myStores) { storeRepository.getMyCachedStores() }
 
     fun saveStore(name: String, address: String, mobile: String): LiveData<Result<Store>> =
         Transformations.switchMap(ipInfo) {
-            infoRepository.saveStore(
+            storeRepository.saveStore(
                 StorePostBody(
                     name = name,
                     address = address,
@@ -38,6 +40,6 @@ class HomeViewModel @Inject constructor(
             )
         }
 
-    fun deleteStore(store: Store): LiveData<Result<Store>> = infoRepository.deleteStore(store)
+    fun deleteStore(store: Store): LiveData<Result<Store>> = storeRepository.deleteStore(store)
 
 }

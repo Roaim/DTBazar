@@ -1,9 +1,9 @@
 package app.roaim.dtbazar.di;
 
-import app.roaim.dtbazar.ui.store.StoreFragment
 import app.roaim.dtbazar.ui.home.HomeFragment
 import app.roaim.dtbazar.ui.login.LoginFragment
 import app.roaim.dtbazar.ui.notifications.NotificationsFragment
+import app.roaim.dtbazar.ui.store.StoreFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

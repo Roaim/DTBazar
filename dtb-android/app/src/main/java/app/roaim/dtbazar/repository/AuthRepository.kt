@@ -11,15 +11,18 @@ import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
 import app.roaim.dtbazar.model.Result.Companion.success
 import app.roaim.dtbazar.utils.Constants
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 import javax.inject.Singleton
 
+@Suppress("RemoveExplicitTypeArguments")
 @Singleton
 class AuthRepository @Inject constructor(
     private val apiService: ApiService,
     private val prefDataSource: PrefDataSource
-) {
-    fun getToken(): LiveData<Result<String>> = liveData {
+) : Loggable {
+    fun getCachedToken(): LiveData<Result<String>> = liveData {
         emit(loading())
         emit(prefDataSource.getToken().token?.let { success(it) }
             ?: failed<String>(Constants.TOKEN_NOT_EXISTS))
@@ -31,7 +34,7 @@ class AuthRepository @Inject constructor(
             try {
                 apiService.getToken(fbAccessToken).getResult { prefDataSource.saveToken(it) }
             } catch (e: Exception) {
-                e.printStackTrace()
+                log("createToken", e)
                 failed<ApiToken>(e.message)
             }
         )

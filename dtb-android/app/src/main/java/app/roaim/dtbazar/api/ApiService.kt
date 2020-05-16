@@ -27,7 +27,10 @@ interface ApiService {
 
     @GET("store/my")
     @Throws(Exception::class)
-    suspend fun getMyStores(): Response<List<Store>>
+    suspend fun getMyStores(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 10
+    ): Response<List<Store>>
 
     @GET("store/nearby")
     @Throws(Exception::class)
@@ -38,5 +41,8 @@ interface ApiService {
 
     @GET("donation/my")
     @Throws(Exception::class)
-    suspend fun getMyDonations(): Response<List<Donation>>
+    suspend fun getMyDonations(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 50
+    ): Response<List<Donation>>
 }

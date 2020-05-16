@@ -3,17 +3,24 @@ package app.roaim.dtbazar.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingComponent
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import app.roaim.dtbazar.databinding.ViewItemStoreBinding
 import app.roaim.dtbazar.model.Store
 
-class StorePagedAdapter : PagedListAdapter<Store, StoreViewHolder>(DiffCallback) {
+class StorePagedAdapter(private val bindingComponent: DataBindingComponent) :
+    PagedListAdapter<Store, StoreViewHolder>(DiffCallback) {
     var itemClickListener: ((item: Store?, itemView: View, isLongClick: Boolean) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder =
-        StoreViewHolder(ViewItemStoreBinding.inflate(LayoutInflater.from(parent.context))).apply {
+        StoreViewHolder(
+            ViewItemStoreBinding.inflate(
+                LayoutInflater.from(parent.context),
+                bindingComponent
+            )
+        ).apply {
             setClickListener(itemClickListener) { getItem(it) }
         }
 
@@ -22,11 +29,14 @@ class StorePagedAdapter : PagedListAdapter<Store, StoreViewHolder>(DiffCallback)
     }
 }
 
-class StoreListAdapter : ListAdapter<Store, StoreViewHolder>(DiffCallback) {
+class StoreListAdapter(private val bindingComponent: DataBindingComponent) :
+    ListAdapter<Store, StoreViewHolder>(DiffCallback) {
     var itemClickListener: ((item: Store?, itemView: View, isLongClick: Boolean) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreViewHolder =
-        StoreViewHolder(ViewItemStoreBinding.inflate(LayoutInflater.from(parent.context))).apply {
+        StoreViewHolder(
+            ViewItemStoreBinding.inflate(LayoutInflater.from(parent.context), bindingComponent)
+        ).apply {
             setClickListener(itemClickListener) { getItem(it) }
         }
 

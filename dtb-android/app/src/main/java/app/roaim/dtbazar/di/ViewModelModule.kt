@@ -3,14 +3,12 @@ package app.roaim.dtbazar.di;
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import app.roaim.dtbazar.ui.DtbViewModelFactory
-import app.roaim.dtbazar.ui.store.StoreViewModel
 import app.roaim.dtbazar.ui.home.HomeViewModel
 import app.roaim.dtbazar.ui.login.LoginViewModel
 import app.roaim.dtbazar.ui.notifications.NotificationsViewModel
-
+import app.roaim.dtbazar.ui.store.StoreViewModel
 import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.multibindings.IntoMap
 
 @Suppress("unused")

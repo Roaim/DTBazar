@@ -37,13 +37,12 @@
 
                 <ImageView
                     android:id="@+id/iv1"
-                    imgUrl="@{store.storeFrontImage.url}"
+                    storeImgUrl="@{store.storeFrontImage.url}"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_store_black_24dp"
                     tools:src="@drawable/ic_store_black_24dp" />
 
                 <TextView

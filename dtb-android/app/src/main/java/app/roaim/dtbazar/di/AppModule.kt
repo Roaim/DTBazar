@@ -3,7 +3,11 @@ package app.roaim.dtbazar.di
 import android.app.Application
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import app.roaim.dtbazar.BuildConfig
+import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.data.PrefDataSource
 import com.facebook.appevents.AppEventsLogger
@@ -35,22 +39,31 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideOkHttpClient(prefDataSource: PrefDataSource): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor { chain ->
+            val request = chain.request().newBuilder()
+                .addHeader("Authorization", "Bearer ${prefDataSource.getToken().token}")
+                .build()
+            chain.proceed(request)
+        }.apply {
+            if (BuildConfig.DEBUG) {
+                addInterceptor(
+                    HttpLoggingInterceptor().setLevel(
+                        HttpLoggingInterceptor.Level.BODY
+                    )
+                )
+            }
+        }.build()
+
+
+    @Provides
+    @Singleton
     fun provideApiService(
         @Named("apiBaseUrl") apiBaseUrl: String,
-        prefDataSource: PrefDataSource
+        okHttpClient: OkHttpClient
     ): ApiService {
-        val clientBuilder = OkHttpClient.Builder()
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${prefDataSource.getToken().token}")
-                    .build()
-                chain.proceed(request)
-            }
-        if (BuildConfig.DEBUG) {
-            clientBuilder.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-        }
         return Retrofit.Builder()
-            .client(clientBuilder.build())
+            .client(okHttpClient)
             .baseUrl(apiBaseUrl)
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .build()
@@ -60,4 +73,17 @@ class AppModule {
     @Provides
     @Singleton
     fun provideFbLogger(app: Application): AppEventsLogger = AppEventsLogger.newLogger(app)
+
+    @Provides
+    @Singleton
+    fun provideGlidePlaceholder(app: Application): RoundedBitmapDrawable {
+        val placeholder = BitmapFactory.decodeResource(
+            app.resources,
+            R.drawable.com_facebook_profile_picture_blank_square
+        )
+        val circularBitmapDrawable =
+            RoundedBitmapDrawableFactory.create(app.resources, placeholder)
+        circularBitmapDrawable.isCircular = true
+        return circularBitmapDrawable
+    }
 }

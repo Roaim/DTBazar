@@ -19,7 +19,8 @@ fun EditText.value(): String = text.apply {
     }
 }.toString()
 
-fun Loggable.log(msg: String, e: Throwable? = null) {
+fun Loggable.log(msg: String, throwable: Throwable? = null, e: Boolean = false) {
     val tag = this::class.simpleName
-    Log.d(tag, msg, e)
+    if (e) Log.e(tag, msg, throwable)
+    else Log.d(tag, msg, throwable)
 }

@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.databinding.DataBindingComponent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -12,15 +13,27 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.ui.StorePagedAdapter
+import app.roaim.dtbazar.utils.FragmentDataBindingComponent
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.autoCleared
+import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 
-class StoreFragment : Fragment(), Injectable {
+class StoreFragment : Fragment(), Injectable, Loggable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    @Inject
+    lateinit var glidePlaceHolder: RoundedBitmapDrawable
+
     private val storeViewModel: StoreViewModel by viewModels { viewModelFactory }
+
+    private var bindingComponent by autoCleared<DataBindingComponent>()
+    private var storePagedAdapter by autoCleared<StorePagedAdapter>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -28,19 +41,25 @@ class StoreFragment : Fragment(), Injectable {
             savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_store, container, false)
-        val textView: TextView = root.findViewById(R.id.text_store)
         val rvStore: RecyclerView = root.findViewById(R.id.rvStore)
-        val storePagedAdapter = StorePagedAdapter()
+        bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
+        storePagedAdapter = StorePagedAdapter(bindingComponent).apply {
+            itemClickListener = storeItemClickListener
+        }
         rvStore.adapter = storePagedAdapter
 
-        storeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+        storeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
+            log("IP_INFO: $it")
+            if (it.status == Status.SUCCESS) storeViewModel.updateIpInfo(it.data)
         })
 
-        storeViewModel.nearbyStores.observe(
-            viewLifecycleOwner,
-            Observer(storePagedAdapter::submitList)
-        )
+        storeViewModel.nearbyStores.observe(viewLifecycleOwner, Observer {
+            storePagedAdapter.submitList(it)
+        })
         return root
+    }
+
+    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
+        log("storeItemClick $store")
     }
 }

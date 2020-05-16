@@ -21,7 +21,7 @@ class LoginViewModel @Inject constructor(
 
     val token: LiveData<Result<String>> = Transformations.switchMap(_fbAccessToken) {
         if (Constants.TOKEN_NOT_EXISTS == it) {
-            authRepository.getToken()
+            authRepository.getCachedToken()
         } else {
             authRepository.createToken(it).map { result ->
                 if (result.status==Status.SUCCESS) result.map { apiToken -> apiToken?.token!! }

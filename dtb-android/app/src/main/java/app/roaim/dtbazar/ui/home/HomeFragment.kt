@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.databinding.DataBindingComponent
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,10 +18,9 @@ import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.ui.StoreListAdapter
-import app.roaim.dtbazar.utils.Loggable
-import app.roaim.dtbazar.utils.log
-import app.roaim.dtbazar.utils.snackbar
+import app.roaim.dtbazar.utils.*
 import javax.inject.Inject
 
 
@@ -29,55 +30,42 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     lateinit var apiUtils: ApiUtils
 
     @Inject
+    lateinit var glidePlaceHolder: RoundedBitmapDrawable
+
+    @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
 
-    private var binding: FragmentHomeBinding? = null
+    private var binding by autoCleared<FragmentHomeBinding>()
+    private var bindingComponent by autoCleared<DataBindingComponent>()
+    private var storeAdapter by autoCleared<StoreListAdapter>()
+    private var donationAdapter by autoCleared<HomeDonationAdapter>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(inflater)
+        bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
+        binding = FragmentHomeBinding.inflate(inflater, bindingComponent)
         handleBackButtonEvent()
-        return binding?.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        binding = null
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding?.listener = this
-        val storeAdapter = StoreListAdapter().apply {
-            itemClickListener = { item, itemView, isLongClick ->
-                if (isLongClick) {
-                    itemView.snackbar("Delete: ${item?.name}?") {
-                        if (item != null) {
-                            homeViewModel.deleteStore(item).observe(viewLifecycleOwner, Observer {
-                                log("DELETE_STORE: $it")
-                                if (it.status == Status.FAILED) Toast.makeText(
-                                    requireContext(),
-                                    it.msg,
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            })
-                        }
-                    }
-                }
-            }
+        binding.listener = this
+        storeAdapter = StoreListAdapter(bindingComponent).apply {
+            itemClickListener = storeItemClickListener
         }
-        val donationAdapter = HomeDonationAdapter()
-        binding?.rvStore?.adapter = storeAdapter
-        binding?.rvDonation?.adapter = donationAdapter
+        donationAdapter = HomeDonationAdapter()
+        binding.rvStore.adapter = storeAdapter
+        binding.rvDonation.adapter = donationAdapter
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
             log(it.toString())
             if (it.status == Status.LOGOUT) apiUtils.logout()
-            binding?.profile = it
+            binding.profile = it
         })
 
         homeViewModel.myCachedStores.observe(viewLifecycleOwner, Observer {
@@ -120,4 +108,20 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         }
         callback.isEnabled = true
     }
+
+    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
+        if (isLongClick && store != null) {
+            itemView.snackbar("Delete: ${store.name}?") {
+                homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
+                    log("DELETE_STORE: $it")
+                    if (it.status == Status.FAILED) Toast.makeText(
+                        requireContext(),
+                        it.msg,
+                        Toast.LENGTH_LONG
+                    ).show()
+                })
+            }
+        }
+    }
+
 }
