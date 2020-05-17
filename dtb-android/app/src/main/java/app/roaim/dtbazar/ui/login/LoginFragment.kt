@@ -31,7 +31,7 @@ class LoginFragment : Fragment(), Injectable, Loggable {
     private val viewModel: LoginViewModel by viewModels { viewModelFactory }
 
     private var binding by autoCleared<LoginFragmentBinding>()
-    private var findNavController by autoCleared<NavController>()
+    private var navController by autoCleared<NavController>()
 
     private var callbackManager by autoCleared<CallbackManager>()
     private var loginButton by autoCleared<LoginButton>()
@@ -55,7 +55,7 @@ class LoginFragment : Fragment(), Injectable, Loggable {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        findNavController = findNavController()
+        navController = findNavController()
         binding.ipInfo = viewModel.ipInfo.map {
             log("IP_INFO: $it")
             it
@@ -63,7 +63,7 @@ class LoginFragment : Fragment(), Injectable, Loggable {
         binding.token = viewModel.token.map {
             log("TOKEN: $it")
             if (it.status == Status.SUCCESS) {
-                findNavController.navigate(R.id.action_loginFragment_to_navigation_home)
+                navController.navigate(R.id.action_loginFragment_to_navigation_home)
             } else if (it.status == Status.FAILED) {
                 checkFacebookAccessToken()
             }

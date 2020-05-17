@@ -3,6 +3,7 @@ package app.roaim.dtbazar.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.StoreDataSourceFactory
@@ -13,7 +14,9 @@ import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.model.StorePostBody
-import app.roaim.dtbazar.utils.Constants
+import app.roaim.dtbazar.utils.Constants.STORE_PAGE_INITIAL_SIZE
+import app.roaim.dtbazar.utils.Constants.STORE_PAGE_LOAD_SIZE
+import app.roaim.dtbazar.utils.Constants.STORE_PAGE_PREFETCH
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.log
 import kotlinx.coroutines.CoroutineScope
@@ -28,11 +31,17 @@ class StoreRepository @Inject constructor(
     private val storeDataSourceFactory: StoreDataSourceFactory
 ) : Loggable {
 
+    val pageConfig = PagedList.Config.Builder()
+        .setInitialLoadSizeHint(STORE_PAGE_INITIAL_SIZE)
+        .setPrefetchDistance(STORE_PAGE_PREFETCH)
+        .setPageSize(STORE_PAGE_LOAD_SIZE)
+        .build()
+
     fun getNearByStores(coroutineScope: CoroutineScope, ipInfo: IpInfo) = LivePagedListBuilder(
         storeDataSourceFactory.apply {
             setCoroutineScope(coroutineScope)
             setLatLon(ipInfo)
-        }, Constants.STORE_PAGE_LOAD_SIZE
+        }, pageConfig
     ).build()
 
     fun getNearByStoresResult() = storeDataSourceFactory.result()

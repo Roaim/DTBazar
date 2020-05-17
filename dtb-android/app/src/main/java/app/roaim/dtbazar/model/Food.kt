@@ -20,20 +20,33 @@ data class Food(
     val currency: String? = null,
 
     @field:SerializedName("id")
-    val id: String
+    val id: String,
+
+    @field:SerializedName("startingPrice")
+    val startingPrice: Double? = null,
+    @field:SerializedName("endingPrice")
+    val endingPrice: Double? = null
 ) : ListItem {
     @Ignore
     override fun getItemId(): String = id
+
+    @Ignore
+    fun priceRange() = "$currency $startingPrice - $endingPrice / $unit"
 }
 
 data class FoodPostBody(
 
     @field:SerializedName("unit")
-    val unit: String? = "KG",
+    val unit: String = "KG",
 
     @field:SerializedName("name")
-    val name: String? = null,
+    val name: String,
 
     @field:SerializedName("currency")
-    val currency: String = "BDT"
+    val currency: String = "BDT",
+
+    @field:SerializedName("startingPrice")
+    val startingPrice: Double,
+    @field:SerializedName("endingPrice")
+    val endingPrice: Double
 )

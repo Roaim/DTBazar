@@ -34,10 +34,20 @@ class FoodViewModel @Inject constructor(private val foodRepository: FoodReposito
         retry(true)
     }
 
-    fun saveFood(name: String): LiveData<Result<Food>> =
+    fun saveFood(
+        name: String,
+        currency: String,
+        unit: String,
+        startingPrice: Double,
+        endingPrice: Double
+    ): LiveData<Result<Food>> =
         foodRepository.saveFood(
             FoodPostBody(
-                name = name, unit = "KG", currency = "BDT"
+                name = name,
+                unit = unit,
+                currency = currency,
+                startingPrice = startingPrice,
+                endingPrice = endingPrice
             )
         )
 

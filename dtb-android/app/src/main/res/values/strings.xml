@@ -3,4 +3,12 @@
     <string name="title_home">Home</string>
     <string name="title_store">Store</string>
     <string name="title_food">Food</string>
+
+    <string-array name="food_unit">
+        <item>KG</item>
+        <item>L</item>
+        <item>PCS</item>
+        <item>G</item>
+        <item>ML</item>
+    </string-array>
 </resources>

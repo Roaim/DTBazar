@@ -14,7 +14,7 @@ import app.roaim.dtbazar.model.*
         Donation::class,
         Food::class
     ],
-    version = 8,
+    version = 11,
     exportSchema = false
 )
 @TypeConverters(LocationTypeConverter::class)

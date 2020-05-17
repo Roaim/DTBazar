@@ -21,18 +21,18 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("ipInfoError")
-    fun showError(tv: TextView, ipInfoError: LiveData<Result<IpInfo>>) {
-        ipInfoError.value?.takeIf { it.status == Status.FAILED }?.msg?.also {
-            tv.append("$it\n")
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("clearText")
     fun clearText(et: EditText, result: Result<*>?) {
         if (result?.status == Status.SUCCESS) {
             et.setText("")
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("ipInfoError")
+    fun showError(tv: TextView, ipInfoError: LiveData<Result<IpInfo>>) {
+        ipInfoError.value?.takeIf { it.status == Status.FAILED }?.msg?.also {
+            tv.append("$it\n")
         }
     }
 

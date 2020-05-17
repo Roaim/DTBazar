@@ -22,17 +22,18 @@
             type="app.roaim.dtbazar.ui.food.ViewAddFoodClickListener" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="32dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:paddingStart="4dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="8dp">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
@@ -43,46 +44,177 @@
                 clearText="@{food}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@id/etStartPrice"
                 android:inputType="textPersonName|textCapWords"
                 android:maxLines="1"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioGroup
+        <TextView
+            android:id="@+id/tvc"
+            android:layout_below="@id/til"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:padding="4dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp"
+            android:text="Currency" />
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_below="@id/tvc"
+            android:checkedButton="@id/rbBdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbBdt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:text="BDT" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbUsd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="USD" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tvmu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/progress"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:padding="4dp"
+            android:text="Measure Unit"
+            android:textColor="@color/colorAccent"
+            android:textSize="18dp" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerUnit"
+            android:layout_below="@id/tvmu"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/progress"
+            android:entries="@array/food_unit"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til2"
+            android:layout_below="@id/spinnerUnit"
+            android:layout_toStartOf="@id/progress"
+            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="-8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Starting Price">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etStartPrice"
+                clearText="@{food}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusRight="@id/etEndPrice"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_below="@id/spinnerUnit"
+            android:layout_toEndOf="@id/progress"
+            android:layout_alignParentEnd="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="-8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:hint="Ending Price">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEndPrice"
+                clearText="@{food}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <ProgressBar
+            android:layout_centerHorizontal="true"
+            android:id="@+id/progress"
+            android:layout_below="@id/til2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:visibility="@{food.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{food.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
 
         <Button
+            android:id="@+id/btAdd"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@id/progress"
+            android:layout_below="@id/progress"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginStart="-8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:enabled="@{food.status != Status.LOADING}"
-            android:onClick="@{()->listener.onAddFoodClick(ExtensionsKt.value(etName))}"
-            android:text="Add New Food" />
+            android:onClick="@{()->listener.onAddFoodClick(ExtensionsKt.value(etName), ExtensionsKt.getCheckValue(rg), spinnerUnit.getSelectedItem().toString(), ExtensionsKt.value(etStartPrice), ExtensionsKt.value(etEndPrice))}"
+            android:text="Add Food" />
 
         <Button
+            android:id="@+id/btCancel"
+            android:layout_toStartOf="@id/progress"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/progress"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="-8dp"
             android:backgroundTint="#8FB1B5"
             android:onClick="@{()->listener.onCancelClick()}"
             android:text="Cancel" />
 
         <TextView
+            android:layout_below="@id/btCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="@{food.msg}"
             android:textColor="@color/colorAccent" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

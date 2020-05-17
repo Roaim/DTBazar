@@ -13,9 +13,15 @@ fun FoodFragment.initAddFoodDialog() {
         .setView(addFoodBinding.root)
         .create()
     addFoodBinding.listener = object : ViewAddFoodClickListener {
-        override fun onAddFoodClick(name: String) {
-            if (name.isNotEmpty()) {
-                foodViewModel.saveFood(name)
+        override fun onAddFoodClick(
+            name: String,
+            currency: CharSequence,
+            unit: String,
+            sPrice: String,
+            ePrice: String
+        ) {
+            if (name.isNotEmpty() && sPrice.isNotEmpty() && ePrice.isNotEmpty()) {
+                foodViewModel.saveFood(name, currency.toString(), unit, sPrice.toDouble(), ePrice.toDouble())
                     .observe(viewLifecycleOwner, Observer {
                         log("SAVE_FOOD: $it")
                         addFoodBinding.food = it
