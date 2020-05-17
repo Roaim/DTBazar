@@ -12,9 +12,11 @@ public class FoodDto {
     String name;
     Unit unit;
     Currency currency;
+    Double startingPrice;
+    Double endingPrice;
 
     public Food toFood(String uid) {
-        return new Food(uid, getName(), getUnit(), getCurrency());
+        return new Food(uid, getName(), getUnit(), getCurrency(), getStartingPrice(), getEndingPrice());
     }
 
 }
