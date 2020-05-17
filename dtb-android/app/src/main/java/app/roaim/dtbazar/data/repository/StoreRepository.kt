@@ -1,4 +1,4 @@
-package app.roaim.dtbazar.repository
+package app.roaim.dtbazar.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -35,6 +35,10 @@ class StoreRepository @Inject constructor(
         }, Constants.STORE_PAGE_LOAD_SIZE
     ).build()
 
+    fun getNearByStoresResult() = storeDataSourceFactory.result()
+
+    fun retryNearByStores() = storeDataSourceFactory.retry()
+
     fun getMyCachedStores() = storeDao.findAll()
 
     fun getMyStores(): LiveData<Result<List<Store>>> =
@@ -70,5 +74,9 @@ class StoreRepository @Inject constructor(
             failed<Store>(e.message)
         }
         emit(result)
+    }
+
+    fun clearDataSource() {
+        storeDataSourceFactory.clear()
     }
 }

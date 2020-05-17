@@ -7,9 +7,9 @@ import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.model.StorePostBody
-import app.roaim.dtbazar.repository.DonationRepository
-import app.roaim.dtbazar.repository.InfoRepository
-import app.roaim.dtbazar.repository.StoreRepository
+import app.roaim.dtbazar.data.repository.DonationRepository
+import app.roaim.dtbazar.data.repository.InfoRepository
+import app.roaim.dtbazar.data.repository.StoreRepository
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(

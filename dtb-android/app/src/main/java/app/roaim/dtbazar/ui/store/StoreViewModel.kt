@@ -2,33 +2,25 @@ package app.roaim.dtbazar.ui.store
 
 import androidx.lifecycle.*
 import androidx.paging.PagedList
+import app.roaim.dtbazar.data.repository.InfoRepository
+import app.roaim.dtbazar.data.repository.StoreRepository
 import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Result
-import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.repository.InfoRepository
-import app.roaim.dtbazar.repository.StoreRepository
+import app.roaim.dtbazar.ui.RetryCallback
 import javax.inject.Inject
 
 class StoreViewModel @Inject constructor(
     infoRepository: InfoRepository,
     private val storeRepository: StoreRepository
-) : ViewModel() {
+) : ViewModel(), RetryCallback {
 
     private val _ipInfo: MutableLiveData<IpInfo> = MutableLiveData<IpInfo>()
 
-    val ipInfo: LiveData<Result<IpInfo>> = infoRepository.getIpInfo().map { result ->
-        result.apply {
-            takeIf { it.status == Status.SUCCESS }?.data?.also {
-                _ipInfo.value = it
-            }
-        }
-    }
+    val ipInfo: LiveData<Result<IpInfo>> = infoRepository.getIpInfo()
 
-    /**
-     *  MUST BE OBSERVED AFTER ipInfo: LiveData<Result<IpInfo>>
-     *      otherwise lat lon will be 0.0
-     */
+    val nearByStoresResult = storeRepository.getNearByStoresResult()
+
     val nearbyStores: LiveData<PagedList<Store>> = _ipInfo.switchMap {
         storeRepository.getNearByStores(viewModelScope, it)
     }
@@ -36,5 +28,14 @@ class StoreViewModel @Inject constructor(
     fun updateIpInfo(ipInfo: IpInfo?) {
         if (_ipInfo.value == ipInfo) return
         _ipInfo.value = ipInfo
+    }
+
+    override fun onRetry() {
+        storeRepository.retryNearByStores()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        storeRepository.clearDataSource()
     }
 }

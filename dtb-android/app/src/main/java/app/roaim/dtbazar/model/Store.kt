@@ -2,6 +2,7 @@ package app.roaim.dtbazar.model
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "store", primaryKeys = ["id"])
@@ -43,7 +44,10 @@ data class Store(
 
     @field:SerializedName("allFoodPrice")
     val allFoodPrice: Double? = null
-)
+) : ListItem {
+    @Ignore
+    override fun getItemId(): String = id
+}
 
 data class StoreFrontImage(
 

@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.databinding.FragmentStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.ui.StorePagedAdapter
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
@@ -32,6 +32,7 @@ class StoreFragment : Fragment(), Injectable, Loggable {
 
     private val storeViewModel: StoreViewModel by viewModels { viewModelFactory }
 
+    private var binding by autoCleared<FragmentStoreBinding>()
     private var bindingComponent by autoCleared<DataBindingComponent>()
     private var storePagedAdapter by autoCleared<StorePagedAdapter>()
 
@@ -40,23 +41,40 @@ class StoreFragment : Fragment(), Injectable, Loggable {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.fragment_store, container, false)
-        val rvStore: RecyclerView = root.findViewById(R.id.rvStore)
+
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
-        storePagedAdapter = StorePagedAdapter(bindingComponent).apply {
-            itemClickListener = storeItemClickListener
-        }
-        rvStore.adapter = storePagedAdapter
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_store,
+            container,
+            false,
+            bindingComponent
+        )
+
+        storePagedAdapter = StorePagedAdapter(bindingComponent)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.retryCallback = storeViewModel
+        storePagedAdapter.setItemClickListener(storeItemClickListener)
+        binding.rvStore.adapter = storePagedAdapter
 
         storeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
             log("IP_INFO: $it")
             if (it.status == Status.SUCCESS) storeViewModel.updateIpInfo(it.data)
         })
 
-        storeViewModel.nearbyStores.observe(viewLifecycleOwner, Observer {
-            storePagedAdapter.submitList(it)
+        storeViewModel.nearbyStores.observe(
+            viewLifecycleOwner, Observer(storePagedAdapter::submitList)
+        )
+
+        storeViewModel.nearByStoresResult.observe(viewLifecycleOwner, Observer {
+            log("STORE_LIST: $it")
+            binding.result = it
         })
-        return root
     }
 
     private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->

@@ -19,7 +19,6 @@ import app.roaim.dtbazar.databinding.FragmentHomeBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.ui.StoreListAdapter
 import app.roaim.dtbazar.utils.*
 import javax.inject.Inject
 
@@ -39,7 +38,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
     private var binding by autoCleared<FragmentHomeBinding>()
     private var bindingComponent by autoCleared<DataBindingComponent>()
-    private var storeAdapter by autoCleared<StoreListAdapter>()
+    private var storeAdapter by autoCleared<StoreAdapter>()
     private var donationAdapter by autoCleared<HomeDonationAdapter>()
 
     override fun onCreateView(
@@ -56,25 +55,28 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.listener = this
-        storeAdapter = StoreListAdapter(bindingComponent).apply {
-            itemClickListener = storeItemClickListener
-        }
+
+        storeAdapter = StoreAdapter(bindingComponent)
         donationAdapter = HomeDonationAdapter()
+
+        storeAdapter.setItemClickListener(storeItemClickListener)
+
         binding.rvStore.adapter = storeAdapter
         binding.rvDonation.adapter = donationAdapter
+
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
             log(it.toString())
             if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.profile = it
         })
 
-        homeViewModel.myCachedStores.observe(viewLifecycleOwner, Observer {
-            storeAdapter.submitList(it)
-        })
+        homeViewModel.myCachedStores.observe(
+            viewLifecycleOwner, Observer(storeAdapter::submitList)
+        )
 
-        homeViewModel.myCachedDonations.observe(viewLifecycleOwner, Observer {
-            donationAdapter.reload(it)
-        })
+        homeViewModel.myCachedDonations.observe(
+            viewLifecycleOwner, Observer(donationAdapter::submitList)
+        )
     }
 
     override fun onAddNewStoreClick() {
@@ -85,6 +87,21 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
     override fun onMakeDonationClick() {
 
+    }
+
+    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
+        if (isLongClick && store != null) {
+            itemView.snackbar("Delete: ${store.name}?") {
+                homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
+                    log("DELETE_STORE: $it")
+                    if (it.status == Status.FAILED) Toast.makeText(
+                        requireContext(),
+                        it.msg,
+                        Toast.LENGTH_LONG
+                    ).show()
+                })
+            }
+        }
     }
 
     private fun handleBackButtonEvent() {
@@ -107,21 +124,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
             }
         }
         callback.isEnabled = true
-    }
-
-    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
-        if (isLongClick && store != null) {
-            itemView.snackbar("Delete: ${store.name}?") {
-                homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
-                    log("DELETE_STORE: $it")
-                    if (it.status == Status.FAILED) Toast.makeText(
-                        requireContext(),
-                        it.msg,
-                        Toast.LENGTH_LONG
-                    ).show()
-                })
-            }
-        }
     }
 
 }

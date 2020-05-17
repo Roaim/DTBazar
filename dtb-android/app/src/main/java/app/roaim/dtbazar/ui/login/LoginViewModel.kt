@@ -4,8 +4,8 @@ import androidx.lifecycle.*
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.map
-import app.roaim.dtbazar.repository.AuthRepository
-import app.roaim.dtbazar.repository.InfoRepository
+import app.roaim.dtbazar.data.repository.AuthRepository
+import app.roaim.dtbazar.data.repository.InfoRepository
 import app.roaim.dtbazar.utils.Constants
 import app.roaim.dtbazar.utils.Constants.TOKEN_NOT_CREATED
 import javax.inject.Inject

@@ -1,6 +1,7 @@
 package app.roaim.dtbazar.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "food", primaryKeys = ["id"])
@@ -20,7 +21,10 @@ data class Food(
 
     @field:SerializedName("id")
     val id: String
-)
+) : ListItem {
+    @Ignore
+    override fun getItemId(): String = id
+}
 
 data class FoodPostBody(
 

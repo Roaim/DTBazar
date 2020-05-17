@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import app.roaim.dtbazar.ui.DtbViewModelFactory
 import app.roaim.dtbazar.ui.home.HomeViewModel
 import app.roaim.dtbazar.ui.login.LoginViewModel
-import app.roaim.dtbazar.ui.notifications.NotificationsViewModel
+import app.roaim.dtbazar.ui.food.FoodViewModel
 import app.roaim.dtbazar.ui.store.StoreViewModel
 import dagger.Binds
 import dagger.Module
@@ -31,8 +31,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(NotificationsViewModel::class)
-    abstract fun bindNotificationViewModel(repoViewModel: NotificationsViewModel): ViewModel
+    @ViewModelKey(FoodViewModel::class)
+    abstract fun bindFoodViewModel(repoViewModel: FoodViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: DtbViewModelFactory): ViewModelProvider.Factory

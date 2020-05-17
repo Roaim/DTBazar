@@ -1,4 +1,4 @@
-package app.roaim.dtbazar.repository
+package app.roaim.dtbazar.data.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData

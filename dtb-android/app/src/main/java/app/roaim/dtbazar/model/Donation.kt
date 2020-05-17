@@ -1,6 +1,7 @@
 package app.roaim.dtbazar.model
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "donation", primaryKeys = ["id"])
@@ -35,4 +36,7 @@ data class Donation(
 
     @field:SerializedName("storeId")
     val storeId: String? = null
-)
+) : ListItem {
+    @Ignore
+    override fun getItemId(): String = id
+}
