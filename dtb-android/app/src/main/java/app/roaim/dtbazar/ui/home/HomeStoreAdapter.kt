@@ -9,7 +9,7 @@ import app.roaim.dtbazar.databinding.ViewItemStoreBinding
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.ui.BaseListAdapter
 
-class StoreAdapter(bindingComponent: DataBindingComponent) :
+class HomeStoreAdapter(bindingComponent: DataBindingComponent) :
     BaseListAdapter<Store, ViewItemStoreBinding>(bindingComponent) {
     override fun onCreateBinding(
         bindingComponent: DataBindingComponent?,

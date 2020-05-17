@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.databinding.DataBindingComponent
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -16,6 +18,7 @@ import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
+import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
@@ -34,11 +37,13 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
+    val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
 
-    private var binding by autoCleared<FragmentHomeBinding>()
     private var bindingComponent by autoCleared<DataBindingComponent>()
-    private var storeAdapter by autoCleared<StoreAdapter>()
+    private var binding by autoCleared<FragmentHomeBinding>()
+    var addStoreBinding by autoCleared<ViewAddNewStoreBinding>()
+    var addStoreDialog by autoCleared<AlertDialog>()
+    private var storeAdapter by autoCleared<HomeStoreAdapter>()
     private var donationAdapter by autoCleared<HomeDonationAdapter>()
 
     override fun onCreateView(
@@ -47,7 +52,13 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
             savedInstanceState: Bundle?
     ): View? {
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
-        binding = FragmentHomeBinding.inflate(inflater, bindingComponent)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_home,
+            container,
+            false,
+            bindingComponent
+        )
         handleBackButtonEvent()
         return binding.root
     }
@@ -56,7 +67,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         super.onViewCreated(view, savedInstanceState)
         binding.listener = this
 
-        storeAdapter = StoreAdapter(bindingComponent)
+        storeAdapter = HomeStoreAdapter(bindingComponent)
         donationAdapter = HomeDonationAdapter()
 
         storeAdapter.setItemClickListener(storeItemClickListener)
@@ -77,12 +88,12 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         homeViewModel.myCachedDonations.observe(
             viewLifecycleOwner, Observer(donationAdapter::submitList)
         )
+
+        initAddStoreDialog()
     }
 
     override fun onAddNewStoreClick() {
-        showAddStoreDialog { name, address, mobile ->
-            homeViewModel.saveStore(name, address, mobile)
-        }
+        addStoreDialog.show()
     }
 
     override fun onMakeDonationClick() {
@@ -102,28 +113,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
                 })
             }
         }
-    }
-
-    private fun handleBackButtonEvent() {
-        val activity = requireActivity()
-        var lastPressedAt = 0L
-        // This callback will only be called when MyFragment is at least Started.
-        val callback = activity.onBackPressedDispatcher.addCallback(this) {
-            // Handle the back button event
-            if (findNavController().currentDestination?.id == R.id.navigation_home) {
-                if (lastPressedAt + 2000 > System.currentTimeMillis()) {
-                    activity.finish()
-                } else {
-                    lastPressedAt = System.currentTimeMillis()
-                    Toast.makeText(
-                        activity,
-                        "Press again within 2 second to exit",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-        callback.isEnabled = true
     }
 
 }

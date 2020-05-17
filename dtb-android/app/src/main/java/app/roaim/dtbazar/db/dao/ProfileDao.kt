@@ -1,4 +1,4 @@
-package app.roaim.dtbazar.db
+package app.roaim.dtbazar.db.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -6,7 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.StoreDataSourceFactory
-import app.roaim.dtbazar.db.StoreDao
+import app.roaim.dtbazar.db.dao.StoreDao
 import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Result.Companion.failed

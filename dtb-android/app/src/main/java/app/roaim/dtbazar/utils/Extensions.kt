@@ -5,10 +5,10 @@ import android.view.View
 import android.widget.EditText
 import com.google.android.material.snackbar.Snackbar
 
-fun View.snackbar(msg: String, buttonText: String = "YES", block: () -> Unit) =
+fun View.snackbar(msg: String, buttonText: String = "YES", block: (() -> Unit)? = null) =
     Snackbar.make(this, msg, Snackbar.LENGTH_LONG).apply {
         setAction(buttonText) {
-            block()
+            block?.invoke()
         }
     }.show()
 

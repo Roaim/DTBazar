@@ -46,6 +46,14 @@ interface ApiService {
         @Query("size") size: Int = 50
     ): Response<List<Donation>>
 
+    @POST("food")
+    @Throws(Exception::class)
+    suspend fun saveFood(@Body foodPostBody: FoodPostBody): Response<Food>
+
+    @DELETE("food/{id}")
+    @Throws(Exception::class)
+    suspend fun deleteFood(@Path("id") id: String): Response<Food>
+
     @GET("food")
     @Throws(Exception::class)
     suspend fun getFoods(

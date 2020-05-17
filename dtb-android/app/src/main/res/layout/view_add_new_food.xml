@@ -11,15 +11,15 @@
 
         <import type="app.roaim.dtbazar.model.Result" />
 
-        <import type="app.roaim.dtbazar.model.Store" />
+        <import type="app.roaim.dtbazar.model.Food" />
 
         <variable
-            name="store"
-            type="Result&lt;Store>" />
+            name="food"
+            type="Result&lt;Food>" />
 
         <variable
             name="listener"
-            type="app.roaim.dtbazar.ui.home.ViewAddStoreButtonClickListener" />
+            type="app.roaim.dtbazar.ui.food.ViewAddFoodClickListener" />
     </data>
 
     <LinearLayout
@@ -36,69 +36,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Store Name">
+            android:hint="Food Name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etName"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nextFocusDown="@id/etAddress"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Store Address">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
-                android:imeOptions="actionNext"
-                android:inputType="textPostalAddress|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
-                android:nextFocusDown="@id/etMobile"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Mobile Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMobile"
+                clearText="@{food}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="phone"
+                android:inputType="textPersonName|textCapWords"
                 android:maxLines="1"
-                clearText="@{store}"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:visibility="@{store.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
+            android:visibility="@{food.status == Status.LOADING ? View.VISIBLE : View.GONE}" />
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:enabled="@{store.status != Status.LOADING}"
-            android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etMobile), ExtensionsKt.value(etAddress), ExtensionsKt.value(etName))}"
-            android:text="Add New Store" />
+            android:enabled="@{food.status != Status.LOADING}"
+            android:onClick="@{()->listener.onAddFoodClick(ExtensionsKt.value(etName))}"
+            android:text="Add New Food" />
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
@@ -113,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="@{store.msg}"
+            android:text="@{food.msg}"
             android:textColor="@color/colorAccent" />
 
     </LinearLayout>

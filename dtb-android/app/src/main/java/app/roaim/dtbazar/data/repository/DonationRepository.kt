@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
-import app.roaim.dtbazar.db.DonationDao
+import app.roaim.dtbazar.db.dao.DonationDao
 import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Result.Companion.failed

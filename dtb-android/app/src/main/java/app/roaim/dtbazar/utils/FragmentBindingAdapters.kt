@@ -13,8 +13,9 @@ class FragmentBindingAdapters(
 ) {
     @BindingAdapter("storeImgUrl")
     fun bindImage(imageView: ImageView, url: String?) {
+        if (url == null) return
         Glide.with(fragment).load(url)
-            .placeholder(R.drawable.ic_store_black_24dp)
+            .placeholder(R.drawable.ic_store_black)
             .circleCrop()
             .into(imageView)
     }

@@ -5,7 +5,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
 import app.roaim.dtbazar.api.ApiUtils
-import app.roaim.dtbazar.db.*
+import app.roaim.dtbazar.db.CacheDb
+import app.roaim.dtbazar.db.dao.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -43,4 +44,8 @@ class DbModule {
     @Provides
     @Singleton
     fun provideDonationDao(db: CacheDb): DonationDao = db.donationDao()
+
+    @Provides
+    @Singleton
+    fun provideFoodDao(db: CacheDb): FoodDao = db.foodDao()
 }

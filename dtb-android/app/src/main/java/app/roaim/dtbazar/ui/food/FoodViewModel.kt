@@ -1,20 +1,20 @@
 package app.roaim.dtbazar.ui.food
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.*
+import app.roaim.dtbazar.data.repository.FoodRepository
+import app.roaim.dtbazar.model.Food
+import app.roaim.dtbazar.model.FoodPostBody
+import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Status
-import app.roaim.dtbazar.data.repository.InfoRepository
 import app.roaim.dtbazar.ui.RetryCallback
 import javax.inject.Inject
 
-class FoodViewModel @Inject constructor(infoRepository: InfoRepository) :
+class FoodViewModel @Inject constructor(private val foodRepository: FoodRepository) :
     ViewModel(), RetryCallback {
     private val _retry = MutableLiveData<Boolean>().apply { value = false }
 
     val foodList = _retry.switchMap {
-        infoRepository.getFoods()
+        foodRepository.getFoods()
     }.map {
         it.apply {
             if (status == Status.FAILED) {
@@ -22,6 +22,8 @@ class FoodViewModel @Inject constructor(infoRepository: InfoRepository) :
             }
         }
     }
+
+    val cachedFoods = foodRepository.getCachedFoodFoods()
 
     private fun retry(value: Boolean) {
         if (_retry.value == value) return
@@ -31,4 +33,13 @@ class FoodViewModel @Inject constructor(infoRepository: InfoRepository) :
     override fun onRetry() {
         retry(true)
     }
+
+    fun saveFood(name: String): LiveData<Result<Food>> =
+        foodRepository.saveFood(
+            FoodPostBody(
+                name = name, unit = "KG", currency = "BDT"
+            )
+        )
+
+    fun deleteFood(food: Food) = foodRepository.deleteFood(food)
 }

@@ -6,9 +6,8 @@ import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.PrefDataSource
-import app.roaim.dtbazar.db.IpInfoDao
-import app.roaim.dtbazar.db.ProfileDao
-import app.roaim.dtbazar.model.Food
+import app.roaim.dtbazar.db.dao.IpInfoDao
+import app.roaim.dtbazar.db.dao.ProfileDao
 import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Profile
 import app.roaim.dtbazar.model.Result
@@ -67,16 +66,5 @@ class InfoRepository @Inject constructor(
     private suspend fun saveIpInfo(ipInfo: IpInfo) {
         ipInfoDao.insert(ipInfo)
         prefDataSource.saveIp(ipInfo.ip)
-    }
-
-    fun getFoods() = liveData<Result<List<Food>>> {
-        emit(loading())
-        val result = try {
-            apiService.getFoods().getResult()
-        } catch (e: Exception) {
-            log("getFoods", e)
-            failed<List<Food>>(e.message)
-        }
-        emit(result)
     }
 }

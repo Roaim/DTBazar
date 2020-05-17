@@ -27,14 +27,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#0B2535"
+        android:background="@color/home_background"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:backgroundTint="#75000000"
+            android:backgroundTint="#75001010"
             android:visibility="visible"
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="true"
@@ -65,7 +65,7 @@
                     android:paddingTop="4dp"
                     android:paddingBottom="2dp"
                     android:text="@{profile.data.name}"
-                    android:textColor="@color/text_home_title"
+                    android:textColor="@color/text_home_header_title"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     tools:text="Roaim Ahmed Hridoy" />
@@ -108,14 +108,14 @@
                     android:padding="8dp"
                     android:text="MY STORES"
                     android:textColor="@color/text_home_title"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_home_title"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#58888888" />
+                    android:layout_height=".5dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/home_divider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                     android:foregroundTint="@color/colorAccent"
                     android:onClick="@{()-> listener.onAddNewStoreClick()}"
                     android:text="Add New Store"
-                    android:textColor="@color/text_home_title" />
+                    android:textColor="@color/text_home_button_text" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -152,14 +152,14 @@
                     android:padding="8dp"
                     android:text="MY DONATIONS"
                     android:textColor="@color/text_home_title"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/text_home_title"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="#58888888" />
+                    android:layout_height=".5dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/home_divider" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -184,7 +184,7 @@
                     android:layout_marginBottom="8dp"
                     android:onClick="@{()-> listener.onMakeDonationClick()}"
                     android:text="Make a donation"
-                    android:textColor="@color/text_home_title" />
+                    android:textColor="@color/text_home_button_text" />
 
                 <View
                     android:layout_width="match_parent"

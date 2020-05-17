@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#029A02</color>
-    <color name="colorPrimaryDark">#00402D</color>
-    <color name="colorAccent">#E64A19</color>
-    <color name="text_home_title">#fdffffff</color>
+    <color name="colorPrimaryDark">#07302B</color>
+    <color name="colorAccent">#F4511E</color>
+    <color name="home_divider">#50ffffff</color>
+    <color name="text_home_title">#bfffffff</color>
     <color name="text_home_subtitle">#bfffffff</color>
     <color name="text_home_list_title">#04282C</color>
     <color name="text_home_list_subtitle">#bf07393F</color>
+    <color name="text_home_header_title">#fdffffff</color>
+    <color name="text_home_button_text">#fdffffff</color>
+    <color name="home_background">#0B2535</color>
 </resources>
