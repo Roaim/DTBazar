@@ -1,6 +1,5 @@
 package app.roaim.dtbazar.authservice.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -27,6 +26,9 @@ public class User {
     private String fbProfilePicture;
     @Indexed
     private String fbAccessToken;
+    private boolean admin = false;
+    @Indexed
+    private boolean enabled = true;
     private String ip;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();

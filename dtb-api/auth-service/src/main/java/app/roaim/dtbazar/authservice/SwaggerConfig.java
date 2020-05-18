@@ -110,7 +110,10 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
-                .forPaths(PathSelectors.regex("/auth/profile").or(PathSelectors.regex("/auth/tokenInfo")))
+                .forPaths(PathSelectors.regex("/auth/profile")
+                        .or(PathSelectors.regex("/auth/tokenInfo"))
+                        .or(PathSelectors.regex("/admin.*"))
+                )
                 .build();
     }
 
