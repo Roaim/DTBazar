@@ -2,7 +2,9 @@ package app.roaim.dtbazar.storeservice.security;
 
 import app.roaim.dtbazar.storeservice.jwt.JWTUtil;
 import app.roaim.dtbazar.storeservice.jwt.JwtData;
+import app.roaim.dtbazar.storeservice.redis.UserStatus;
 import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContext;
@@ -16,7 +18,9 @@ import reactor.core.publisher.Mono;
 @Component
 @AllArgsConstructor
 public class SecurityContextRepository implements ServerSecurityContextRepository {
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
+    // TODO replace with kafka in production
+    private final ReactiveRedisOperations<String, UserStatus> userStatusOps;
 
     @Override
     public Mono<Void> save(ServerWebExchange serverWebExchange, SecurityContext securityContext) {
@@ -32,7 +36,13 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
         } else if (authHeader.startsWith("Bearer ")) {
             String authToken = authHeader.substring(7);
             JwtData jwtData = jwtUtil.getJwtData(authToken);
-            return jwtUtil.getAuthentication(jwtData).map(SecurityContextImpl::new);
+            return userStatusOps.opsForValue().get(jwtData.getSub())
+                    .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "UID is not present in redis")))
+                    .flatMap(userStatus -> userStatus.isEnabled()
+                            ? jwtUtil.getAuthentication(jwtData)
+                            : Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You are blocked"))
+                    )
+                    .map(SecurityContextImpl::new);
         } else {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "Authorization header must start with Bearer"));
         }
