@@ -28,7 +28,7 @@ public class AuthController {
         return authService.getUserByFbAccessToken(facebookAccessToken)
                 .switchIfEmpty(
                         facebookService.getFacebookUserProfile(facebookAccessToken)
-                                .flatMap(fbUserProfile -> authService.saveOrGetUser(fbUserProfile, facebookAccessToken, xForwardedFor))
+                                .flatMap(fbUserProfile -> authService.saveGetUser(fbUserProfile, facebookAccessToken, xForwardedFor))
                 ).flatMap(authService::generateJwtToken);
     }
 

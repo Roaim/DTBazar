@@ -1,8 +1,8 @@
-package app.roaim.dtbazar.mediaservice.security;
+package app.roaim.dtbazar.authservice.security;
 
-import app.roaim.dtbazar.mediaservice.jwt.JWTUtil;
-import app.roaim.dtbazar.mediaservice.jwt.JwtData;
-import app.roaim.dtbazar.mediaservice.redis.UserStatus;
+import app.roaim.dtbazar.authservice.redis.UserStatus;
+import app.roaim.dtbazar.authservice.jwt.JWTUtil;
+import app.roaim.dtbazar.authservice.jwt.JwtData;
 import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.ReactiveRedisOperations;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +19,6 @@ import reactor.core.publisher.Mono;
 @AllArgsConstructor
 public class SecurityContextRepository implements ServerSecurityContextRepository {
     private final JWTUtil jwtUtil;
-    // TODO replace with kafka in production
     private final ReactiveRedisOperations<String, UserStatus> userStatusOps;
 
     @Override
@@ -31,7 +30,7 @@ public class SecurityContextRepository implements ServerSecurityContextRepositor
     public Mono<SecurityContext> load(ServerWebExchange exchange) {
         HttpHeaders headers = exchange.getRequest().getHeaders();
         String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
-        if (authHeader == null) {
+        if (authHeader == null || authHeader.startsWith("Bearer null")) {
             return Mono.empty();
         } else if (authHeader.startsWith("Bearer ")) {
             String authToken = authHeader.substring(7);

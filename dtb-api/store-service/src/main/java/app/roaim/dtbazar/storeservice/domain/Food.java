@@ -1,8 +1,8 @@
 package app.roaim.dtbazar.storeservice.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import app.roaim.dtbazar.storeservice.model.Currency;
 import app.roaim.dtbazar.storeservice.model.Unit;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
@@ -23,25 +23,29 @@ public class Food {
     private String name;
     private Unit unit;
     private Currency currency;
+    private Double startingPrice;
+    private Double endingPrice;
     @JsonIgnore
     private String uid;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @PersistenceConstructor
-    public Food(String uid, String name, Unit unit, Currency currency) {
+    public Food(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice) {
         super();
-        update(uid, name, unit, currency);
+        update(uid, name, unit, currency, startingPrice, endingPrice);
     }
 
     public void update(Food food) {
-        update(food.getUid(), food.getName(), food.getUnit(), food.getCurrency());
+        update(food.getUid(), food.getName(), food.getUnit(), food.getCurrency(), food.getStartingPrice(), food.getEndingPrice());
     }
 
-    public void update(String uid, String name, Unit unit, Currency currency) {
+    public void update(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice) {
         this.uid = uid;
         this.name = name;
         this.unit = unit;
         this.currency = currency;
+        this.startingPrice = startingPrice;
+        this.endingPrice = endingPrice;
     }
 }

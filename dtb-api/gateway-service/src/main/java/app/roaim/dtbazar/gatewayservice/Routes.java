@@ -19,7 +19,7 @@ public class Routes {
     RouteLocator routeLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("auth-service", r -> r
-                        .path("/api/v1/auth/**", "/doc/v1/auth", "/api/v1/ipInfo", 
+                        .path("/api/v1/auth/**", "/doc/v1/auth", "/api/v1/ipInfo", "/api/v1/admin/**",
 								"/api/v1/privacy.html", "/api/v1/terms.html")
                         .filters(f -> f
 //                                .requestRateLimiter(this::configureRateLimiter)

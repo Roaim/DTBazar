@@ -31,6 +31,14 @@ public class DonationController {
         return service.saveDonation(jwtData, donationDto);
     }
 
+    @GetMapping("/my")
+    Flux<Donation> getMyDonations(
+            @ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+        JwtData jwtData = jwtUtil.decode(bearerToken);
+        return service.getMyDonations(jwtData.getSub(), page, size);
+    }
+
     @GetMapping
     Flux<Donation> getDonations(
             @RequestParam(required = false) String storeId,

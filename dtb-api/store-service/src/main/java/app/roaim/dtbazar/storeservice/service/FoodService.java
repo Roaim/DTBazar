@@ -13,8 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyDelete;
-import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyUpdate;
+import static app.roaim.dtbazar.storeservice.ThrowableUtil.*;
+import static java.lang.String.format;
 import static reactor.core.publisher.Mono.error;
 
 // TODO move to a separate micro service
@@ -41,7 +41,7 @@ public class FoodService {
         return foodDetailRepository.findFirstByFood_Id(foodId)
                 .switchIfEmpty(
                         error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                                String.format("FoodId: %s not found", foodId)))
+                                format("FoodId: %s not found", foodId)))
                 );
     }
 
@@ -62,9 +62,11 @@ public class FoodService {
     public Mono<FoodDetail> deleteFoodById(String uid, String foodId) {
         return getFoodById(foodId).flatMap(fd -> {
             if (fd.getFood().getUid().equals(uid)) {
-                return foodRepository.deleteById(foodId)
+                double donationLeft = fd.getTotalDonation() - fd.getSpentDonation();
+                return donationLeft == 0 ? foodRepository.deleteById(foodId)
                         .then(foodDetailRepository.deleteById(fd.getId()))
-                        .thenReturn(fd);
+                        .thenReturn(fd)
+                        : error(denyLeftDonationDelete(fd.getFood().getName(), fd.getFood().getCurrency().name(), donationLeft));
             } else {
                 return error(denyDelete("food"));
             }

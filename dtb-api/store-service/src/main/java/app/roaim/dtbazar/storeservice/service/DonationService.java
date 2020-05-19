@@ -32,6 +32,11 @@ public class DonationService {
                 });
     }
 
+    public Flux<Donation> getMyDonations(String uid, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return repository.findAllByDonorId(uid, pageable);
+    }
+
     public Flux<Donation> getAllDonations(String storeId, String donorId, String storeFoodId, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
         if (storeId != null && donorId != null && storeFoodId != null) {

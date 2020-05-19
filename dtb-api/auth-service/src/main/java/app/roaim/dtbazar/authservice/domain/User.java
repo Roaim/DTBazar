@@ -1,6 +1,7 @@
 package app.roaim.dtbazar.authservice.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Document(collection = "user")
+@NoArgsConstructor
 public class User {
     @Id
     private String id;
@@ -24,6 +26,9 @@ public class User {
     private String fbProfilePicture;
     @Indexed
     private String fbAccessToken;
+    private boolean admin = false;
+    @Indexed
+    private boolean enabled = true;
     private String ip;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();

@@ -1,5 +1,6 @@
 package app.roaim.dtbazar.storeservice.service;
 
+import app.roaim.dtbazar.storeservice.ThrowableUtil;
 import app.roaim.dtbazar.storeservice.domain.Store;
 import app.roaim.dtbazar.storeservice.repository.StoreRepository;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyDelete;
+import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyLeftDonationDelete;
 import static reactor.core.publisher.Mono.error;
 
 @Service
@@ -20,6 +23,11 @@ public class StoreService {
 
     public Mono<Store> saveStore(Store store) {
         return repository.save(store);
+    }
+
+    public Flux<Store> getMyStores(String sub, int page, int size) {
+        PageRequest pageable = PageRequest.of(page, size);
+        return repository.findAllByUid(sub, pageable);
     }
 
     public Flux<Store> getAllStores(int page, int size) {
@@ -54,12 +62,14 @@ public class StoreService {
     }
 
     public Mono<Store> deleteStoreById(String id, String uid) {
-        return getStoreById(id)
-                .flatMap(store -> {
-                    if (!store.getUid().equals(uid))
-                        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have permission to delete this store"));
-                    return repository.deleteById(id)
-                            .thenReturn(store);
-                });
+        return getStoreById(id).flatMap(store -> {
+            if (store.getUid().equals(uid)) {
+                double leftDonation = store.getTotalDonation() - store.getSpentDonation();
+                return leftDonation == 0 ? repository.deleteById(id).thenReturn(store) :
+                        error(denyLeftDonationDelete(store.getName(), "", leftDonation));
+            } else {
+                return error(denyDelete(store.getName()));
+            }
+        });
     }
 }
