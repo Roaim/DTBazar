@@ -24,7 +24,6 @@ import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
 import app.roaim.dtbazar.utils.log
 import app.roaim.dtbazar.utils.snackbar
-import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickListener {
@@ -156,7 +155,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
     }
 
     private fun deleteStoreFood(storeFood: StoreFood?, itemView: View) {
-        if (storeFood != null) {
+        if (storeFood != null && viewModel.isOwnStore.value == true) {
             itemView.snackbar("Delete: ${storeFood.food?.name}?") {
                 viewModel.deleteStoreFood(storeFood).observe(viewLifecycleOwner, Observer {
                     log("DELETE_STORE_FOOD: $it")

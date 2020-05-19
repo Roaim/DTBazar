@@ -13,6 +13,7 @@
     <string name="two_decimal">%.2f</string>
     <string name="qty_rate">%s x %s</string>
     <string name="pay_button">PAY %s %.2f</string>
+    <string name="home_donation_item">%s %.2f</string>
 
     <string-array name="food_unit">
         <item>KG</item>
