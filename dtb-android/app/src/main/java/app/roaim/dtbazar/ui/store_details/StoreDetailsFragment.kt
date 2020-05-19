@@ -52,8 +52,16 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
     ): View? {
         binding = FragmentStoreDetailsBinding.inflate(inflater, container, false)
         binding.args = navArgs
-        viewModel.getUid().observe(viewLifecycleOwner, Observer {
-            binding.isOwner = (it == navArgs.uid)
+        viewModel.store.observe(viewLifecycleOwner, Observer {
+            log("STORE: $it")
+            binding.store = it
+            it.data?.apply {
+                viewModel.init(uid, id)
+            }
+        })
+        viewModel.init(navArgs.uid, navArgs.storeId)
+        viewModel.isOwnStore.observe(viewLifecycleOwner, Observer {
+            binding.isOwner = it
         })
         adapter = StoreFoodAdapter()
         onStoreFoodItemClickListener = getStoreFoodItemClickListener()
@@ -69,12 +77,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         super.onViewCreated(view, savedInstanceState)
         ViewCompat.setTransitionName(binding.viewStore, navArgs.storeId)
         binding.recyclerView.adapter = adapter
-        viewModel.getStoreFood(navArgs.storeId)
         binding.retryCallback = viewModel
-        viewModel.store.observe(viewLifecycleOwner, Observer {
-            log("STORE: $it")
-            binding.store = it
-        })
         viewModel.cachedStoreFoods.observe(viewLifecycleOwner, Observer(adapter::submitList))
         viewModel.storeFoods.observe(viewLifecycleOwner, Observer {
             log("STORE_FOODS: $it")

@@ -43,6 +43,44 @@ fun HomeFragment.initAddStoreDialog() {
     }
 }
 
+fun navigateToStoreDetails(
+    itemView: View,
+    id: String,
+    name: String?,
+    uid: String,
+    proprietor: String?,
+    mobile: String?,
+    allFoodPrice: Float?,
+    totalDonation: Float?,
+    spentDonation: Float?
+) {
+    val actionNavigationHomeToStoreDetailsFragment =
+        HomeFragmentDirections.actionNavigationHomeToStoreDetailsFragment(
+            id, name, uid, proprietor, mobile,
+            allFoodPrice ?: 0f,
+            totalDonation ?: 0f,
+            spentDonation ?: 0f
+        )
+    ViewCompat.setTransitionName(itemView, id)
+    val extras =
+        FragmentNavigatorExtras(itemView to id)
+    itemView.findNavController()
+        .navigate(actionNavigationHomeToStoreDetailsFragment, extras)
+}
+
+fun HomeFragment.deleteStore(store: Store, itemView: View) {
+    itemView.snackbar("Delete: ${store.name}?") {
+        homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
+            log("DELETE_STORE: $it")
+            if (it.status == Status.FAILED) Toast.makeText(
+                requireContext(),
+                it.msg,
+                Toast.LENGTH_LONG
+            ).show()
+        })
+    }
+}
+
 fun HomeFragment.handleBackButtonEvent() {
     val activity = requireActivity()
     var lastPressedAt = 0L

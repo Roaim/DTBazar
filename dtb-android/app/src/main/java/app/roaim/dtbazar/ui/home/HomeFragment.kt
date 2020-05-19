@@ -4,27 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
-import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
 import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.utils.*
+import app.roaim.dtbazar.utils.FragmentDataBindingComponent
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.autoCleared
+import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 
 
@@ -50,9 +50,9 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     var storeItemClickListener by autoCleared<((Store?, View, Boolean) -> Unit)>()
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
         binding = DataBindingUtil.inflate(
@@ -71,8 +71,35 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         binding.listener = this
         storeAdapter = HomeStoreAdapter(bindingComponent)
         donationAdapter = HomeDonationAdapter()
-        initStoreItemClickListener()
-        storeAdapter.setItemClickListener(storeItemClickListener)
+        storeAdapter.setItemClickListener { store: Store?, itemView: View, isLongClick: Boolean ->
+            if (store != null) {
+                if (isLongClick) deleteStore(store, itemView)
+                else navigateToStoreDetails(
+                    itemView,
+                    store.id,
+                    store.name,
+                    store.uid,
+                    store.proprietor,
+                    store.mobile,
+                    store.allFoodPrice?.toFloat(),
+                    store.totalDonation?.toFloat(),
+                    store.spentDonation?.toFloat()
+                )
+            }
+        }
+        donationAdapter.setItemClickListener { donation: Donation?, itemView: View, longClick: Boolean ->
+            navigateToStoreDetails(
+                itemView,
+                donation?.storeId!!,
+                donation.storeName,
+                "",
+                "",
+                "",
+                null,
+                null,
+                null
+            )
+        }
         binding.rvStore.adapter = storeAdapter
         binding.rvDonation.adapter = donationAdapter
 
@@ -99,40 +126,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
     override fun onMakeDonationClick() {
         findNavController().navigate(R.id.action_navigation_home_to_navigation_store)
-    }
-
-    fun initStoreItemClickListener() {
-        storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
-            if (store != null) {
-                if (isLongClick) itemView.snackbar("Delete: ${store.name}?") {
-                    homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
-                        log("DELETE_STORE: $it")
-                        if (it.status == Status.FAILED) Toast.makeText(
-                            requireContext(),
-                            it.msg,
-                            Toast.LENGTH_LONG
-                        ).show()
-                    })
-                } else {
-                    val actionNavigationHomeToStoreDetailsFragment =
-                        HomeFragmentDirections.actionNavigationHomeToStoreDetailsFragment(
-                            store.id,
-                            store.name,
-                            store.uid,
-                            store.proprietor,
-                            store.mobile,
-                            store.allFoodPrice?.toFloat() ?: 0f,
-                            store.totalDonation?.toFloat() ?: 0f,
-                            store.spentDonation?.toFloat() ?: 0f
-                        )
-                    ViewCompat.setTransitionName(itemView, store.id)
-                    val extras =
-                        FragmentNavigatorExtras(itemView to store.id)
-                    itemView.findNavController()
-                        .navigate(actionNavigationHomeToStoreDetailsFragment, extras)
-                }
-            }
-        }
     }
 
 }

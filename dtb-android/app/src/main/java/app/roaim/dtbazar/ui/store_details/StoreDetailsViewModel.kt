@@ -16,6 +16,7 @@ class StoreDetailsViewModel @Inject constructor(
     ViewModel(), RetryCallback {
 
     private val _storeId = MutableLiveData<String>()
+    private val _uid = MutableLiveData<String>()
 
     val cachedStoreFoods: LiveData<List<StoreFood>> = _storeId.switchMap {
         foodRepository.getCachedStoreFoodFoods(it)
@@ -29,16 +30,24 @@ class StoreDetailsViewModel @Inject constructor(
 
     val store: LiveData<Result<Store>> = _storeId.switchMap { storeRepository.getStoryBy(it) }
 
-    fun getStoreFood(storeId: String) {
-        if (storeId == _storeId.value) return
-        _storeId.value = storeId
+    val isOwnStore = _uid.switchMap(storeRepository::isOwnStore)
+
+    fun init(uid: String?, storeId: String?) {
+        if (uid != _uid.value) {
+            _uid.value = uid
+        }
+        if (storeId != _storeId.value) {
+            _storeId.value = storeId
+        }
     }
 
     fun getFoodList(): LiveData<Result<List<Food>>> = foodRepository.getFoods()
 
 
     override fun onRetry() {
-        _storeId.postValue(_storeId.value)
+        _storeId.value?.let {
+            _storeId.value = it
+        }
     }
 
     fun saveStoreFood(storeId: String, foodId: String, stockQty: String, unitPrice: String) =
@@ -51,11 +60,6 @@ class StoreDetailsViewModel @Inject constructor(
             )
         )
 
-    fun getUid(): LiveData<String> {
-        foodRepository.getUid()
-        return foodRepository.uid
-    }
-
     fun addDonation(
         storeFoodId: String,
         amount: Double,
@@ -63,7 +67,7 @@ class StoreDetailsViewModel @Inject constructor(
     ): LiveData<Result<Donation>> {
         val donationPostBody = DonationPostBody(amount, storeFoodId, currency)
         return donationRepository.addDonation(donationPostBody).map {
-            onRetry()
+            if (it.status == Status.SUCCESS) onRetry()
             it
         }
     }

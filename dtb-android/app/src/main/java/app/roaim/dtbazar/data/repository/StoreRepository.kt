@@ -39,6 +39,8 @@ class StoreRepository @Inject constructor(
         .setPageSize(STORE_PAGE_LOAD_SIZE)
         .build()
 
+    fun isOwnStore(storeUid: String): LiveData<Boolean> = liveData { emit(prefDataSource.getUid() == storeUid) }
+
     fun getNearByStores(coroutineScope: CoroutineScope, ipInfo: IpInfo) = LivePagedListBuilder(
         storeDataSourceFactory.apply {
             setCoroutineScope(coroutineScope)

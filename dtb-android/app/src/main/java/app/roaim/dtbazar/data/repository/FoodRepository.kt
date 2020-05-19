@@ -26,14 +26,6 @@ class FoodRepository @Inject constructor(
     private val prefDataSource: PrefDataSource
 ) : Loggable {
 
-    private val _uid = MutableLiveData<String>()
-
-    val uid: LiveData<String> = _uid
-
-    fun getUid() {
-        _uid.value = prefDataSource.getUid()
-    }
-
     fun saveFood(foodBody: FoodPostBody): LiveData<Result<Food>> = liveData {
         emit(loading())
         val result = try {
