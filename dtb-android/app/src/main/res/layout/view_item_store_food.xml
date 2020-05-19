@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="storeFood"
+            type="app.roaim.dtbazar.model.StoreFood" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
+            android:visibility="visible"
+            app:cardCornerRadius="4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_food_dark"
+                    tools:src="@drawable/ic_food_dark" />
+
+                <TextView
+                    android:id="@+id/tvName1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv1"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:text="@{storeFood.food.name}"
+                    android:textColor="@color/color_dark"
+                    android:textSize="16sp"
+                    tools:text="Thick Rice" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvName1"
+                    android:layout_toEndOf="@id/iv1"
+                    android:paddingTop="2dp"
+                    android:text="@{@string/store_food_item_price(storeFood.food.currency, storeFood.unitPrice, storeFood.food.unit, storeFood.stockQty)}"
+                    android:textColor="@color/color_dark"
+                    android:textSize="15sp"
+                    tools:text="BDT 7/PCS (600)" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</layout>

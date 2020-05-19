@@ -13,6 +13,7 @@ ext {
     def RxAndroidVersion = '2.0.1'
     def RxJavaVersion = '2.1.3'
     def RxKotlinVersion = '2.1.0'
+    def glide_version = '4.11.0'
 
     deps = [:]
 
@@ -161,12 +162,18 @@ ext {
 
     deps.kapt = kaptDependencies
 
+    deps.kaptExt = [
+            glide: "com.github.bumptech.glide:compiler:$glide_version"
+    ]
+
     // Versions for misc dependencies
     def preference_version = "1.1.1"
 
     miscDependencies = [
             preference: "androidx.preference:preference-ktx:$preference_version",
-            security  : "androidx.security:security-crypto:1.0.0-rc01"
+            security  : "androidx.security:security-crypto:1.0.0-rc01",
+            facebook  : 'com.facebook.android:facebook-login:[5,6)',
+            glide     : "com.github.bumptech.glide:glide:$glide_version"
     ]
 
     deps.misc = miscDependencies

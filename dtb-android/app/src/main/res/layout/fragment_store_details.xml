@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="app.roaim.dtbazar.model.Result" />
+
+        <import type="app.roaim.dtbazar.ui.store_details.StoreDetailsFragmentArgs" />
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <variable
+            name="listener"
+            type="app.roaim.dtbazar.ui.store_details.StoreFoodClickListener" />
+
+        <variable
+            name="result"
+            type="Result" />
+
+        <variable
+            name="retryCallback"
+            type="app.roaim.dtbazar.ui.RetryCallback" />
+
+        <variable
+            name="args"
+            type="StoreDetailsFragmentArgs" />
+
+        <variable
+            name="store"
+            type="Result&lt;app.roaim.dtbazar.model.Store>" />
+
+        <variable
+            name="isOwner"
+            type="Boolean" />
+    </data>
+
+
+    <RelativeLayout
+        android:id="@+id/viewStore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="64dp"
+        tools:context="app.roaim.dtbazar.ui.store_details.StoreDetailsFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView2"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:nestedScrollingEnabled="false"
+            android:layout_marginEnd="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="7"
+            tools:listitem="@layout/view_item_store_food" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            app:cardCornerRadius="4dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp">
+
+                <TextView
+                    android:id="@+id/tvName1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="6dp"
+                    android:text="@{args.proprietor}"
+                    android:textColor="@color/color_dark"
+                    android:textSize="16sp"
+                    tools:text="Store Owner: Roaim Ahmed" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_donation_dark"
+                        android:drawablePadding="8dp"
+                        android:gravity="center|start"
+                        android:text="@{@string/store_details_total_donation(store.data.totalDonationFloat() ?? args.totalDonation)}"
+                        android:textColor="@color/color_dark"
+                        android:textSize="15sp"
+                        tools:text="Total: 1200" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/ic_donation_dark"
+                        android:drawablePadding="8dp"
+                        android:gravity="center|start"
+                        android:text="@{@string/store_details_spent_donation(store.data.spentDonationFloat() ?? args.spentDonation)}"
+                        android:textColor="@color/color_dark"
+                        android:textSize="15sp"
+                        tools:text="Spent: 200" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/cardView2"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Foods"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonAddFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="16dp"
+            android:onClick="@{()-> listener.onAddStoreFoodClick()}"
+            android:src="@drawable/ic_add"
+            android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
+            app:backgroundTint="@color/colorPrimary" />
+
+        <include
+            layout="@layout/view_progress_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
+            app:result="@{result}"
+            app:retryCallback="@{retryCallback}" />
+    </RelativeLayout>
+
+</layout>

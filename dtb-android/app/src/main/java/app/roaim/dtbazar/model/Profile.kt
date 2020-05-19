@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import com.google.gson.annotations.SerializedName
 
-@Entity(primaryKeys = ["id"])
+@Entity(tableName = "profile", primaryKeys = ["id"])
 data class Profile(
     @field:SerializedName("id")
     @ColumnInfo(name = "id")

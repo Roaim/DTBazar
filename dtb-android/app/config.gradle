@@ -37,6 +37,8 @@ android {
         versionName generateVersionName()
 
         buildConfigField(vars.types.str, vars.apiEndpointPrefix, API_ENDPOINT_PREFIX)
+        resValue 'string', 'facebook_app_id', DTBAZAR_FB_ID
+        resValue 'string', 'fb_login_protocol_scheme', DTBAZAR_FB_LOGIN_SCHEME
     }
 
     flavorDimensions 'apiServer', 'apiVersion'

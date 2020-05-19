@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <variable
+            name="result"
+            type="app.roaim.dtbazar.model.Result" />
+
+        <variable
+            name="retryCallback"
+            type="app.roaim.dtbazar.ui.RetryCallback" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="4dp"
+        android:paddingBottom="64dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="20"
+            tools:listitem="@layout/view_item_food" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonAddFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add"
+            app:backgroundTint="@color/colorPrimary" />
+
+        <include
+            layout="@layout/view_progress_state"
+            app:result="@{result}"
+            app:retryCallback="@{retryCallback}" />
+
+    </FrameLayout>
+
+</layout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="app.roaim.dtbazar.model.Donation" />
+
+        <variable
+            name="donation"
+            type="Donation" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:visibility="visible"
+            app:cardCornerRadius="4dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@{donation.currency+` `+donation.amount}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="BDT 500" />
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:text="@{donation.createdAt}"
+                    tools:text="2020-05-14T15:59:01.783Z"
+                    android:textSize="12sp"
+                    android:layout_toEndOf="@id/iv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:src="@drawable/ic_donation_black"
+                    tools:src="@drawable/ic_donation_black" />
+
+                <TextView
+                    android:id="@+id/tvName1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/iv1"
+                    android:layout_below="@id/tvDate"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="2dp"
+                    android:text="@{donation.foodName}"
+                    android:textColor="@color/text_home_list_title"
+                    android:textSize="16sp"
+                    tools:text="Rice" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvName1"
+                    android:layout_toEndOf="@id/iv1"
+                    android:paddingTop="2dp"
+                    android:text="@{donation.storeName}"
+                    android:textColor="@color/text_home_list_subtitle"
+                    android:textSize="16sp"
+                    tools:text="One Plus Store" />
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+    </FrameLayout>
+</layout>
