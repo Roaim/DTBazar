@@ -63,8 +63,10 @@ public class StoreService {
                 .flatMap(store -> {
                     if (!store.getUid().equals(uid))
                         return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You don't have permission to delete this store"));
-                    return repository.deleteById(id)
-                            .thenReturn(store);
+                    else if (store.getTotalDonation() - store.getSpentDonation() > 0)
+                        return Mono.error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You need to spend all the donations before deleting this store"));
+                    else return repository.deleteById(id)
+                                .thenReturn(store);
                 });
     }
 }
