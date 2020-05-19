@@ -83,4 +83,8 @@ interface ApiService {
     @POST("donation")
     @Throws(Exception::class)
     suspend fun saveDonation(@Body donationPostBody: DonationPostBody): Response<Donation>
+
+    @POST("foodSell")
+    @Throws(Exception::class)
+    suspend fun postFoodSell(@Body foodSellPostBody: FoodSellPostBody): Response<FoodSell>
 }

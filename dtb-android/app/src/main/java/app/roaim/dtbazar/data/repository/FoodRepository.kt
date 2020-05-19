@@ -1,7 +1,6 @@
 package app.roaim.dtbazar.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
@@ -90,4 +89,15 @@ class FoodRepository @Inject constructor(
 
     fun getCachedStoreFoodFoods(storeId: String): LiveData<List<StoreFood>> =
         storeFoodDao.findAllByStoreId(storeId)
+
+    fun sellFood(foodSellPostBody: FoodSellPostBody) = liveData<Result<FoodSell>> {
+        emit(loading())
+        val result = try {
+            apiService.postFoodSell(foodSellPostBody).getResult()
+        } catch (e: Exception) {
+            log("sellFood", e)
+            failed<FoodSell>(e.message)
+        }
+        emit(result)
+    }
 }

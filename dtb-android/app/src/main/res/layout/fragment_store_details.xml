@@ -99,11 +99,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_donation_dark"
+                        android:drawableStart="@drawable/ic_donation_primary"
                         android:drawablePadding="8dp"
                         android:gravity="center|start"
                         android:text="@{@string/store_details_total_donation(store.data.totalDonationFloat() ?? args.totalDonation)}"
-                        android:textColor="@color/color_dark"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="15sp"
                         tools:text="Total: 1200" />
 
@@ -111,11 +111,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_donation_dark"
+                        android:drawableStart="@drawable/ic_donation_accent"
                         android:drawablePadding="8dp"
                         android:gravity="center|start"
                         android:text="@{@string/store_details_spent_donation(store.data.spentDonationFloat() ?? args.spentDonation)}"
-                        android:textColor="@color/color_dark"
+                        android:textColor="@color/colorAccent"
                         android:textSize="15sp"
                         tools:text="Spent: 200" />
 

@@ -1,15 +1,10 @@
 package app.roaim.dtbazar.ui.home
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
-import app.roaim.dtbazar.model.Profile
-import app.roaim.dtbazar.model.Result
-import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.model.StorePostBody
+import androidx.lifecycle.*
 import app.roaim.dtbazar.data.repository.DonationRepository
 import app.roaim.dtbazar.data.repository.InfoRepository
 import app.roaim.dtbazar.data.repository.StoreRepository
+import app.roaim.dtbazar.model.*
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -18,18 +13,47 @@ class HomeViewModel @Inject constructor(
     private val donationRepository: DonationRepository
 ) : ViewModel() {
 
-    val profile: LiveData<Result<Profile>> = infoRepository.getProfile()
+    private val _uid = MutableLiveData<String>()
+
+    private val _myStores = MediatorLiveData<List<Store>>()
+    private val _myDonations = MediatorLiveData<List<Donation>>()
+
+    val profile: LiveData<Result<Profile>> = infoRepository.getProfile().map {
+        if (it.status == Status.SUCCESS) _uid.postValue(it.data?.id)
+        it
+    }
 
     val ipInfo = infoRepository.getIpInfo()
 
-    private val myDonations = donationRepository.getMyDonations()
+    val myDonations: LiveData<List<Donation>> = _uid.switchMap { uid ->
+        _myDonations.addSource(donationRepository.getMyCachedDonations(uid)) {
+            _myDonations.value = it
+        }
+        val myRemoteDonations = donationRepository.getMyDonations()
+        _myDonations.addSource(myRemoteDonations) {
+            if (it.status == Status.SUCCESS) {
+                _myDonations.value = it.data
+                _myDonations.removeSource(myRemoteDonations)
+            }
+        }
+        _myDonations
+    }
 
-    val myCachedDonations =
-        Transformations.switchMap(myDonations) { donationRepository.getMyCachedDonations() }
 
-    private val myStores = storeRepository.getMyStores()
+    val myStores = _uid.switchMap { uid ->
+        _myStores.addSource(storeRepository.getMyCachedStores(uid)) {
+            _myStores.value = it
+        }
+        val myRemoteStores = storeRepository.getMyStores()
+        _myStores.addSource(myRemoteStores) {
+            if (it.status == Status.SUCCESS) {
+                _myStores.value = it.data
+                _myStores.removeSource(myRemoteStores)
+            }
+        }
+        _myStores
+    }
 
-    val myCachedStores = Transformations.switchMap(myStores) { storeRepository.getMyCachedStores() }
 
     fun saveStore(name: String, address: String, mobile: String): LiveData<Result<Store>> =
         Transformations.switchMap(ipInfo) {

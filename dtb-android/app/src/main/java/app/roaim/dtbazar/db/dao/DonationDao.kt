@@ -18,4 +18,14 @@ interface DonationDao {
 
     @Query("select * from donation where id = :id")
     fun findById(id: String): LiveData<Donation>
+
+    @Transaction
+    @Query("delete from donation")
+    suspend fun deleteAll()
+
+    @Transaction
+    suspend fun refresh(vararg donation: Donation) {
+        deleteAll()
+        insert(*donation)
+    }
 }

@@ -5,7 +5,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import app.roaim.dtbazar.databinding.ViewAddNewStoreFoodBinding
 import app.roaim.dtbazar.model.Food
+import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.model.StoreFood
 import app.roaim.dtbazar.utils.log
 
 fun StoreDetailsFragment.initAddStoreFoodDialog() {
@@ -34,6 +36,11 @@ fun StoreDetailsFragment.initAddStoreFoodDialog() {
 
         override fun onAddStoreFoodClick(stockQty: String, unitPrice: String) {
             if (stockQty.isNotEmpty() && unitPrice.isNotEmpty()) {
+                if (foodSuggestionAdapter.isEmpty) {
+                    addStoreFoodBinding.storeFood =
+                        Result.failed<StoreFood>("Please add a food definition from the bottom right \"Food\" tab.")
+                    return
+                }
                 val food = addStoreFoodBinding.spinnerFood.selectedItem as Food
                 viewModel.saveStoreFood(navArgs.storeId, food.id, stockQty, unitPrice)
                     .observe(viewLifecycleOwner, Observer {

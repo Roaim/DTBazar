@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="app.roaim.dtbazar.utils.ExtensionsKt" />
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <import type="app.roaim.dtbazar.model.Result" />
+
+        <import type="app.roaim.dtbazar.model.StoreFood" />
+
+        <variable
+            name="isSell"
+            type="Boolean" />
+
+        <variable
+            name="isOwner"
+            type="Boolean" />
+
+        <variable
+            name="result"
+            type="Result" />
+
+        <variable
+            name="listener"
+            type="app.roaim.dtbazar.ui.store_details.ViewAddDonationSellClickListener" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="@{result.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+
+        <RadioGroup
+            android:id="@+id/rg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
+            android:weightSum="2">
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbDonation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:text="DONATE" />
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/rbSell"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:padding="8dp"
+                android:text="SELL" />
+
+        </RadioGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:visibility="@{isSell ? View.GONE : View.VISIBLE}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Donation Amount">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAmount"
+                clearText="@{result}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Buyer Name"
+            android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etBuyerName"
+                clearText="@{result}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="textPersonName"
+                android:nextFocusDown="@id/etNid"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="National ID no."
+            android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etNid"
+                clearText="@{result}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:maxLines="1"
+                android:nextFocusDown="@id/etQty"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="Quantity"
+            android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etQty"
+                clearText="@{result}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:singleLine="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:enabled="@{result.status != Status.LOADING}"
+            android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.value(etQty), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : listener.onAddDonationClick(ExtensionsKt.value(etAmount))}"
+            android:text="@{isSell ? `Sell` : `Make Donation`}"
+            tools:text="Make Donation" />
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:backgroundTint="#8FB1B5"
+            android:onClick="@{()->listener.onCancelClick()}"
+            android:text="Cancel" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:text="@{result.msg}"
+            android:textColor="@color/colorAccent" />
+
+    </LinearLayout>
+</layout>

@@ -13,9 +13,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import app.roaim.dtbazar.databinding.FragmentStoreDetailsBinding
-import app.roaim.dtbazar.databinding.ViewAddNewDonationBinding
+import app.roaim.dtbazar.databinding.ViewAddNewDonationSellBinding
 import app.roaim.dtbazar.databinding.ViewAddNewStoreFoodBinding
+import app.roaim.dtbazar.databinding.ViewFoodSellInvoiceBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.FoodSell
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.StoreFood
 import app.roaim.dtbazar.utils.Loggable
@@ -35,8 +37,10 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
     var addStoreFoodBinding by autoCleared<ViewAddNewStoreFoodBinding>()
     var foodSuggestionAdapter by autoCleared<FoodSuggestionAdapter>()
     var onStoreFoodItemClickListener by autoCleared<((StoreFood?, View, Boolean) -> Unit)>()
-    var addDonationBinding by autoCleared<ViewAddNewDonationBinding>()
-    var addDonationDialog by autoCleared<AlertDialog>()
+    var addDonationSellBinding by autoCleared<ViewAddNewDonationSellBinding>()
+    var addDonationSellDialog by autoCleared<AlertDialog>()
+    var invoiceBinding by autoCleared<ViewFoodSellInvoiceBinding>()
+    var invoiceDialog by autoCleared<AlertDialog>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +66,25 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         viewModel.init(navArgs.uid, navArgs.storeId)
         viewModel.isOwnStore.observe(viewLifecycleOwner, Observer {
             binding.isOwner = it
+            addDonationSellBinding.isOwner = it
+            addDonationSellBinding.isSell = it &&
+                    addDonationSellBinding.rg.checkedRadioButtonId == addDonationSellBinding.rbSell.id
         })
         adapter = StoreFoodAdapter()
         onStoreFoodItemClickListener = getStoreFoodItemClickListener()
         adapter.setItemClickListener(onStoreFoodItemClickListener)
-        addDonationBinding =
-            ViewAddNewDonationBinding.inflate(LayoutInflater.from(requireContext()))
-        addDonationDialog =
-            AlertDialog.Builder(requireContext()).setView(addDonationBinding.root).create()
+        addDonationSellBinding =
+            ViewAddNewDonationSellBinding.inflate(LayoutInflater.from(requireContext()))
+        addDonationSellBinding.rg.setOnCheckedChangeListener { group, checkedId ->
+            addDonationSellBinding.isSell = checkedId == addDonationSellBinding.rbSell.id
+        }
+        addDonationSellDialog =
+            AlertDialog.Builder(requireContext()).setView(addDonationSellBinding.root).create()
+        invoiceBinding = ViewFoodSellInvoiceBinding.inflate(LayoutInflater.from(requireContext()))
+        invoiceDialog = AlertDialog.Builder(requireContext()).setView(invoiceBinding.root).create()
+        invoiceBinding.btPay.setOnClickListener {
+            invoiceDialog.dismiss()
+        }
         return binding.root
     }
 
@@ -93,28 +108,49 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
     }
 
     private fun getStoreFoodItemClickListener() = { storeFood: StoreFood?, _: View, _: Boolean ->
-        addDonationDialog.show()
-        addDonationBinding.listener = object : ViewAddDonationClickListener {
+        addDonationSellDialog.show()
+        addDonationSellBinding.listener = object : ViewAddDonationSellClickListener {
             override fun onCancelClick() {
-                addDonationDialog.dismiss()
+                addDonationSellDialog.dismiss()
             }
 
             override fun onAddDonationClick(amount: String) {
-                if (amount.isNotEmpty()) {
+                if (amount.isNotEmpty() && storeFood != null) {
                     viewModel.addDonation(
-                        storeFood!!.id,
+                        storeFood.id,
                         amount.toDouble(),
                         storeFood.food?.currency!!
                     ).observe(viewLifecycleOwner, Observer {
                         log("ADD_DONATION: $it")
-                        addDonationBinding.donation = it
+                        addDonationSellBinding.result = it
                         if (it.status == Status.SUCCESS) {
                             onCancelClick()
                         }
                     })
                 }
             }
+
+            override fun onAddSellClick(qty: String, nid: String, name: String) {
+//                log("qty: $qty; nid: $nid; name: $name")
+                if (qty.isNotEmpty() && nid.isNotEmpty() && name.isNotEmpty() && storeFood != null) {
+                    viewModel.sellFood(storeFood.id, name, nid, qty.toDouble())
+                        .observe(viewLifecycleOwner, Observer {
+                            log("FOOD_SELL: $it")
+                            addDonationSellBinding.result = it
+                            if (it.status == Status.SUCCESS) {
+                                onCancelClick()
+                                showInvoice(it.data!!, storeFood)
+                            }
+                        })
+                }
+            }
         }
+    }
+
+    private fun showInvoice(foodSell: FoodSell, storeFood: StoreFood) {
+        invoiceBinding.foodSell = foodSell
+        invoiceBinding.storeFood = storeFood
+        invoiceDialog.show()
     }
 
 }

@@ -104,18 +104,14 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         binding.rvDonation.adapter = donationAdapter
 
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
-            log(it.toString())
+            log("PROFILE: $it")
             if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.profile = it
         })
 
-        homeViewModel.myCachedStores.observe(
-            viewLifecycleOwner, Observer(storeAdapter::submitList)
-        )
+        homeViewModel.myStores.observe(viewLifecycleOwner, Observer(storeAdapter::submitList))
 
-        homeViewModel.myCachedDonations.observe(
-            viewLifecycleOwner, Observer(donationAdapter::submitList)
-        )
+        homeViewModel.myDonations.observe(viewLifecycleOwner, Observer(donationAdapter::submitList))
 
         initAddStoreDialog()
     }
