@@ -87,4 +87,8 @@ interface ApiService {
     @POST("foodSell")
     @Throws(Exception::class)
     suspend fun postFoodSell(@Body foodSellPostBody: FoodSellPostBody): Response<FoodSell>
+
+    @DELETE("storeFood/{id}")
+    @Throws(Exception::class)
+    suspend fun deleteStoreFood(@Path("id") id: String): Response<StoreFood>
 }

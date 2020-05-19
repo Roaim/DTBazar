@@ -100,4 +100,15 @@ class FoodRepository @Inject constructor(
         }
         emit(result)
     }
+
+    fun deleteStoreFood(storeFood: StoreFood): LiveData<Result<StoreFood>> = liveData {
+        emit(loading())
+        val result = try {
+            apiService.deleteStoreFood(storeFood.id).getResult { storeFoodDao.delete(storeFood) }
+        } catch (e: Exception) {
+            log("", e)
+            failed<StoreFood>(e.message)
+        }
+        emit(result)
+    }
 }

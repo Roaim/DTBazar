@@ -58,7 +58,10 @@ class StoreDetailsViewModel @Inject constructor(
                 foodId = foodId,
                 stockQty = stockQty.toDouble()
             )
-        )
+        ).map {
+            if (it.status == Status.SUCCESS) onRetry()
+            it
+        }
 
     fun addDonation(
         storeFoodId: String,
@@ -77,6 +80,11 @@ class StoreDetailsViewModel @Inject constructor(
     ).let {
         foodRepository.sellFood(it)
     }.map {
+        if (it.status == Status.SUCCESS) onRetry()
+        it
+    }
+
+    fun deleteStoreFood(storeFood: StoreFood) = foodRepository.deleteStoreFood(storeFood).map {
         if (it.status == Status.SUCCESS) onRetry()
         it
     }

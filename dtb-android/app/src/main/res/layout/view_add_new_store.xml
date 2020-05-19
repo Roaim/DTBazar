@@ -22,101 +22,107 @@
             type="app.roaim.dtbazar.ui.home.ViewAddStoreButtonClickListener" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="16dp">
+        android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:visibility="@{store.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
-
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Store Name">
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="16dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etName"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:visibility="@{store.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nextFocusDown="@id/etAddress"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="8dp"
+                android:hint="Store Name">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Store Address">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etName"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName|textCapWords"
+                    android:maxLines="1"
+                    clearText="@{store}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusDown="@id/etAddress"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
-                android:imeOptions="actionNext"
-                android:inputType="textPostalAddress|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
-                android:nextFocusDown="@id/etMobile"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Mobile Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMobile"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:imeOptions="actionDone"
-                android:inputType="phone"
-                android:maxLines="1"
-                clearText="@{store}"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_margin="8dp"
+                android:hint="Store Address">
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:enabled="@{store.status != Status.LOADING}"
-            android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etMobile), ExtensionsKt.value(etAddress), ExtensionsKt.value(etName))}"
-            android:text="Add New Store" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etAddress"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPostalAddress|textCapWords"
+                    android:maxLines="1"
+                    clearText="@{store}"
+                    android:nextFocusDown="@id/etMobile"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:backgroundTint="#8FB1B5"
-            android:onClick="@{()->listener.onCancelClick()}"
-            android:text="Cancel" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="Mobile Number">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:text="@{store.msg}"
-            android:textColor="@color/colorAccent" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etMobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    clearText="@{store}"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-    </LinearLayout>
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:enabled="@{store.status != Status.LOADING}"
+                android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etMobile), ExtensionsKt.value(etAddress), ExtensionsKt.value(etName))}"
+                android:text="Add New Store" />
+
+            <Button
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:backgroundTint="#8FB1B5"
+                android:onClick="@{()->listener.onCancelClick()}"
+                android:text="Cancel" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:text="@{store.msg}"
+                android:textColor="@color/colorAccent" />
+
+        </LinearLayout>
+
+    </ScrollView>
 </layout>
