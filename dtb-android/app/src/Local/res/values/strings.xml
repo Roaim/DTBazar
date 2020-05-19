@@ -2,5 +2,5 @@
     <string name="app_name">DTB-Local</string>
     <string name="title_home">Home (Local)</string>
     <string name="title_store">Store (Local)</string>
-    <string name="title_notifications">Food (Local)</string>
+    <string name="title_food">Food (Local)</string>
 </resources>

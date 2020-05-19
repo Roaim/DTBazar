@@ -13,16 +13,15 @@
     </data>
 
     <FrameLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:selectableItemBackground">
+        android:layout_width="match_parent">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
             android:visibility="visible"
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="true"
@@ -72,5 +71,6 @@
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
+
     </FrameLayout>
 </layout>

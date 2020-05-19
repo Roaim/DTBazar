@@ -7,6 +7,7 @@
     <string name="store_details_total_donation"><b>Total: </b> %s</string>
     <string name="store_details_spent_donation"><b>Spent: </b> %s</string>
     <string name="store_food_item_price"><b>%s %s/%s</b> (%s)</string>
+    <string name="title_food_suggestion_spinner"><b>%s</b> (%s/%s)</string>
 
     <string-array name="food_unit">
         <item>KG</item>

@@ -26,6 +26,7 @@
             android:id="@+id/rvFood"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="20"
             tools:listitem="@layout/view_item_food" />

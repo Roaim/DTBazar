@@ -12,15 +12,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:selectableItemBackground">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
+            android:focusable="true"
+            android:foreground="?android:selectableItemBackground"
             android:visibility="visible"
             app:cardCornerRadius="4dp"
             app:cardUseCompatPadding="true"
@@ -41,7 +40,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
                     android:src="@drawable/ic_food_dark"
-                    tools:src="@drawable/ic_food" />
+                    tools:src="@drawable/ic_food_dark" />
 
                 <TextView
                     android:id="@+id/tvName1"

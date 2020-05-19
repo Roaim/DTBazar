@@ -12,10 +12,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:selectableItemBackground">
+        android:layout_height="wrap_content">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -63,7 +60,7 @@
                     android:paddingTop="2dp"
                     android:text="@{food.priceRange}"
                     android:textColor="@color/text_home_list_subtitle"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     tools:text="BDT 35 - 60 / KG" />
 
             </RelativeLayout>
