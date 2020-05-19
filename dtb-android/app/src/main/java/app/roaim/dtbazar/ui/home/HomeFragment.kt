@@ -5,15 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
@@ -45,6 +47,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     var addStoreDialog by autoCleared<AlertDialog>()
     private var storeAdapter by autoCleared<HomeStoreAdapter>()
     private var donationAdapter by autoCleared<HomeDonationAdapter>()
+    var storeItemClickListener by autoCleared<((Store?, View, Boolean) -> Unit)>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -66,12 +69,10 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.listener = this
-
         storeAdapter = HomeStoreAdapter(bindingComponent)
         donationAdapter = HomeDonationAdapter()
-
+        initStoreItemClickListener()
         storeAdapter.setItemClickListener(storeItemClickListener)
-
         binding.rvStore.adapter = storeAdapter
         binding.rvDonation.adapter = donationAdapter
 
@@ -97,20 +98,39 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     }
 
     override fun onMakeDonationClick() {
-
+        findNavController().navigate(R.id.action_navigation_home_to_navigation_store)
     }
 
-    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
-        if (isLongClick && store != null) {
-            itemView.snackbar("Delete: ${store.name}?") {
-                homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
-                    log("DELETE_STORE: $it")
-                    if (it.status == Status.FAILED) Toast.makeText(
-                        requireContext(),
-                        it.msg,
-                        Toast.LENGTH_LONG
-                    ).show()
-                })
+    fun initStoreItemClickListener() {
+        storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
+            if (store != null) {
+                if (isLongClick) itemView.snackbar("Delete: ${store.name}?") {
+                    homeViewModel.deleteStore(store).observe(viewLifecycleOwner, Observer {
+                        log("DELETE_STORE: $it")
+                        if (it.status == Status.FAILED) Toast.makeText(
+                            requireContext(),
+                            it.msg,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    })
+                } else {
+                    val actionNavigationHomeToStoreDetailsFragment =
+                        HomeFragmentDirections.actionNavigationHomeToStoreDetailsFragment(
+                            store.id,
+                            store.name,
+                            store.uid,
+                            store.proprietor,
+                            store.mobile,
+                            store.allFoodPrice?.toFloat() ?: 0f,
+                            store.totalDonation?.toFloat() ?: 0f,
+                            store.spentDonation?.toFloat() ?: 0f
+                        )
+                    ViewCompat.setTransitionName(itemView, store.id)
+                    val extras =
+                        FragmentNavigatorExtras(itemView to store.id)
+                    itemView.findNavController()
+                        .navigate(actionNavigationHomeToStoreDetailsFragment, extras)
+                }
             }
         }
     }

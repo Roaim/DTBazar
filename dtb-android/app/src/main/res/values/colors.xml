@@ -11,4 +11,5 @@
     <color name="text_home_header_title">#fdffffff</color>
     <color name="text_home_button_text">#fdffffff</color>
     <color name="home_background">#0B2535</color>
+    <color name="color_dark">#CD0F2A39</color>
 </resources>

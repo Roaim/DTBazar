@@ -48,4 +48,8 @@ class DbModule {
     @Provides
     @Singleton
     fun provideFoodDao(db: CacheDb): FoodDao = db.foodDao()
+
+    @Provides
+    @Singleton
+    fun provideStoreFoodDao(db: CacheDb): StoreFoodDao = db.storeFoodDao()
 }

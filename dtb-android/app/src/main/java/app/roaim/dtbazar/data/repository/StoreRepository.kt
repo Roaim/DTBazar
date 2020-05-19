@@ -6,6 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
+import app.roaim.dtbazar.data.PrefDataSource
 import app.roaim.dtbazar.data.StoreDataSourceFactory
 import app.roaim.dtbazar.db.dao.StoreDao
 import app.roaim.dtbazar.model.IpInfo
@@ -28,7 +29,8 @@ import javax.inject.Singleton
 class StoreRepository @Inject constructor(
     private val storeDao: StoreDao,
     private val apiService: ApiService,
-    private val storeDataSourceFactory: StoreDataSourceFactory
+    private val storeDataSourceFactory: StoreDataSourceFactory,
+    private val prefDataSource: PrefDataSource
 ) : Loggable {
 
     val pageConfig = PagedList.Config.Builder()
@@ -48,7 +50,7 @@ class StoreRepository @Inject constructor(
 
     fun retryNearByStores() = storeDataSourceFactory.retry()
 
-    fun getMyCachedStores() = storeDao.findAll()
+    fun getMyCachedStores() = prefDataSource.getUid().let(storeDao::findAllByUid)
 
     fun getMyStores(): LiveData<Result<List<Store>>> =
         liveData {
@@ -61,6 +63,18 @@ class StoreRepository @Inject constructor(
             }
             emit(result)
         }
+
+    fun getStoryBy(storeId: String) = liveData<Result<Store>> {
+        emit(loading())
+        val result = try {
+            apiService.getStore(storeId)
+                .getResult { if (prefDataSource.getUid() == it.uid) storeDao.insert(it) }
+        } catch (e: Exception) {
+            log("getStoreById", e)
+            failed<Store>(e.message)
+        }
+        emit(result)
+    }
 
     fun saveStore(storeBody: StorePostBody): LiveData<Result<Store>> = liveData {
         emit(loading())

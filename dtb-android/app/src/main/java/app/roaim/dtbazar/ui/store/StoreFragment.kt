@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
+import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentStoreBinding
 import app.roaim.dtbazar.di.Injectable
@@ -77,7 +80,26 @@ class StoreFragment : Fragment(), Injectable, Loggable {
         })
     }
 
-    private val storeItemClickListener = { store: Store?, itemView: View, isLongClick: Boolean ->
+    private val storeItemClickListener = { store: Store?, itemView: View, _: Boolean ->
         log("storeItemClick $store")
+        if (store != null) {
+            val actionNavigationHomeToStoreDetailsFragment =
+                StoreFragmentDirections.actionNavigationStoreToStoreDetailsFragment(
+                    store.id,
+                    store.name,
+                    store.uid,
+                    store.proprietor,
+                    store.mobile,
+                    store.allFoodPrice?.toFloat() ?: 0f,
+                    store.totalDonation?.toFloat() ?: 0f,
+                    store.spentDonation?.toFloat() ?: 0f
+                )
+            ViewCompat.setTransitionName(itemView, store.id)
+            val extras =
+                FragmentNavigatorExtras(itemView to store.id)
+            itemView.findNavController()
+                .navigate(actionNavigationHomeToStoreDetailsFragment, extras)
+
+        }
     }
 }

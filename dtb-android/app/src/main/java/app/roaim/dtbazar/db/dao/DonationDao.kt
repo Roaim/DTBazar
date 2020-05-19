@@ -1,14 +1,12 @@
 package app.roaim.dtbazar.db.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import app.roaim.dtbazar.model.Donation
 
 @Dao
 interface DonationDao {
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg donation: Donation)
 

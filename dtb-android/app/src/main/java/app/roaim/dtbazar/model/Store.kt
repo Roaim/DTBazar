@@ -3,16 +3,17 @@ package app.roaim.dtbazar.model
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Ignore
+import androidx.room.Index
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "store", primaryKeys = ["id"])
+@Entity(tableName = "store", primaryKeys = ["id"], indices = [Index("uid")])
 data class Store(
 
     @field:SerializedName("address")
     val address: String? = null,
 
     @field:SerializedName("uid")
-    val uid: String? = null,
+    val uid: String,
 
     @field:SerializedName("createdAt")
     val createdAt: String? = null,
@@ -47,6 +48,12 @@ data class Store(
 ) : ListItem {
     @Ignore
     override fun getItemId(): String = id
+
+    @Ignore
+    fun totalDonationFloat() = totalDonation?.toFloat()
+
+    @Ignore
+    fun spentDonationFloat() = spentDonation?.toFloat()
 }
 
 data class StoreFrontImage(

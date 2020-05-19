@@ -10,7 +10,7 @@ data class Result<out T>(val status: Status, val data: T?, val msg: String?) {
 
         fun <T> loading(): Result<T> = Result<T>(Status.LOADING, null, null)
 
-        fun <T> logout(): Result<T> = Result<T>(Status.LOGOUT, null, null)
+        fun <T> logout(msg: String? = null): Result<T> = Result<T>(Status.LOGOUT, null, msg)
     }
 }
 

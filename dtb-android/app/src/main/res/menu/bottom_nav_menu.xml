@@ -12,7 +12,7 @@
         android:title="@string/title_store" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_food"
         android:icon="@drawable/ic_food"
         android:title="@string/title_food" />
 

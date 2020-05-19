@@ -60,8 +60,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_donation_24dp"
-                    tools:src="@drawable/ic_donation_24dp" />
+                    android:src="@drawable/ic_donation_black"
+                    tools:src="@drawable/ic_donation_black" />
 
                 <TextView
                     android:id="@+id/tvName1"
@@ -74,7 +74,6 @@
                     android:text="@{donation.foodName}"
                     android:textColor="@color/text_home_list_title"
                     android:textSize="16sp"
-                    android:textStyle="bold"
                     tools:text="Rice" />
 
                 <TextView

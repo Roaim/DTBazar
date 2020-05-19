@@ -11,15 +11,15 @@
 
         <import type="app.roaim.dtbazar.model.Result" />
 
-        <import type="app.roaim.dtbazar.model.Store" />
+        <import type="app.roaim.dtbazar.model.StoreFood" />
 
         <variable
-            name="store"
-            type="Result&lt;Store>" />
+            name="storeFood"
+            type="Result" />
 
         <variable
             name="listener"
-            type="app.roaim.dtbazar.ui.home.ViewAddStoreButtonClickListener" />
+            type="app.roaim.dtbazar.ui.store_details.ViewAddStoreFoodClickListener" />
     </data>
 
     <LinearLayout
@@ -36,23 +36,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:visibility="@{store.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+            android:visibility="@{storeFood.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spinnerFood"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Store Name">
+            android:hint="Selling Price">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etName"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
+                android:id="@+id/etUnitPrice"
+                clearText="@{storeFood}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:nextFocusDown="@id/etAddress"
+                android:imeOptions="actionNext"
+                android:inputType="numberDecimal"
+                android:maxLines="1"
+                android:nextFocusDown="@id/etStockQty"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,46 +66,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:hint="Store Address">
+            android:hint="Stock Quantity">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
-                android:imeOptions="actionNext"
-                android:inputType="textPostalAddress|textCapWords"
-                android:maxLines="1"
-                clearText="@{store}"
-                android:nextFocusDown="@id/etMobile"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="Mobile Number">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMobile"
+                android:id="@+id/etStockQty"
+                clearText="@{storeFood}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
-                android:inputType="phone"
+                android:inputType="numberDecimal"
                 android:maxLines="1"
-                clearText="@{store}"
                 android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
-            android:backgroundTint="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:enabled="@{store.status != Status.LOADING}"
-            android:onClick="@{()->listener.onAddStoreClick(ExtensionsKt.value(etMobile), ExtensionsKt.value(etAddress), ExtensionsKt.value(etName))}"
-            android:text="Add New Store" />
+            android:backgroundTint="@color/colorPrimary"
+            android:enabled="@{storeFood.status != Status.LOADING}"
+            android:onClick="@{()->listener.onAddStoreFoodClick(ExtensionsKt.value(etStockQty), ExtensionsKt.value(etUnitPrice))}"
+            android:text="Add Food To Store" />
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
@@ -115,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:text="@{store.msg}"
+            android:text="@{storeFood.msg}"
             android:textColor="@color/colorAccent" />
 
     </LinearLayout>

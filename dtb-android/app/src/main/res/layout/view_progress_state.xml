@@ -41,7 +41,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="16dp"
-            android:visibility="@{result.status==Status.FAILED ? View.VISIBLE : View.GONE}"
+            android:visibility="@{result.status==Status.FAILED || result.status == Status.LOGOUT ? View.VISIBLE : View.GONE}"
             app:cardCornerRadius="8dp"
             app:cardUseCompatPadding="true">
 
@@ -88,7 +88,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:gravity="center"
-                    android:text="@{result.msg}"
+                    showError="@{result}"
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp"
                     tools:text="Internal server error. Can not read load resource." />

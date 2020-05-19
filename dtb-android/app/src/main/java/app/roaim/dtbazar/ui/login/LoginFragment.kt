@@ -62,10 +62,16 @@ class LoginFragment : Fragment(), Injectable, Loggable {
         }
         binding.token = viewModel.token.map {
             log("TOKEN: $it")
-            if (it.status == Status.SUCCESS) {
-                navController.navigate(R.id.action_loginFragment_to_navigation_home)
-            } else if (it.status == Status.FAILED) {
-                checkFacebookAccessToken()
+            when (it.status) {
+                Status.SUCCESS -> {
+                    navController.navigate(R.id.action_loginFragment_to_navigation_home)
+                }
+                Status.FAILED, Status.LOGOUT -> {
+                    checkFacebookAccessToken()
+                }
+                Status.LOADING -> {
+                    // Handled in DataBinding
+                }
             }
             it
         }

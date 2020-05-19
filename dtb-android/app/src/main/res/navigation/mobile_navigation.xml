@@ -9,16 +9,85 @@
         android:id="@+id/navigation_home"
         android:name="app.roaim.dtbazar.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_navigation_home_to_storeDetailsFragment"
+            app:destination="@id/navigation_store_details">
+            <argument
+                android:name="storeId"
+                app:argType="string" />
+            <argument
+                android:name="storeName"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="uid"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="proprietor"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="mobile"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="allFoodPrice"
+                app:argType="float" />
+            <argument
+                android:name="totalDonation"
+                app:argType="float" />
+            <argument
+                android:name="spentDonation"
+                app:argType="float" />
+        </action>
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_store"
+            app:destination="@id/navigation_store" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_store"
         android:name="app.roaim.dtbazar.ui.store.StoreFragment"
         android:label="@string/title_store"
-        tools:layout="@layout/fragment_store" />
+        tools:layout="@layout/fragment_store">
+        <action
+            android:id="@+id/action_navigation_store_to_storeDetailsFragment"
+            app:destination="@id/navigation_store_details">
+            <argument
+                android:name="storeId"
+                app:argType="string" />
+            <argument
+                android:name="storeName"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="uid"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="proprietor"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="mobile"
+                app:nullable="true"
+                app:argType="string" />
+            <argument
+                android:name="allFoodPrice"
+                app:argType="float" />
+            <argument
+                android:name="totalDonation"
+                app:argType="float" />
+            <argument
+                android:name="spentDonation"
+                app:argType="float" />
+        </action>
+    </fragment>
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_food"
         android:name="app.roaim.dtbazar.ui.food.FoodFragment"
         android:label="@string/title_food"
         tools:layout="@layout/fragment_food" />
@@ -32,6 +101,40 @@
             android:id="@+id/action_loginFragment_to_navigation_home"
             app:launchSingleTop="true"
             app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_store_details"
+        tools:layout="@layout/fragment_store_details"
+        android:name="app.roaim.dtbazar.ui.store_details.StoreDetailsFragment"
+        android:label="{storeName}">
+        <argument
+            android:name="storeId"
+            app:argType="string" />
+        <argument
+            android:name="storeName"
+            android:defaultValue="Store Details"
+            app:argType="string" />
+        <argument
+            android:name="uid"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="proprietor"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="mobile"
+            app:nullable="true"
+            app:argType="string" />
+        <argument
+            android:name="allFoodPrice"
+            app:argType="float" />
+        <argument
+            android:name="totalDonation"
+            app:argType="float" />
+        <argument
+            android:name="spentDonation"
+            app:argType="float" />
     </fragment>
 
 </navigation>

@@ -57,3 +57,7 @@
 # for DexGuard only
 #-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
 ##----------------------------FOR GLIDE
+## for navigation controller safe arg
+-keepnames class com.path.to.your.ParcelableArg
+-keepnames class com.path.to.your.SerializableArg
+-keepnames class com.path.to.your.EnumArg

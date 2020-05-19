@@ -12,9 +12,10 @@ import app.roaim.dtbazar.model.*
         IpInfo::class,
         Store::class,
         Donation::class,
-        Food::class
+        Food::class,
+        StoreFood::class
     ],
-    version = 11,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(LocationTypeConverter::class)
@@ -24,4 +25,5 @@ abstract class CacheDb : RoomDatabase() {
     abstract fun storeDao(): StoreDao
     abstract fun donationDao(): DonationDao
     abstract fun foodDao(): FoodDao
+    abstract fun storeFoodDao(): StoreFoodDao
 }

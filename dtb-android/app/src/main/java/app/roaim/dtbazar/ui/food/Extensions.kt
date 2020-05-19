@@ -14,11 +14,11 @@ fun FoodFragment.initAddFoodDialog() {
         .create()
     addFoodBinding.listener = object : ViewAddFoodClickListener {
         override fun onAddFoodClick(
-            name: String,
+            ePrice: String,
             currency: CharSequence,
             unit: String,
             sPrice: String,
-            ePrice: String
+            name: String
         ) {
             if (name.isNotEmpty() && sPrice.isNotEmpty() && ePrice.isNotEmpty()) {
                 foodViewModel.saveFood(name, currency.toString(), unit, sPrice.toDouble(), ePrice.toDouble())

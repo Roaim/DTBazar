@@ -28,12 +28,11 @@ class InfoRepository @Inject constructor(
     private val prefDataSource: PrefDataSource
 ) : Loggable {
 
-    fun getProfile(): LiveData<Result<Profile>> =
-        prefDataSource.getUid()?.let { uid ->
-            profileDao.findById(uid).map {
-                success(it)
-            }
-        } ?: liveData {
+    fun getProfile(): LiveData<Result<Profile>> = prefDataSource.getUid()
+        .takeIf { it.isNotEmpty() }
+        ?.let { profileDao.findById(it) }
+        ?.map { success(it) }
+        ?: liveData {
         emit(loading())
         val result = try {
             apiService.getProfile().getResult {

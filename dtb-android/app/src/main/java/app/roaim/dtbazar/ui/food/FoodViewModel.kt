@@ -23,7 +23,7 @@ class FoodViewModel @Inject constructor(private val foodRepository: FoodReposito
         }
     }
 
-    val cachedFoods = foodRepository.getCachedFoodFoods()
+    val cachedFoods = foodRepository.getCachedFoods()
 
     private fun retry(value: Boolean) {
         if (_retry.value == value) return

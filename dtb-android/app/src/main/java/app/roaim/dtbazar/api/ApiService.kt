@@ -21,6 +21,10 @@ interface ApiService {
     @Throws(Exception::class)
     suspend fun saveStore(@Body storePostBody: StorePostBody): Response<Store>
 
+    @GET("store/{id}")
+    @Throws(Exception::class)
+    suspend fun getStore(@Path("id") id: String): Response<Store>
+
     @DELETE("store/{id}")
     @Throws(Exception::class)
     suspend fun deleteStore(@Path("id") id: String): Response<Store>
@@ -60,4 +64,23 @@ interface ApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 100
     ): Response<List<Food>>
+
+    @GET("storeFood/store/{storeId}")
+    @Throws(Exception::class)
+    suspend fun getStoreFoods(
+        @Path("storeId") storeId: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 25
+    ): Response<List<StoreFood>>
+
+    @POST("storeFood/store/{storeId}")
+    @Throws(Exception::class)
+    suspend fun saveStoreFood(
+        @Path("storeId") storeId: String,
+        @Body storeFoodPostBody: StoreFoodPostBody
+    ): Response<StoreFood>
+
+    @POST("donation")
+    @Throws(Exception::class)
+    suspend fun saveDonation(@Body donationPostBody: DonationPostBody): Response<Donation>
 }

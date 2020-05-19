@@ -42,5 +42,5 @@ class PrefDataSource @Inject constructor(private val preferences: SharedPreferen
         preferences.edit().putString(KEY_UID, id).apply()
     }
 
-    fun getUid(): String? = preferences.getString(KEY_UID, null)
+    fun getUid(): String = preferences.getString(KEY_UID, "") ?: ""
 }

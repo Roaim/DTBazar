@@ -1,18 +1,17 @@
 package app.roaim.dtbazar
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.roaim.dtbazar.api.ApiUtils
-import app.roaim.dtbazar.di.Injectable
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -20,6 +19,9 @@ import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector {
+
+    private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
@@ -33,15 +35,15 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         setContentView(R.layout.activity_main)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
-        val navController = findNavController(R.id.nav_host_fragment)
+        navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        val appBarConfiguration = AppBarConfiguration(
+        appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_login,
                 R.id.navigation_home,
                 R.id.navigation_store,
-                R.id.navigation_notifications
+                R.id.navigation_food
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -54,6 +56,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
                 navView.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -30,7 +30,7 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("ipInfoError")
-    fun showError(tv: TextView, ipInfoError: LiveData<Result<IpInfo>>) {
+    fun showIpInfoError(tv: TextView, ipInfoError: LiveData<Result<IpInfo>>) {
         ipInfoError.value?.takeIf { it.status == Status.FAILED }?.msg?.also {
             tv.append("$it\n")
         }
@@ -38,12 +38,20 @@ object BindingAdapters {
 
     @JvmStatic
     @BindingAdapter("tokenError")
-    fun showIpInfoTokenError(tv: TextView, tokenError: LiveData<Result<String>>) {
-        tokenError.value?.takeIf { it.status == Status.FAILED }?.msg?.also {
+    fun showTokenError(tv: TextView, error: LiveData<Result<String>>) {
+        error.value?.takeIf { it.status == Status.FAILED || it.status == Status.LOGOUT }?.msg?.also {
             if (!(it == Constants.TOKEN_NOT_EXISTS || it == Constants.TOKEN_NOT_CREATED)){
                 tv.append("$it\n")
             }
 
+        }
+    }
+
+    @JvmStatic
+    @BindingAdapter("showError")
+    fun showTokenError(tv: TextView, error: Result<*>?) {
+        error?.takeIf { it.status == Status.FAILED || it.status == Status.LOGOUT }?.msg?.also {
+            tv.text = it
         }
     }
 }

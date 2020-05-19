@@ -4,6 +4,10 @@
     <string name="title_store">Store</string>
     <string name="title_food">Food</string>
 
+    <string name="store_details_total_donation"><b>Total: </b> %s</string>
+    <string name="store_details_spent_donation"><b>Spent: </b> %s</string>
+    <string name="store_food_item_price"><b>%s %s/%s</b> (%s)</string>
+
     <string-array name="food_unit">
         <item>KG</item>
         <item>L</item>

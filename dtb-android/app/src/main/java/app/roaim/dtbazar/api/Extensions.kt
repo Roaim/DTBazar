@@ -18,10 +18,10 @@ suspend fun <T> Response<T>.getResult(block: (suspend (T) -> Unit)? = null): Res
 
 @Throws(Exception::class)
 fun <T> Response<*>.getErrorResult(): Result<T> = when (code()) {
-    400 -> {
+    400, 403 -> {
         getErrorBodyResult<T> { eb ->
             eb.takeIf { it.isTokenError() }?.let { _ ->
-                Result.logout<T>()
+                Result.logout<T>(eb.message)
             }
         }
     }
@@ -41,5 +41,5 @@ fun ResponseBody.toErrorBody(): ErrorBody? =
     Gson().fromJson(string(), ErrorBody::class.java)
 
 fun ErrorBody.isTokenError() =
-    message.contains(Regex("(Authorization|JWT|Bearer)", RegexOption.IGNORE_CASE))
+    message.contains(Regex("(Authorization|JWT|Bearer|blocked)", RegexOption.IGNORE_CASE))
 

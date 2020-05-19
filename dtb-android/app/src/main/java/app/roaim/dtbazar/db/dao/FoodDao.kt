@@ -6,6 +6,7 @@ import app.roaim.dtbazar.model.Food
 
 @Dao
 interface FoodDao {
+    @Transaction
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(vararg food: Food)
 
