@@ -13,8 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyDelete;
-import static app.roaim.dtbazar.storeservice.ThrowableUtil.denyUpdate;
+import static app.roaim.dtbazar.storeservice.ThrowableUtil.*;
 import static reactor.core.publisher.Mono.error;
 
 // TODO move to a separate micro service
@@ -82,7 +81,10 @@ public class StoreFoodService {
     public Mono<StoreFood> deleteStoreFoodById(String uid, String storeFoodId) {
         return getStoreFoodById(storeFoodId).flatMap(storeFood -> {
             if (storeFood.getUid().equals(uid)) {
-                return repository.deleteById(storeFoodId).thenReturn(storeFood);
+                double donationLeft = storeFood.getTotalDonation() - storeFood.getSpentDonation();
+                return donationLeft == 0 ?
+                        repository.deleteById(storeFoodId).thenReturn(storeFood) :
+                        error(denyLeftDonationDelete(storeFood.getFood().getName(), storeFood.getFood().getCurrency().name(), donationLeft));
             } else {
                 return error(denyDelete("store's food"));
             }
