@@ -65,7 +65,7 @@ public class StoreService {
         return getStoreById(id).flatMap(store -> {
             if (store.getUid().equals(uid)) {
                 double leftDonation = store.getTotalDonation() - store.getSpentDonation();
-                return leftDonation == 0 ? repository.deleteById(id).thenReturn(store) :
+                return leftDonation <= 0 ? repository.deleteById(id).thenReturn(store) :
                         error(denyLeftDonationDelete(store.getName(), "", leftDonation));
             } else {
                 return error(denyDelete(store.getName()));
