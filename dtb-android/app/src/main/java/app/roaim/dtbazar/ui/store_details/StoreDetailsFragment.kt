@@ -1,9 +1,7 @@
 package app.roaim.dtbazar.ui.store_details
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
+import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentStoreDetailsBinding
 import app.roaim.dtbazar.databinding.ViewAddNewDonationSellBinding
 import app.roaim.dtbazar.databinding.ViewAddNewStoreFoodBinding
@@ -45,6 +44,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         sharedElementReturnTransition =
@@ -169,6 +169,17 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         invoiceBinding.foodSell = foodSell
         invoiceBinding.storeFood = storeFood
         invoiceDialog.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        val menuReload = menu.add("Reload")
+        menuReload.setIcon(R.drawable.ic_refresh)
+        menuReload.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        menuReload.setOnMenuItemClickListener {
+            viewModel.onRetry()
+            true
+        }
     }
 
 }
