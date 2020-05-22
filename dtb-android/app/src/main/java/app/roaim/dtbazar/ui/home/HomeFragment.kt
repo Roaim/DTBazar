@@ -47,7 +47,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     var addStoreDialog by autoCleared<AlertDialog>()
     private var storeAdapter by autoCleared<HomeStoreAdapter>()
     private var donationAdapter by autoCleared<HomeDonationAdapter>()
-    var storeItemClickListener by autoCleared<((Store?, View, Boolean) -> Unit)>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -63,6 +62,9 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
             bindingComponent
         )
         handleBackButtonEvent()
+        homeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
+            log("IP_INFO: $it")
+        })
         return binding.root
     }
 

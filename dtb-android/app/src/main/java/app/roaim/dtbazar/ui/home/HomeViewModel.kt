@@ -56,16 +56,15 @@ class HomeViewModel @Inject constructor(
 
 
     fun saveStore(name: String, address: String, mobile: String): LiveData<Result<Store>> =
-        Transformations.switchMap(ipInfo) {
             storeRepository.saveStore(
                 StorePostBody(
                     name = name,
                     address = address,
                     mobile = mobile,
-                    location = listOf(it.data?.lat, it.data?.lon)
+                    location = listOf(ipInfo.value?.lat, ipInfo.value?.lon)
                 )
             )
-        }
+
 
     fun deleteStore(store: Store): LiveData<Result<Store>> = storeRepository.deleteStore(store)
 

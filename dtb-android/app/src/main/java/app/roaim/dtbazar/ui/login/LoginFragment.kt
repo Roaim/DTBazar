@@ -7,23 +7,25 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
-import androidx.navigation.NavController
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.LoginFragmentBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.ui.home.handleBackButtonEvent
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
 import app.roaim.dtbazar.utils.log
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
 import com.facebook.login.LoginManager
-import com.facebook.login.widget.LoginButton
+import com.facebook.login.LoginResult
 import javax.inject.Inject
 
 
-class LoginFragment : Fragment(), Injectable, Loggable {
+class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginResult> {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -31,40 +33,39 @@ class LoginFragment : Fragment(), Injectable, Loggable {
     private val viewModel: LoginViewModel by viewModels { viewModelFactory }
 
     private var binding by autoCleared<LoginFragmentBinding>()
-    private var navController by autoCleared<NavController>()
-
     private var callbackManager by autoCleared<CallbackManager>()
-    private var loginButton by autoCleared<LoginButton>()
-    private var loginManager by autoCleared<LoginManager>()
+    private var mFragment by autoCleared<Fragment>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        binding = LoginFragmentBinding.inflate(inflater)
+        binding = LoginFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         initFacebookLogin()
+        handleBackButtonEvent()
         return binding.root
     }
 
-    override fun onDestroyView() {
-        loginButton.unregisterCallback(callbackManager)
-        super.onDestroyView()
+    override fun onStart() {
+        super.onStart()
+        binding.loginButton.registerCallback(callbackManager, this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        binding.loginButton.unregisterCallback(callbackManager)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = findNavController()
-        binding.ipInfo = viewModel.ipInfo.map {
-            log("IP_INFO: $it")
-            it
-        }
         binding.token = viewModel.token.map {
             log("TOKEN: $it")
             when (it.status) {
                 Status.SUCCESS -> {
-                    navController.navigate(R.id.action_loginFragment_to_navigation_home)
+                    binding.root.findNavController()
+                        .navigate(R.id.action_loginFragment_to_navigation_home)
                 }
                 Status.FAILED, Status.LOGOUT -> {
                     checkFacebookAccessToken()
@@ -78,7 +79,7 @@ class LoginFragment : Fragment(), Injectable, Loggable {
     }
 
     private fun onGetFacebookAccessToken(facebookAccessToken: String) {
-        loginButton.hide()
+        binding.loginButton.hide()
         viewModel.getToken(facebookAccessToken)
     }
 
@@ -87,26 +88,16 @@ class LoginFragment : Fragment(), Injectable, Loggable {
             log("CURRENT_FB_ACCESS_TOKEN: $token")
             onGetFacebookAccessToken(token)
         } ?: run {
-            loginManager.logOut()
+            LoginManager.getInstance().logOut()
         }
-        loginButton.show()
+        binding.loginButton.show()
     }
 
     private fun initFacebookLogin() {
-        loginButton = binding.loginButton
-        loginManager = LoginManager.getInstance()
         callbackManager = CallbackManager.Factory.create()
-        val email = "email"
-        loginButton.setPermissions(email)
-        loginButton.fragment = this
-        loginButton.registerCallback(callbackManager) { token, error ->
-            log("FB_CALLBACK: token = $token | error = $error")
-            if (token.isNullOrEmpty()) {
-                loginButton.show()
-            } else {
-                onGetFacebookAccessToken(token)
-            }
-        }
+        mFragment = this
+        binding.loginButton.fragment = mFragment
+        binding.loginButton.setPermissions("email")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -117,6 +108,24 @@ class LoginFragment : Fragment(), Injectable, Loggable {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onSuccess(result: LoginResult?) {
+        log("LoginSuccess: $result")
+        val token = result?.accessToken?.token
+        token?.also {
+            onGetFacebookAccessToken(token)
+        }
+    }
+
+    override fun onCancel() {
+        log("LoginCancel")
+        binding.loginButton.show()
+    }
+
+    override fun onError(error: FacebookException?) {
+        log("LoginError: ${error?.message}")
+        binding.loginButton.show()
     }
 
 }

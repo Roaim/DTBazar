@@ -13,12 +13,6 @@
 
         <import type="app.roaim.dtbazar.model.Status" />
 
-        <import type="app.roaim.dtbazar.model.IpInfo" />
-
-        <variable
-            name="ipInfo"
-            type="LiveData&lt;Result&lt;IpInfo>>" />
-
         <variable
             name="token"
             type="LiveData&lt;Result&lt;String>>" />
@@ -31,7 +25,6 @@
 
         <TextView
             android:id="@+id/info"
-            ipInfoError="@{ipInfo}"
             tokenError="@{token}"
             android:layout_width="0dp"
             android:layout_height="0dp"

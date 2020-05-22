@@ -159,7 +159,10 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
             itemView.snackbar("Delete: ${storeFood.food?.name}?") {
                 viewModel.deleteStoreFood(storeFood).observe(viewLifecycleOwner, Observer {
                     log("DELETE_STORE_FOOD: $it")
-                    if (it.status != Status.SUCCESS) itemView.snackbar("${it.msg}. ${storeFood.food?.name} can't be deleted.", "OK")
+                    if (it.status == Status.FAILED) itemView.snackbar(
+                        "${it.msg}. ${storeFood.food?.name} can't be deleted.",
+                        "OK"
+                    )
                 })
             }
         }

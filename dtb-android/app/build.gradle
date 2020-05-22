@@ -61,4 +61,6 @@ dependencies {
     testImplementation deps.javaTest.junit
 
     androidTestImplementation deps.androidTest.values()
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
 }

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/navigation_login">
+    app:startDestination="@id/loginCheckFragment">
 
     <fragment
         android:id="@+id/navigation_home"
@@ -135,6 +135,17 @@
         <argument
             android:name="spentDonation"
             app:argType="float" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginCheckFragment"
+        android:name="app.roaim.dtbazar.ui.login.LoginCheckFragment"
+        android:label="" >
+        <action
+            android:id="@+id/action_loginCheckFragment_to_navigation_login"
+            app:destination="@id/navigation_login" />
+        <action
+            android:id="@+id/action_loginCheckFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
 </navigation>

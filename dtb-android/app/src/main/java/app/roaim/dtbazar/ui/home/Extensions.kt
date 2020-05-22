@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -81,22 +82,24 @@ fun HomeFragment.deleteStore(store: Store, itemView: View) {
     }
 }
 
-fun HomeFragment.handleBackButtonEvent() {
+fun Fragment.handleBackButtonEvent() {
     val activity = requireActivity()
     var lastPressedAt = 0L
     // This callback will only be called when MyFragment is at least Started.
     val callback = activity.onBackPressedDispatcher.addCallback(this) {
         // Handle the back button event
-        if (findNavController().currentDestination?.id == R.id.navigation_home) {
-            if (lastPressedAt + 2000 > System.currentTimeMillis()) {
-                activity.finish()
-            } else {
-                lastPressedAt = System.currentTimeMillis()
-                Toast.makeText(
-                    activity,
-                    "Press again within 2 second to exit",
-                    Toast.LENGTH_SHORT
-                ).show()
+        when (findNavController().currentDestination?.id) {
+            R.id.navigation_home, R.id.navigation_login -> {
+                if (lastPressedAt + 2000 > System.currentTimeMillis()) {
+                    activity.finish()
+                } else {
+                    lastPressedAt = System.currentTimeMillis()
+                    Toast.makeText(
+                        activity,
+                        "Press again within 2 second to exit",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }

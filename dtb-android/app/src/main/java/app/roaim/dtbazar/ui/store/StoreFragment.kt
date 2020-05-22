@@ -53,9 +53,7 @@ class StoreFragment : Fragment(), Injectable, Loggable {
             false,
             bindingComponent
         )
-
         storePagedAdapter = StorePagedAdapter(bindingComponent)
-
         return binding.root
     }
 
@@ -64,11 +62,6 @@ class StoreFragment : Fragment(), Injectable, Loggable {
         binding.retryCallback = storeViewModel
         storePagedAdapter.setItemClickListener(storeItemClickListener)
         binding.rvStore.adapter = storePagedAdapter
-
-        storeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
-            log("IP_INFO: $it")
-            if (it.status == Status.SUCCESS) storeViewModel.updateIpInfo(it.data)
-        })
 
         storeViewModel.nearbyStores.observe(
             viewLifecycleOwner, Observer(storePagedAdapter::submitList)
