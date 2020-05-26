@@ -25,7 +25,7 @@ public class Food {
     private Currency currency;
     private Double startingPrice;
     private Double endingPrice;
-    private double subsidy = .8;
+    private Double subsidy = .8;
     @Indexed
     private boolean enabled = true;
     @JsonIgnore
@@ -50,6 +50,6 @@ public class Food {
         this.currency = currency;
         this.startingPrice = startingPrice;
         this.endingPrice = endingPrice;
-        this.subsidy = subsidy;
+        if (subsidy != null) this.subsidy = subsidy;
     }
 }
