@@ -33,7 +33,7 @@ Services** architecture.
 ![API Doc Preview](preview/api_doc_preview.gif)
 
 ## Contribution
-Everyone is wellcome to contribute to any platform of this project. 
+Everyone is wellcome to contribute to any platform of this project. You don't have to comment everywhere. Just comment where it is really needed and make sure your code is readable without comments and follows proper architecture.
 Platform wise contribution guidelines can be found in their individual 
 **README.md**.
 
