@@ -1,7 +1,7 @@
 <img width="100" height="100" src="icon/dtbazar-icon.png">
 
 # DT Bazar (দশ টাকার বাজার or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
-A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types.
+A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types. However, if we include foods with price ~50 cent then people will be able to buy it for ~10 cent. So, we should primarily focus on some basic foods which are sold under USD 1. 
 
 ### The 3 simple steps:
 1. Store owner creates store and adds food that will receive donation
@@ -16,17 +16,21 @@ card at that store
 * [ ] **IOS**
 * [ ] **Web** (Frontend)
 
+### Android Overview
+The **Android** project is developed with android's **native** 
+framework using **Kotlin** and **Jetpack-Android**.
+* Click on, [dtb-android](dtb-android) folder, to know more about **android project**.
+* Click on, [release](https://github.com/Roaim/DTBazar/releases) to know find latest **releases**.
+##### Preview
+![Android app preview](preview/android/scs.png)
+
 ### API Overview
 The **API** is developed using **Spring Boot** (Java) and **Micro 
 Services** architecture. 
-* Click on, [dtb-api](dtb-api) folder, to know details about API, .
+* Click on, [dtb-api](dtb-api) folder, to know details about **API project**.
 ##### API Documentation: https://vm03.hidayahsmart.solutions/dtbazar
 ##### Preview
 ![API Doc Preview](preview/api_doc_preview.gif)
-
-### Android Overview
-The **Android** project is developed using android's **native** 
-framework with **Kotlin**.
 
 ## Contribution
 Everyone is wellcome to contribute to any platform of this project. 
@@ -41,14 +45,12 @@ The project belongs to a single git repository containing all platforms. It foll
 
 * The **readme** branch is where all commons files are placed. 
 * New platform must create a new branch from **readme**. 
-* Platform's branch should be merged directly to **master** (after pulling 
-changes from **readme**).
+* Platform's branch should be merged directly to **master**.
 * Feature branch should be merged to platform's branch which was 
 created from **readme**
 * Common files must not be modified in the platforms' branches. They 
 should be modified in the **readme** branch and merged directly to 
-**master**. Platforms' branches should pull changes from **readme** 
-before merging to **master**.
+**master**.
 
 #### Naming Convension
 * Platform's branch name should be same as platform name. *Ex. `android`*
