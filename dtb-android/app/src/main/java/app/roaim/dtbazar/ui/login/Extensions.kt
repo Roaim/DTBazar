@@ -14,25 +14,3 @@ fun LoginButton.hide() {
 fun LoginButton.show() {
     visibility = View.VISIBLE
 }
-
-fun LoginButton.registerCallback(
-    callbackManager: CallbackManager,
-    block: (token: String?, error: String?) -> Unit
-) {
-    this.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-        override fun onSuccess(result: LoginResult?) {
-            val token = result?.accessToken?.token
-            token?.also {
-                block(it, null)
-            }
-        }
-
-        override fun onCancel() {
-            block(null, "LoginCancel")
-        }
-
-        override fun onError(error: FacebookException?) {
-            block(null, "LoginError: ${error?.message}")
-        }
-    })
-}

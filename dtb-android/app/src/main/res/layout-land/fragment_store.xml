@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="androidx.lifecycle.LiveData" />
+
+        <import type="app.roaim.dtbazar.model.Result" />
+
+        <import type="java.util.List" />
+
+        <import type="app.roaim.dtbazar.model.Store" />
+
+        <import type="app.roaim.dtbazar.model.Status" />
+
+        <variable
+            name="result"
+            type="Result" />
+
+        <variable
+            name="retryCallback"
+            type="app.roaim.dtbazar.ui.RetryCallback" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="4dp"
+        android:paddingBottom="64dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:itemCount="5"
+            tools:listitem="@layout/view_item_store" />
+
+        <include
+            layout="@layout/view_progress_state"
+            app:result="@{result}"
+            app:retryCallback="@{retryCallback}" />
+
+    </FrameLayout>
+</layout>

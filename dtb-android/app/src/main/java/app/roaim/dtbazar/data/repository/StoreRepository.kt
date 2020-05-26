@@ -39,6 +39,8 @@ class StoreRepository @Inject constructor(
         .setPageSize(STORE_PAGE_LOAD_SIZE)
         .build()
 
+    fun isOwnStore(storeUid: String): LiveData<Boolean> = liveData { emit(prefDataSource.getUid() == storeUid) }
+
     fun getNearByStores(coroutineScope: CoroutineScope, ipInfo: IpInfo) = LivePagedListBuilder(
         storeDataSourceFactory.apply {
             setCoroutineScope(coroutineScope)
@@ -50,13 +52,13 @@ class StoreRepository @Inject constructor(
 
     fun retryNearByStores() = storeDataSourceFactory.retry()
 
-    fun getMyCachedStores() = prefDataSource.getUid().let(storeDao::findAllByUid)
+    fun getMyCachedStores(uid: String) = storeDao.findAllByUid(uid)
 
     fun getMyStores(): LiveData<Result<List<Store>>> =
         liveData {
             emit(loading())
             val result = try {
-                apiService.getMyStores().getResult { storeDao.insert(*it.toTypedArray()) }
+                apiService.getMyStores().getResult { storeDao.refresh(*it.toTypedArray()) }
             } catch (e: Exception) {
                 log("getMyStores", e)
                 failed<List<Store>>(e.message)

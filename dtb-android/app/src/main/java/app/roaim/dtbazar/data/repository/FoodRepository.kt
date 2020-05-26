@@ -1,7 +1,6 @@
 package app.roaim.dtbazar.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.map
 import app.roaim.dtbazar.api.ApiService
@@ -25,14 +24,6 @@ class FoodRepository @Inject constructor(
     private val storeFoodDao: StoreFoodDao,
     private val prefDataSource: PrefDataSource
 ) : Loggable {
-
-    private val _uid = MutableLiveData<String>()
-
-    val uid: LiveData<String> = _uid
-
-    fun getUid() {
-        _uid.value = prefDataSource.getUid()
-    }
 
     fun saveFood(foodBody: FoodPostBody): LiveData<Result<Food>> = liveData {
         emit(loading())
@@ -98,4 +89,26 @@ class FoodRepository @Inject constructor(
 
     fun getCachedStoreFoodFoods(storeId: String): LiveData<List<StoreFood>> =
         storeFoodDao.findAllByStoreId(storeId)
+
+    fun sellFood(foodSellPostBody: FoodSellPostBody) = liveData<Result<FoodSell>> {
+        emit(loading())
+        val result = try {
+            apiService.postFoodSell(foodSellPostBody).getResult()
+        } catch (e: Exception) {
+            log("sellFood", e)
+            failed<FoodSell>(e.message)
+        }
+        emit(result)
+    }
+
+    fun deleteStoreFood(storeFood: StoreFood): LiveData<Result<StoreFood>> = liveData {
+        emit(loading())
+        val result = try {
+            apiService.deleteStoreFood(storeFood.id).getResult { storeFoodDao.delete(storeFood) }
+        } catch (e: Exception) {
+            log("", e)
+            failed<StoreFood>(e.message)
+        }
+        emit(result)
+    }
 }

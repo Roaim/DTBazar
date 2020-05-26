@@ -24,13 +24,13 @@ class DonationRepository @Inject constructor(
     private val prefDataSource: PrefDataSource
 ) : Loggable {
 
-    fun getMyCachedDonations() = donationDao.findAllByUid(prefDataSource.getUid())
+    fun getMyCachedDonations(uid: String) = donationDao.findAllByUid(uid)
 
     fun getMyDonations(): LiveData<Result<List<Donation>>> =
         liveData {
             emit(loading())
             val result = try {
-                apiService.getMyDonations().getResult { donationDao.insert(*it.toTypedArray()) }
+                apiService.getMyDonations().getResult { donationDao.refresh(*it.toTypedArray()) }
             } catch (e: Exception) {
                 log("getMyDonations", e)
                 failed<List<Donation>>(e.message)

@@ -47,6 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/iv1"
+                    android:layout_toStartOf="@id/tvDonation"
                     android:paddingTop="2dp"
                     android:paddingBottom="2dp"
                     android:text="@{storeFood.food.name}"
@@ -59,11 +60,39 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvName1"
                     android:layout_toEndOf="@id/iv1"
+                    android:layout_toStartOf="@id/tvDonation"
                     android:paddingTop="2dp"
                     android:text="@{@string/store_food_item_price(storeFood.food.currency, storeFood.unitPrice, storeFood.food.unit, storeFood.stockQty)}"
                     android:textColor="@color/color_dark"
                     android:textSize="15sp"
                     tools:text="BDT 7/PCS (600)" />
+
+                <TextView
+                    android:id="@+id/tvDonation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:drawableStart="@drawable/ic_donation_dark"
+                    android:drawablePadding="4dp"
+                    android:gravity="start|center"
+                    android:text="@{@string/store_food_donation(storeFood.totalDonation - storeFood.spentDonation)}"
+                    android:textColor="@color/color_dark"
+                    tools:text="BDT 1000" />
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/tvSpendDonation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvDonation"
+                    android:layout_alignStart="@id/tvDonation"
+                    android:layout_alignParentEnd="true"
+                    android:drawableStart="@drawable/ic_donation_accent"
+                    android:drawablePadding="4dp"
+                    android:gravity="center|start"
+                    android:text="@{@string/store_food_spent_donation(storeFood.spentDonation)}"
+                    android:textColor="@color/colorAccent"
+                    tools:text="BDT 100" />
 
             </RelativeLayout>
 

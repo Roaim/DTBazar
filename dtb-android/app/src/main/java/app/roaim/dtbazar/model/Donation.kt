@@ -14,7 +14,7 @@ data class Donation(
     val donorName: String? = null,
 
     @field:SerializedName("amount")
-    val amount: Int? = null,
+    val amount: Double? = null,
 
     @field:SerializedName("foodName")
     val foodName: String? = null,

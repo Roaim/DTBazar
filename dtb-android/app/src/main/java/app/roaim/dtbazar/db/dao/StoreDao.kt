@@ -22,6 +22,7 @@ interface StoreDao {
     @Delete
     suspend fun delete(id: Store)
 
+    @Transaction
     @Query("delete from store")
     suspend fun deleteAll()
 

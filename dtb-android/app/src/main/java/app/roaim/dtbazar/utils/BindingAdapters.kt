@@ -29,14 +29,6 @@ object BindingAdapters {
     }
 
     @JvmStatic
-    @BindingAdapter("ipInfoError")
-    fun showIpInfoError(tv: TextView, ipInfoError: LiveData<Result<IpInfo>>) {
-        ipInfoError.value?.takeIf { it.status == Status.FAILED }?.msg?.also {
-            tv.append("$it\n")
-        }
-    }
-
-    @JvmStatic
     @BindingAdapter("tokenError")
     fun showTokenError(tv: TextView, error: LiveData<Result<String>>) {
         error.value?.takeIf { it.status == Status.FAILED || it.status == Status.LOGOUT }?.msg?.also {

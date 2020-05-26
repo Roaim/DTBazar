@@ -4,10 +4,16 @@
     <string name="title_store">Store</string>
     <string name="title_food">Food</string>
 
-    <string name="store_details_total_donation"><b>Total: </b> %s</string>
-    <string name="store_details_spent_donation"><b>Spent: </b> %s</string>
-    <string name="store_food_item_price"><b>%s %s/%s</b> (%s)</string>
+    <string name="store_details_total_donation"> %.2f</string>
+    <string name="store_details_spent_donation"> %.2f</string>
+    <string name="store_food_donation"> %.2f</string>
+    <string name="store_food_spent_donation"> %.2f</string>
+    <string name="store_food_item_price"><b>%s %.2f/%s</b> (%.2f)</string>
     <string name="title_food_suggestion_spinner"><b>%s</b> (%s/%s)</string>
+    <string name="two_decimal">%.2f</string>
+    <string name="qty_rate">%s x %s</string>
+    <string name="pay_button">COLLECT %s %.2f</string>
+    <string name="home_donation_item">%s %.2f</string>
 
     <string-array name="food_unit">
         <item>KG</item>
