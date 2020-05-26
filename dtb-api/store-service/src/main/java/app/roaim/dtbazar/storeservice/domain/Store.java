@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,8 @@ public class Store {
     private double totalDonation;
     private double spentDonation;
     private double allFoodPrice;
+    @Indexed
+    private boolean enabled = true;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 

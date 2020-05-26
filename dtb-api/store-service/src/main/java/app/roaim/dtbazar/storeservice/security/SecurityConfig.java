@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .securityContextRepository(securityContextRepository)
                 .authorizeExchange()
                 .pathMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources/**", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/actuator/refresh").permitAll()
+                .pathMatchers("/admin/**").hasRole("ADMIN")
                 .anyExchange().authenticated()
                 .and().build();
     }

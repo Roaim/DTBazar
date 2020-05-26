@@ -25,27 +25,31 @@ public class Food {
     private Currency currency;
     private Double startingPrice;
     private Double endingPrice;
+    private double subsidy = .8;
+    @Indexed
+    private boolean enabled = true;
     @JsonIgnore
     private String uid;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @PersistenceConstructor
-    public Food(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice) {
+    public Food(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice, Double subsidy) {
         super();
-        update(uid, name, unit, currency, startingPrice, endingPrice);
+        update(uid, name, unit, currency, startingPrice, endingPrice, subsidy);
     }
 
     public void update(Food food) {
-        update(food.getUid(), food.getName(), food.getUnit(), food.getCurrency(), food.getStartingPrice(), food.getEndingPrice());
+        update(food.getUid(), food.getName(), food.getUnit(), food.getCurrency(), food.getStartingPrice(), food.getEndingPrice(), food.getSubsidy());
     }
 
-    public void update(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice) {
+    public void update(String uid, String name, Unit unit, Currency currency, Double startingPrice, Double endingPrice, Double subsidy) {
         this.uid = uid;
         this.name = name;
         this.unit = unit;
         this.currency = currency;
         this.startingPrice = startingPrice;
         this.endingPrice = endingPrice;
+        this.subsidy = subsidy;
     }
 }

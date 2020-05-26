@@ -39,7 +39,7 @@ public class StoreFood {
      */
     public synchronized double onSell(double quantity) {
         double costPrice = quantity * getUnitPrice();
-        double donation = costPrice * .8;
+        double donation = costPrice * getFood().getSubsidy();
         onSpentStock(quantity);
         onSpentDonation(donation);
         return donation;
