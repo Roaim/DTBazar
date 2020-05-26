@@ -82,7 +82,7 @@ public class StoreFoodService {
         return getStoreFoodById(storeFoodId).flatMap(storeFood -> {
             if (storeFood.getUid().equals(uid)) {
                 double donationLeft = storeFood.getTotalDonation() - storeFood.getSpentDonation();
-                return donationLeft == 0 ?
+                return donationLeft <= 0 ?
                         repository.deleteById(storeFoodId).thenReturn(storeFood) :
                         error(denyLeftDonationDelete(storeFood.getFood().getName(), storeFood.getFood().getCurrency().name(), donationLeft));
             } else {

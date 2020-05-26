@@ -63,7 +63,7 @@ public class FoodService {
         return getFoodById(foodId).flatMap(fd -> {
             if (fd.getFood().getUid().equals(uid)) {
                 double donationLeft = fd.getTotalDonation() - fd.getSpentDonation();
-                return donationLeft == 0 ? foodRepository.deleteById(foodId)
+                return donationLeft <= 0 ? foodRepository.deleteById(foodId)
                         .then(foodDetailRepository.deleteById(fd.getId()))
                         .thenReturn(fd)
                         : error(denyLeftDonationDelete(fd.getFood().getName(), fd.getFood().getCurrency().name(), donationLeft));
