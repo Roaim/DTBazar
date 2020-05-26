@@ -22,6 +22,8 @@ The DT Bazar **Android** is developed using **Native-Android** framework using *
 * Material Design
 * Navigation Component
 * Paging Library
+* Kotlin Extensions
+* Data Binding
 * Kapt processor
 * Retrofit
 * Glide
@@ -29,5 +31,5 @@ The DT Bazar **Android** is developed using **Native-Android** framework using *
 * Leakcanary
 
 ### Application Architecture
-**MVVM** architecture with **Repository** pattern is followed. The inner layers don't know anything about the outer layers and the outer layers have reference to the immediate inner layers only.
+**MVVM** architecture with **Repository** pattern and **Single-Activity** model is followed. The inner layers don't know anything about the outer layers and the outer layers have reference to the immediate inner layers only.
 ![android-architecture](dtbazar-android-architecture.png)
