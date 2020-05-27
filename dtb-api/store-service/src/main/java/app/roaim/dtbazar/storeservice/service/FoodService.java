@@ -34,13 +34,31 @@ public class FoodService {
 
     public Flux<Food> getFoods(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return foodRepository.findAllBy(pageable);
+        return foodRepository.findAllByEnabled(true, pageable);
+    }
+
+    // Admin Only
+    public Flux<Food> getAllFoodList(int page, int size, Boolean enabled) {
+        Pageable pageable = PageRequest.of(page, size);
+        return enabled == null ? foodRepository.findAllByOrderByIdDesc(pageable) :
+                foodRepository.findAllByEnabledOrderByIdDesc(enabled, pageable);
+    }
+
+    // Admin only
+    public Mono<Food> updateFoodStatus(String foodId, boolean enable) {
+        return foodRepository.findById(foodId)
+                .switchIfEmpty(error(new ResponseStatusException(HttpStatus.NOT_FOUND, format("FoodId: %s not found", foodId))))
+                .map(food -> {
+                    food.setEnabled(enable);
+                    return food;
+                })
+                .flatMap(foodRepository::save);
     }
 
     public Mono<FoodDetail> getFoodById(String foodId) {
         return foodDetailRepository.findFirstByFood_Id(foodId)
                 .switchIfEmpty(
-                        error(new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        error(new ResponseStatusException(HttpStatus.NOT_FOUND,
                                 format("FoodId: %s not found", foodId)))
                 );
     }

@@ -7,5 +7,7 @@ import reactor.core.publisher.Flux;
 
 // TODO move to a separate micro service
 public interface FoodRepository extends ReactiveMongoRepository<Food, String> {
-    Flux<Food> findAllBy(Pageable pageable);
+    Flux<Food> findAllByEnabled(boolean enabled, Pageable pageable);
+    Flux<Food> findAllByOrderByIdDesc(Pageable pageable);
+    Flux<Food> findAllByEnabledOrderByIdDesc(boolean enabled, Pageable pageable);
 }

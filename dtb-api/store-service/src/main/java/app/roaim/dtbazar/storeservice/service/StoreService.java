@@ -1,10 +1,10 @@
 package app.roaim.dtbazar.storeservice.service;
 
-import app.roaim.dtbazar.storeservice.ThrowableUtil;
 import app.roaim.dtbazar.storeservice.domain.Store;
 import app.roaim.dtbazar.storeservice.repository.StoreRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Point;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,11 +27,11 @@ public class StoreService {
 
     public Flux<Store> getMyStores(String sub, int page, int size) {
         PageRequest pageable = PageRequest.of(page, size);
-        return repository.findAllByUid(sub, pageable);
+        return repository.findAllByUidAndEnabledTrue(sub, pageable);
     }
 
     public Flux<Store> getAllStores(int page, int size) {
-        return repository.findAllBy(PageRequest.of(page, size));
+        return repository.findAllByEnabledTrue(PageRequest.of(page, size));
     }
 
     public Mono<Store> getStoreById(String storeId) {
@@ -43,11 +43,11 @@ public class StoreService {
     }
 
     public Flux<Store> getStoresByName(String storeName, int page, int size) {
-        return repository.findByNameStartsWithIgnoreCase(storeName, PageRequest.of(page, size));
+        return repository.findByNameStartsWithIgnoreCaseAndEnabledTrue(storeName, PageRequest.of(page, size));
     }
 
     public Flux<Store> getNearByStores(double lat, double lon, int page, int size) {
-        return repository.findByLocationNear(new Point(lat, lon), PageRequest.of(page, size));
+        return repository.findByLocationNearAndEnabledTrue(new Point(lat, lon), PageRequest.of(page, size));
     }
 
     public Mono<Store> updateStoreId(String id, Store store) {
@@ -71,5 +71,21 @@ public class StoreService {
                 return error(denyDelete(store.getName()));
             }
         });
+    }
+
+    // Admin only
+    public Flux<Store> getAllStoreList(int page, int size, Boolean enabled) {
+        Pageable pageable = PageRequest.of(page, size);
+        return enabled == null ?
+                repository.findAllByOrderByIdDesc(pageable) :
+                repository.findAllByEnabledOrderByIdDesc(enabled, pageable);
+    }
+
+    // Admin only
+    public Mono<Store> updateStoreStatus(String storeId, boolean enable) {
+        return getStoreById(storeId).map(store -> {
+            store.setEnabled(enable);
+            return store;
+        }).flatMap(repository::save);
     }
 }

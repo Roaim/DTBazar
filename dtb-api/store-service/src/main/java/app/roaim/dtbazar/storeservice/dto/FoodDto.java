@@ -14,9 +14,10 @@ public class FoodDto {
     Currency currency;
     Double startingPrice;
     Double endingPrice;
+    Double subsidy = .8;
 
     public Food toFood(String uid) {
-        return new Food(uid, getName(), getUnit(), getCurrency(), getStartingPrice(), getEndingPrice());
+        return new Food(uid, getName(), getUnit(), getCurrency(), getStartingPrice(), getEndingPrice(), getSubsidy());
     }
 
 }

@@ -114,6 +114,7 @@ public class SwaggerConfig {
                 .forPaths(PathSelectors.regex("/store.*")
                         .or(PathSelectors.regex("/food.*"))
                         .or(PathSelectors.regex("/donation.*"))
+                        .or(PathSelectors.regex("/admin.*"))
                 )
                 .build();
     }
