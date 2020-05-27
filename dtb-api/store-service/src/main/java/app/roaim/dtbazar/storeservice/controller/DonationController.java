@@ -66,4 +66,11 @@ public class DonationController {
         JwtData jwtData = jwtUtil.decode(bearerToken);
         return service.deleteDonationById(jwtData.getSub(), donationId);
     }
+
+    @PatchMapping("/{donationId}")
+    Mono<Donation> approveDonation(@ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
+                                  @PathVariable String donationId) {
+        JwtData jwtData = jwtUtil.decode(bearerToken);
+        return service.approveDonationById(jwtData.getSub(), donationId);
+    }
 }

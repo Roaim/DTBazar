@@ -27,9 +27,17 @@ public class DonationService {
         return intercomService.getStoreFoodById(donationDto.getStoreFoodId())
                 .flatMap(storeFood -> {
                     Donation donation = donationDto.toDonation(jwtData.getSub(), jwtData.getName(), storeFood);
-                    return intercomService.onAddDonation(donation, storeFood)
-                            .then(repository.save(donation));
+                    return repository.save(donation);
                 });
+    }
+
+    public Mono<Donation> approveDonationById(String uid, String donationId) {
+        return getDonationById(donationId).flatMap(donation -> intercomService.getStoreFoodById(donation.getStoreFoodId()).flatMap(storeFood -> {
+            if (storeFood.getUid().equals(uid)) {
+                donation.setEnabled(true);
+                return intercomService.onAddDonation(donation, storeFood).then(repository.save(donation));
+            } else return error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't approve this donation."));
+        }));
     }
 
     public Flux<Donation> getMyDonations(String uid, int page, int size) {
@@ -60,7 +68,7 @@ public class DonationService {
     public Mono<Donation> getDonationById(String donationId) {
         return repository.findById(donationId).switchIfEmpty(
                 error(new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
+                        HttpStatus.NOT_FOUND,
                         String.format("DonationId: %s not found", donationId))
                 )
         );
