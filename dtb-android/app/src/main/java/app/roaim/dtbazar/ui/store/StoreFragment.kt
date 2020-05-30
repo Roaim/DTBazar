@@ -17,7 +17,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentStoreBinding
 import app.roaim.dtbazar.di.Injectable
-import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
 import app.roaim.dtbazar.utils.Loggable
@@ -35,9 +34,11 @@ class StoreFragment : Fragment(), Injectable, Loggable {
 
     private val storeViewModel: StoreViewModel by viewModels { viewModelFactory }
 
-    private var binding by autoCleared<FragmentStoreBinding>()
+    private var _binding: FragmentStoreBinding? = null
+    private val binding get() = _binding!!
     private var bindingComponent by autoCleared<DataBindingComponent>()
-    private var storePagedAdapter by autoCleared<StorePagedAdapter>()
+    private var _storePagedAdapter: StorePagedAdapter? = null
+    private val storePagedAdapter get() = _storePagedAdapter!!
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -46,15 +47,21 @@ class StoreFragment : Fragment(), Injectable, Loggable {
     ): View? {
 
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_store,
             container,
             false,
             bindingComponent
         )
-        storePagedAdapter = StorePagedAdapter(bindingComponent)
+        _storePagedAdapter = StorePagedAdapter(bindingComponent)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        _storePagedAdapter = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

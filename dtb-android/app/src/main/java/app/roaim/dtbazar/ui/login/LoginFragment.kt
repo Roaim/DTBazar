@@ -7,7 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.map
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.LoginFragmentBinding
 import app.roaim.dtbazar.di.Injectable
@@ -32,29 +33,38 @@ class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginRe
 
     private val viewModel: LoginViewModel by viewModels { viewModelFactory }
 
-    private var binding by autoCleared<LoginFragmentBinding>()
+    private var _binding: LoginFragmentBinding? = null
+    private val binding get() = _binding!!
     private var callbackManager by autoCleared<CallbackManager>()
     private var mFragment by autoCleared<Fragment>()
+    private var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        binding = LoginFragmentBinding.inflate(inflater, container, false)
+        _binding = LoginFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         initFacebookLogin()
         handleBackButtonEvent()
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     override fun onStart() {
         super.onStart()
+        navController = findNavController()
         binding.loginButton.registerCallback(callbackManager, this)
     }
 
     override fun onStop() {
         super.onStop()
+        navController = null
         binding.loginButton.unregisterCallback(callbackManager)
     }
 
@@ -64,8 +74,7 @@ class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginRe
             log("TOKEN: $it")
             when (it.status) {
                 Status.SUCCESS -> {
-                    binding.root.findNavController()
-                        .navigate(R.id.action_loginFragment_to_navigation_home)
+                    navController?.navigate(R.id.action_loginFragment_to_navigation_home)
                 }
                 Status.FAILED, Status.LOGOUT -> {
                     checkFacebookAccessToken()

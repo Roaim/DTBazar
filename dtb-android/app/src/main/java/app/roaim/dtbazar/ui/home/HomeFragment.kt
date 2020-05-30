@@ -42,11 +42,14 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     val homeViewModel: HomeViewModel by viewModels { viewModelFactory }
 
     private var bindingComponent by autoCleared<DataBindingComponent>()
-    private var binding by autoCleared<FragmentHomeBinding>()
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     var addStoreBinding by autoCleared<ViewAddNewStoreBinding>()
     var addStoreDialog by autoCleared<AlertDialog>()
-    private var storeAdapter by autoCleared<HomeStoreAdapter>()
-    private var donationAdapter by autoCleared<HomeDonationAdapter>()
+    private var _storeAdapter: HomeStoreAdapter? = null
+    private val storeAdapter get() = _storeAdapter!!
+    private var _donationAdapter: HomeDonationAdapter? = null
+    private val donationAdapter get() = _donationAdapter!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +57,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         savedInstanceState: Bundle?
     ): View? {
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
-        binding = DataBindingUtil.inflate(
+        _binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_home,
             container,
@@ -68,11 +71,18 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        _donationAdapter = null
+        _storeAdapter = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.listener = this
-        storeAdapter = HomeStoreAdapter(bindingComponent)
-        donationAdapter = HomeDonationAdapter()
+        _storeAdapter = HomeStoreAdapter(bindingComponent)
+        _donationAdapter = HomeDonationAdapter()
         storeAdapter.setItemClickListener { store: Store?, itemView: View, isLongClick: Boolean ->
             if (store != null) {
                 if (isLongClick) deleteStore(store, itemView)
