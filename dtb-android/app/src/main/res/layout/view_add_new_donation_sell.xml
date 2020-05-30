@@ -23,6 +23,14 @@
             type="Boolean" />
 
         <variable
+            name="quantity"
+            type="Double" />
+
+        <variable
+            name="storeFood"
+            type="StoreFood" />
+
+        <variable
             name="result"
             type="Result" />
 
@@ -88,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Donation Amount">
+                android:hint="@{@string/hint_add_donation(storeFood.food.unit)}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAmount"
@@ -143,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Quantity"
+                android:hint="@{@string/hint_food_sell(storeFood.food.unit)}"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -162,11 +170,13 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{result.status != Status.LOADING}"
                 android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.value(etQty), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : listener.onAddDonationClick(ExtensionsKt.value(etAmount))}"
-                android:text="@{isSell ? `Sell` : `Make Donation`}"
+                android:text="@{isSell ? `Sell` : `Make Donation\n` + storeFood.food.currency + ` ` +  (quantity * storeFood.unitPrice * storeFood.food.subsidy)}"
                 tools:text="Make Donation" />
 
             <Button
@@ -174,6 +184,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
                 android:backgroundTint="#8FB1B5"
                 android:onClick="@{()->listener.onCancelClick()}"
                 android:text="Cancel" />

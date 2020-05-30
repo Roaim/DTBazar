@@ -24,8 +24,12 @@ data class Food(
 
     @field:SerializedName("startingPrice")
     val startingPrice: Double? = null,
+
     @field:SerializedName("endingPrice")
-    val endingPrice: Double? = null
+    val endingPrice: Double? = null,
+
+    @field:SerializedName("subsidy")
+    val subsidy: Double? = null
 ) : ListItem {
     @Ignore
     override fun getItemId(): String = id

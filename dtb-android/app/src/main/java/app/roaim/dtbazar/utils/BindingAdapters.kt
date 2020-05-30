@@ -5,7 +5,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
-import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Status
 import com.bumptech.glide.Glide

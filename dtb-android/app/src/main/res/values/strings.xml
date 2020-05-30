@@ -14,6 +14,8 @@
     <string name="qty_rate">%s x %s</string>
     <string name="pay_button">COLLECT %s %.2f</string>
     <string name="home_donation_item">%s %.2f</string>
+    <string name="hint_add_donation">Donation Quantity (%s)</string>
+    <string name="hint_food_sell">Quantity (%s)</string>
 
     <string-array name="food_unit">
         <item>KG</item>
@@ -21,5 +23,7 @@
         <item>PCS</item>
         <item>G</item>
         <item>ML</item>
+        <item>LB</item>
+        <item>OZ</item>
     </string-array>
 </resources>

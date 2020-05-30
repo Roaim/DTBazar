@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class StoreFood(
 
     @field:SerializedName("unitPrice")
-    val unitPrice: Double? = null,
+    val unitPrice: Double,
 
     @field:SerializedName("createdAt")
     val createdAt: String? = null,

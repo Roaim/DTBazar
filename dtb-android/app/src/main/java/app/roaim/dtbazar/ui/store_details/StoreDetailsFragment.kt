@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -76,8 +77,12 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         adapter.setItemClickListener(onStoreFoodItemClickListener)
         addDonationSellBinding =
             ViewAddNewDonationSellBinding.inflate(LayoutInflater.from(requireContext()))
-        addDonationSellBinding.rg.setOnCheckedChangeListener { group, checkedId ->
+        addDonationSellBinding.rg.setOnCheckedChangeListener { _, checkedId ->
             addDonationSellBinding.isSell = checkedId == addDonationSellBinding.rbSell.id
+        }
+        addDonationSellBinding.etAmount.addTextChangedListener { input ->
+            addDonationSellBinding.quantity =
+                input.toString().takeIf { it.isNotEmpty() }?.toDouble() ?: 0.0
         }
         addDonationSellDialog =
             AlertDialog.Builder(requireContext()).setView(addDonationSellBinding.root).create()
@@ -114,17 +119,19 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
                 deleteStoreFood(storeFood, itemView)
             } else {
                 addDonationSellDialog.show()
+                addDonationSellBinding.storeFood = storeFood
                 addDonationSellBinding.listener = object : ViewAddDonationSellClickListener {
                     override fun onCancelClick() {
                         addDonationSellDialog.dismiss()
                         addDonationSellBinding.etBuyerName.requestFocus()
                     }
 
-                    override fun onAddDonationClick(amount: String) {
-                        if (amount.isNotEmpty() && storeFood != null) {
+                    override fun onAddDonationClick(quantity: String) {
+                        if (quantity.isNotEmpty() && storeFood != null) {
                             viewModel.addDonation(
                                 storeFood.id,
-                                amount.toDouble(),
+                                quantity.toDouble().times(storeFood.unitPrice)
+                                    .times(storeFood.food?.subsidy ?: .8),
                                 storeFood.food?.currency!!
                             ).observe(viewLifecycleOwner, Observer {
                                 log("ADD_DONATION: $it")

@@ -311,13 +311,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:padding="16dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:text="@{@string/pay_button(storeFood.food.currency, storeFood.unitPrice * foodSell.qty * .2f)}"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView20"
-                tools:text="Pay BDT 20" />
+                tools:text="Collect BDT 20" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

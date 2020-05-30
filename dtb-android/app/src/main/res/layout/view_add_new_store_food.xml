@@ -42,6 +42,19 @@
                 android:layout_gravity="center_horizontal"
                 android:visibility="@{storeFood.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
 
+            <TextView
+                android:id="@+id/tvc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/til"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="-4dp"
+                android:text="Select Food"
+                android:textColor="@color/colorAccent"
+                android:textSize="13sp" />
+
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinnerFood"
                 android:layout_width="match_parent"
