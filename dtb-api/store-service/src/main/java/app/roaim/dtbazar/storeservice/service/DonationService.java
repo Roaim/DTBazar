@@ -6,6 +6,7 @@ import app.roaim.dtbazar.storeservice.jwt.JwtData;
 import app.roaim.dtbazar.storeservice.repository.DonationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,8 +41,13 @@ public class DonationService {
         }));
     }
 
+    public Flux<Donation> getPendingDonation(String storeId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllByStoreIdAndEnabledFalseOrderByIdDesc(storeId, pageable);
+    }
+
     public Flux<Donation> getMyDonations(String uid, int page, int size) {
-        PageRequest pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         return repository.findAllByDonorId(uid, pageable);
     }
 

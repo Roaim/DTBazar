@@ -39,6 +39,13 @@ public class DonationController {
         return service.getMyDonations(jwtData.getSub(), page, size);
     }
 
+    @GetMapping("/pending")
+    Flux<Donation> getPendingDonations(
+            @RequestParam(required = false) String storeId,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+        return service.getPendingDonation(storeId, page, size);
+    }
+
     @GetMapping
     Flux<Donation> getDonations(
             @RequestParam(required = false) String storeId,
