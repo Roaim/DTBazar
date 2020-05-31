@@ -38,6 +38,18 @@ class DonationRepository @Inject constructor(
             emit(result)
         }
 
+    fun getPendingDonations(storeId: String): LiveData<Result<List<Donation>>> =
+        liveData {
+            emit(loading())
+            val result = try {
+                apiService.getPendingDonations(storeId).getResult()
+            } catch (e: Exception) {
+                log("getPendingDonations", e)
+                failed<List<Donation>>(e.message)
+            }
+            emit(result)
+        }
+
     fun addDonation(donationPostBody: DonationPostBody) = liveData<Result<Donation>> {
         emit(loading())
         val result = try {
@@ -48,5 +60,19 @@ class DonationRepository @Inject constructor(
             failed<Donation>(e.message)
         }
         emit(result)
+    }
+
+    fun approveDonation(donation: Donation?) = liveData<Result<Donation>> {
+        if (donation == null) emit(failed<Donation>("Can't approve a null donation"))
+        else {
+            emit(loading())
+            val result = try {
+                apiService.approveDonation(donation.id).getResult()
+            } catch (e: Exception) {
+                log("ApproveDonation", e)
+                failed<Donation>(e.message)
+            }
+            emit(result)
+        }
     }
 }

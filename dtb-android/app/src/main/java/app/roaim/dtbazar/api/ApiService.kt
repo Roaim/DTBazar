@@ -50,6 +50,18 @@ interface ApiService {
         @Query("size") size: Int = 50
     ): Response<List<Donation>>
 
+    @GET("donation/pending")
+    @Throws(Exception::class)
+    suspend fun getPendingDonations(
+        @Query("storeId") storeId: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 25
+    ): Response<List<Donation>>
+
+    @PATCH("donation/{id}")
+    @Throws(Exception::class)
+    suspend fun approveDonation(@Path("id") id: String): Response<Donation>
+
     @POST("food")
     @Throws(Exception::class)
     suspend fun saveFood(@Body foodPostBody: FoodPostBody): Response<Food>
