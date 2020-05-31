@@ -28,6 +28,10 @@ public class DonationService {
         return intercomService.getStoreFoodById(donationDto.getStoreFoodId())
                 .flatMap(storeFood -> {
                     Donation donation = donationDto.toDonation(jwtData.getSub(), jwtData.getName(), storeFood);
+                    if (storeFood.getUid().equals(jwtData.getSub())) {
+                        donation.setEnabled(true);
+                        return intercomService.onAddDonation(donation, storeFood).then(repository.save(donation));
+                    }
                     return repository.save(donation);
                 });
     }
