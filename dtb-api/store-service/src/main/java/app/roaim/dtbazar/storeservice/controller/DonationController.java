@@ -41,7 +41,7 @@ public class DonationController {
 
     @GetMapping("/pending")
     Flux<Donation> getPendingDonations(
-            @RequestParam(required = false) String storeId,
+            @RequestParam String storeId,
             @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
         return service.getPendingDonation(storeId, page, size);
     }
