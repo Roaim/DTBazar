@@ -71,6 +71,8 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
             addDonationSellBinding.isOwner = it
             addDonationSellBinding.isSell = it &&
                     addDonationSellBinding.rg.checkedRadioButtonId == addDonationSellBinding.rbSell.id
+            addDonationSellBinding.isAddStock = it &&
+                    addDonationSellBinding.rg.checkedRadioButtonId == addDonationSellBinding.rbStock.id
         })
         adapter = StoreFoodAdapter()
         onStoreFoodItemClickListener = getStoreFoodItemClickListener()
