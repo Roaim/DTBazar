@@ -12,6 +12,8 @@ public interface DonationRepository extends ReactiveMongoRepository<Donation, St
 
     Flux<Donation> findAllByStoreId(String storeId, Pageable pageable);
 
+    Flux<Donation> findAllByStoreIdAndEnabledFalseOrderByIdDesc(String storeId, Pageable pageable);
+
     Flux<Donation> findAllByDonorId(String donorId, Pageable pageable);
 
     Flux<Donation> findAllByStoreFoodId(String foodId, Pageable pageable);

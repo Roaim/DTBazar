@@ -39,6 +39,13 @@ public class DonationController {
         return service.getMyDonations(jwtData.getSub(), page, size);
     }
 
+    @GetMapping("/pending")
+    Flux<Donation> getPendingDonations(
+            @RequestParam String storeId,
+            @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "20") int size) {
+        return service.getPendingDonation(storeId, page, size);
+    }
+
     @GetMapping
     Flux<Donation> getDonations(
             @RequestParam(required = false) String storeId,
@@ -65,5 +72,12 @@ public class DonationController {
                                   @PathVariable String donationId) {
         JwtData jwtData = jwtUtil.decode(bearerToken);
         return service.deleteDonationById(jwtData.getSub(), donationId);
+    }
+
+    @PatchMapping("/{donationId}")
+    Mono<Donation> approveDonation(@ApiIgnore @RequestHeader(value = HttpHeaders.AUTHORIZATION) String bearerToken,
+                                  @PathVariable String donationId) {
+        JwtData jwtData = jwtUtil.decode(bearerToken);
+        return service.approveDonationById(jwtData.getSub(), donationId);
     }
 }

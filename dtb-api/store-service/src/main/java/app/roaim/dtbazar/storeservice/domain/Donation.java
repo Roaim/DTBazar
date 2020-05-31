@@ -27,6 +27,8 @@ public class Donation {
     private String foodName;
     private double amount;
     private Currency currency = Currency.BDT;
+    @Indexed
+    private boolean enabled;
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
 
