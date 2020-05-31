@@ -6,6 +6,7 @@ import app.roaim.dtbazar.storeservice.jwt.JwtData;
 import app.roaim.dtbazar.storeservice.repository.DonationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,13 +28,30 @@ public class DonationService {
         return intercomService.getStoreFoodById(donationDto.getStoreFoodId())
                 .flatMap(storeFood -> {
                     Donation donation = donationDto.toDonation(jwtData.getSub(), jwtData.getName(), storeFood);
-                    return intercomService.onAddDonation(donation, storeFood)
-                            .then(repository.save(donation));
+                    if (storeFood.getUid().equals(jwtData.getSub())) {
+                        donation.setEnabled(true);
+                        return intercomService.onAddDonation(donation, storeFood).then(repository.save(donation));
+                    }
+                    return repository.save(donation);
                 });
     }
 
+    public Mono<Donation> approveDonationById(String uid, String donationId) {
+        return getDonationById(donationId).flatMap(donation -> intercomService.getStoreFoodById(donation.getStoreFoodId()).flatMap(storeFood -> {
+            if (storeFood.getUid().equals(uid)) {
+                donation.setEnabled(true);
+                return intercomService.onAddDonation(donation, storeFood).then(repository.save(donation));
+            } else return error(new ResponseStatusException(HttpStatus.FORBIDDEN, "You can't approve this donation."));
+        }));
+    }
+
+    public Flux<Donation> getPendingDonation(String storeId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAllByStoreIdAndEnabledFalseOrderByIdDesc(storeId, pageable);
+    }
+
     public Flux<Donation> getMyDonations(String uid, int page, int size) {
-        PageRequest pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         return repository.findAllByDonorId(uid, pageable);
     }
 
@@ -60,7 +78,7 @@ public class DonationService {
     public Mono<Donation> getDonationById(String donationId) {
         return repository.findById(donationId).switchIfEmpty(
                 error(new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
+                        HttpStatus.NOT_FOUND,
                         String.format("DonationId: %s not found", donationId))
                 )
         );
