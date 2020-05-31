@@ -11,5 +11,7 @@
     <dimen name="fb_margin_override_lr">32dp</dimen>
     <!--The next value changes the margin between the FB icon and the login text:-->
     <dimen name="fb_margin_override_textpadding">16dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
     <!--    FACEBOOK LOGIN BUTTON-->
 </resources>

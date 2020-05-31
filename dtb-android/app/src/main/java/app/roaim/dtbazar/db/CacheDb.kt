@@ -15,7 +15,7 @@ import app.roaim.dtbazar.model.*
         Food::class,
         StoreFood::class
     ],
-    version = 15,
+    version = 17,
     exportSchema = false
 )
 @TypeConverters(LocationTypeConverter::class)

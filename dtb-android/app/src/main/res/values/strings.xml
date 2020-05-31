@@ -11,9 +11,13 @@
     <string name="store_food_item_price"><b>%s %.2f/%s</b> (%.2f)</string>
     <string name="title_food_suggestion_spinner"><b>%s</b> (%s/%s)</string>
     <string name="two_decimal">%.2f</string>
-    <string name="qty_rate">%s x %s</string>
+    <string name="qty_rate">%.1f x %.2f</string>
     <string name="pay_button">COLLECT %s %.2f</string>
     <string name="home_donation_item">%s %.2f</string>
+    <string name="hint_donation_qty">Donation Quantity (%s)</string>
+    <string name="hint_food_qty">Quantity (%s)</string>
+    <string name="hint_food_price">1 %s Price (%s)</string>
+    <string name="bt_make_donation">Make Donation\n%s %.2f</string>
 
     <string-array name="food_unit">
         <item>KG</item>
@@ -21,5 +25,10 @@
         <item>PCS</item>
         <item>G</item>
         <item>ML</item>
+        <item>LB</item>
+        <item>OZ</item>
     </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

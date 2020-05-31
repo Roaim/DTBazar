@@ -1,6 +1,8 @@
 package app.roaim.dtbazar.ui.store_details
 
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import app.roaim.dtbazar.databinding.ViewAddNewStoreFoodBinding
@@ -12,6 +14,21 @@ import app.roaim.dtbazar.utils.log
 
 fun StoreDetailsFragment.initAddStoreFoodDialog() {
     addStoreFoodBinding = ViewAddNewStoreFoodBinding.inflate(LayoutInflater.from(requireContext()))
+    addStoreFoodBinding.spinnerFood.onItemSelectedListener =
+        object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                addStoreFoodBinding.food = parent?.getItemAtPosition(0) as Food
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                addStoreFoodBinding.food = parent?.getItemAtPosition(position) as Food
+            }
+        }
     addStoreFoodDialog = AlertDialog.Builder(requireContext())
         .setView(addStoreFoodBinding.root)
         .create()

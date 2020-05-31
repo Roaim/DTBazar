@@ -135,6 +135,14 @@
         <argument
             android:name="spentDonation"
             app:argType="float" />
+        <action
+            android:id="@+id/action_navigation_store_details_to_pendingDonationFragment"
+            app:destination="@id/pendingDonationFragment">
+            <argument
+                android:name="storeId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/loginCheckFragment"
@@ -146,6 +154,16 @@
         <action
             android:id="@+id/action_loginCheckFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/pendingDonationFragment"
+        android:name="app.roaim.dtbazar.ui.store_details.PendingDonationFragment"
+        android:label="Pending Donation"
+        tools:layout="@layout/fragment_pending_donation">
+        <argument
+            android:name="storeId"
+            app:argType="string"
+            app:nullable="false" />
     </fragment>
 
 </navigation>

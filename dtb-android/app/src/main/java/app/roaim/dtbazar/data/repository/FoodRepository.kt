@@ -90,17 +90,6 @@ class FoodRepository @Inject constructor(
     fun getCachedStoreFoodFoods(storeId: String): LiveData<List<StoreFood>> =
         storeFoodDao.findAllByStoreId(storeId)
 
-    fun sellFood(foodSellPostBody: FoodSellPostBody) = liveData<Result<FoodSell>> {
-        emit(loading())
-        val result = try {
-            apiService.postFoodSell(foodSellPostBody).getResult()
-        } catch (e: Exception) {
-            log("sellFood", e)
-            failed<FoodSell>(e.message)
-        }
-        emit(result)
-    }
-
     fun deleteStoreFood(storeFood: StoreFood): LiveData<Result<StoreFood>> = liveData {
         emit(loading())
         val result = try {

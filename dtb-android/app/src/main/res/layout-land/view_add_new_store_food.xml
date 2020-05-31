@@ -14,6 +14,10 @@
         <import type="app.roaim.dtbazar.model.StoreFood" />
 
         <variable
+            name="food"
+            type="app.roaim.dtbazar.model.Food" />
+
+        <variable
             name="storeFood"
             type="Result" />
 
@@ -38,6 +42,19 @@
             android:layout_gravity="center_horizontal"
             android:visibility="@{storeFood.status == Status.LOADING ? View.VISIBLE : View.INVISIBLE}" />
 
+        <TextView
+            android:id="@+id/tvc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/til"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="-4dp"
+            android:text="Select Food"
+            android:textColor="@color/colorAccent"
+            android:textSize="13sp" />
+
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spinnerFood"
             android:layout_width="match_parent"
@@ -55,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Selling Price">
+                android:hint="@{@string/hint_food_price(food.unit, food.currency)}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etUnitPrice"
@@ -74,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Stock Quantity">
+                android:hint="@{@string/hint_food_qty(food.unit)}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStockQty"

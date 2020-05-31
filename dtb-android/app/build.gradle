@@ -53,6 +53,9 @@ dependencies {
     implementation deps.misc.facebook
     implementation deps.misc.glide
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     kapt deps.kapt.values()
 
     testImplementation deps.javaTest.junit

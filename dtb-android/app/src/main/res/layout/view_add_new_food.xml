@@ -65,7 +65,7 @@
                 android:padding="4dp"
                 android:text="Currency"
                 android:textColor="@color/colorAccent"
-                android:textSize="18dp" />
+                android:textSize="13sp" />
 
             <RadioGroup
                 android:id="@+id/rg"
@@ -107,11 +107,11 @@
                 android:padding="4dp"
                 android:text="Measure Unit"
                 android:textColor="@color/colorAccent"
-                android:textSize="18dp" />
+                android:textSize="13sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/spinnerUnit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvmu"
                 android:layout_marginStart="-8dp"
