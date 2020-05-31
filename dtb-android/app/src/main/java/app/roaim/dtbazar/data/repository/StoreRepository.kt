@@ -9,12 +9,9 @@ import app.roaim.dtbazar.api.getResult
 import app.roaim.dtbazar.data.PrefDataSource
 import app.roaim.dtbazar.data.StoreDataSourceFactory
 import app.roaim.dtbazar.db.dao.StoreDao
-import app.roaim.dtbazar.model.IpInfo
-import app.roaim.dtbazar.model.Result
+import app.roaim.dtbazar.model.*
 import app.roaim.dtbazar.model.Result.Companion.failed
 import app.roaim.dtbazar.model.Result.Companion.loading
-import app.roaim.dtbazar.model.Store
-import app.roaim.dtbazar.model.StorePostBody
 import app.roaim.dtbazar.utils.Constants.STORE_PAGE_INITIAL_SIZE
 import app.roaim.dtbazar.utils.Constants.STORE_PAGE_LOAD_SIZE
 import app.roaim.dtbazar.utils.Constants.STORE_PAGE_PREFETCH
@@ -104,4 +101,27 @@ class StoreRepository @Inject constructor(
     fun clearDataSource() {
         storeDataSourceFactory.clear()
     }
+
+    fun sellFood(foodSellPostBody: FoodSellPostBody) = liveData<Result<FoodSell>> {
+        emit(loading())
+        val result = try {
+            apiService.postFoodSell(foodSellPostBody).getResult()
+        } catch (e: Exception) {
+            log("sellFood", e)
+            failed<FoodSell>(e.message)
+        }
+        emit(result)
+    }
+
+    fun addStock(storeFoodId: String, stockPatchBody: StockPatchBody) =
+        liveData<Result<StoreFood>> {
+            emit(loading())
+            val result = try {
+                apiService.addStock(storeFoodId, stockPatchBody).getResult()
+            } catch (e: Exception) {
+                log("addStock", e)
+                failed<StoreFood>(e.message)
+            }
+            emit(result)
+        }
 }

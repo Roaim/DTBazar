@@ -19,6 +19,10 @@
             type="Boolean" />
 
         <variable
+            name="isAddStock"
+            type="Boolean" />
+
+        <variable
             name="isOwner"
             type="Boolean" />
 
@@ -69,34 +73,41 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="@{isOwner ? View.VISIBLE : View.GONE}"
-                android:weightSum="2">
+                android:visibility="@{isOwner ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/rbDonation"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:padding="8dp"
+                    android:textSize="13sp"
                     android:text="DONATE" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/rbSell"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:checked="true"
                     android:padding="8dp"
+                    android:textSize="13sp"
                     android:text="SELL" />
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/rbStock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Stock In"
+                    android:textSize="13sp" />
 
             </RadioGroup>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:visibility="@{isSell ? View.GONE : View.VISIBLE}"
+                android:hint="@{@string/hint_donation_qty(storeFood.food.unit)}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="@{@string/hint_add_donation(storeFood.food.unit)}">
+                android:visibility="@{isSell || isAddStock ? View.GONE : View.VISIBLE}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etAmount"
@@ -143,7 +154,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:maxLines="1"
-                    android:nextFocusDown="@id/etQty"
+                    android:nextFocusDown="@id/etQtySell"
                     android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -151,11 +162,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="@{@string/hint_food_sell(storeFood.food.unit)}"
+                android:hint="@{@string/hint_food_qty(storeFood.food.unit)}"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etQty"
+                    android:id="@+id/etQtySell"
+                    clearText="@{result}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@{@string/hint_food_qty(storeFood.food.unit)}"
+                android:visibility="@{(isAddStock &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etQtyStock"
+                    clearText="@{result}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:maxLines="1"
+                    android:nextFocusDown="@id/etUnitPrice"
+                    android:singleLine="true" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@{@string/hint_food_price(storeFood.food.unit, storeFood.food.currency)}"
+                android:visibility="@{(isAddStock &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etUnitPrice"
                     clearText="@{result}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -175,8 +223,8 @@
                 android:layout_margin="8dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{result.status != Status.LOADING}"
-                android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.value(etQty), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : listener.onAddDonationClick(ExtensionsKt.value(etAmount))}"
-                android:text="@{isSell ? `Sell` : `Make Donation\n` + storeFood.food.currency + ` ` +  (quantity * storeFood.unitPrice * storeFood.food.subsidy)}"
+                android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.sellQty(etQtySell, storeFood), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : isAddStock ? listener.onAddStockClick(ExtensionsKt.value(etQtyStock), ExtensionsKt.value(etUnitPrice)) : listener.onAddDonationClick(ExtensionsKt.donationQty(etAmount, storeFood))}"
+                android:text="@{isSell ? `Sell` : isAddStock ? `Add Stock` : @string/bt_make_donation(storeFood.food.currency, quantity * storeFood.unitPrice * storeFood.food.subsidy)}"
                 tools:text="Make Donation" />
 
             <Button

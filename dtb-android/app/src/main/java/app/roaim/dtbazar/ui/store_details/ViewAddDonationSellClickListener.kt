@@ -4,4 +4,5 @@ interface ViewAddDonationSellClickListener {
     fun onCancelClick()
     fun onAddDonationClick(quantity: String)
     fun onAddSellClick(qty: String, nid: String, name: String)
+    fun onAddStockClick(qty: String, unitPrice: String)
 }

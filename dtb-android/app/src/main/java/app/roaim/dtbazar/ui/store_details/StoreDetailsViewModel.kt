@@ -78,8 +78,15 @@ class StoreDetailsViewModel @Inject constructor(
     fun sellFood(storeFoodId: String, name: String, nid: String, qty: Double) = FoodSellPostBody(
         storeFoodId = storeFoodId, qty = qty, nid = nid, buyerName = name
     ).let {
-        foodRepository.sellFood(it)
+        storeRepository.sellFood(it)
     }.map {
+        if (it.status == Status.SUCCESS) onRetry()
+        it
+    }
+
+    fun addStock(storeFoodId: String, quantity: Double, unitPrice: Double) = StockPatchBody(
+        unitPrice, quantity
+    ).let { storeRepository.addStock(storeFoodId, it) }.map {
         if (it.status == Status.SUCCESS) onRetry()
         it
     }

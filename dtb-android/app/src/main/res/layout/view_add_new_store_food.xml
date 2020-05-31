@@ -14,6 +14,10 @@
         <import type="app.roaim.dtbazar.model.StoreFood" />
 
         <variable
+            name="food"
+            type="app.roaim.dtbazar.model.Food" />
+
+        <variable
             name="storeFood"
             type="Result" />
 
@@ -65,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Selling Price">
+                android:hint="@{@string/hint_food_price(food.unit, food.currency)}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etUnitPrice"
@@ -83,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="Stock Quantity">
+                android:hint="@{@string/hint_food_qty(food.unit)}">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStockQty"

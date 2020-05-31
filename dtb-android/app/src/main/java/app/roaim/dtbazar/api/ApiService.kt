@@ -91,4 +91,11 @@ interface ApiService {
     @DELETE("storeFood/{id}")
     @Throws(Exception::class)
     suspend fun deleteStoreFood(@Path("id") id: String): Response<StoreFood>
+
+    @PATCH("storeFood/{storeFoodId}/addStock")
+    @Throws(Exception::class)
+    suspend fun addStock(
+        @Path("storeFoodId") storeFoodId: String,
+        @Body stockPatchBody: StockPatchBody
+    ): Response<StoreFood>
 }

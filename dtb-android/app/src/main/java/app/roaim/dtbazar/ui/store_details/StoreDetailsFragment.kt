@@ -79,10 +79,11 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
             ViewAddNewDonationSellBinding.inflate(LayoutInflater.from(requireContext()))
         addDonationSellBinding.rg.setOnCheckedChangeListener { _, checkedId ->
             addDonationSellBinding.isSell = checkedId == addDonationSellBinding.rbSell.id
+            addDonationSellBinding.isAddStock = checkedId == addDonationSellBinding.rbStock.id
         }
         addDonationSellBinding.etAmount.addTextChangedListener { input ->
             addDonationSellBinding.quantity =
-                input.toString().takeIf { it.isNotEmpty() }?.toDouble() ?: 0.0
+                input.toString().takeIf { it.isNotEmpty() && it != "." }?.toDouble() ?: 0.0
         }
         addDonationSellDialog =
             AlertDialog.Builder(requireContext()).setView(addDonationSellBinding.root).create()
@@ -136,9 +137,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
                             ).observe(viewLifecycleOwner, Observer {
                                 log("ADD_DONATION: $it")
                                 addDonationSellBinding.result = it
-                                if (it.status == Status.SUCCESS) {
-                                    onCancelClick()
-                                }
+                                if (it.status == Status.SUCCESS) onCancelClick()
                             })
                         }
                     }
@@ -157,7 +156,20 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
                                 })
                         }
                 }
-            }
+
+                    override fun onAddStockClick(qty: String, unitPrice: String) {
+                        if (qty.isNotEmpty() && unitPrice.isNotEmpty() && storeFood != null) {
+                            viewModel.addStock(storeFood.id, qty.toDouble(), unitPrice.toDouble())
+                                .observe(
+                                    viewLifecycleOwner, Observer {
+                                        log("AddStock: $it")
+                                        addDonationSellBinding.result = it
+                                        if (it.status == Status.SUCCESS) onCancelClick()
+                                    }
+                                )
+                        }
+                    }
+                }
         }
     }
 
