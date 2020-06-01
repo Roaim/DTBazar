@@ -136,6 +136,10 @@
             android:name="spentDonation"
             app:argType="float" />
         <action
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/slide_out_top"
+            app:popEnterAnim="@anim/slide_in_top"
+            app:popExitAnim="@anim/slide_out_bottom"
             android:id="@+id/action_navigation_store_details_to_pendingDonationFragment"
             app:destination="@id/pendingDonationFragment">
             <argument
