@@ -45,6 +45,13 @@
         <action
             android:id="@+id/action_navigation_home_to_navigation_store"
             app:destination="@id/navigation_store" />
+        <action
+            android:id="@+id/action_navigation_home_to_addStoreFragment"
+            app:destination="@id/addStoreFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -169,5 +176,9 @@
             app:argType="string"
             app:nullable="false" />
     </fragment>
+    <fragment
+        android:id="@+id/addStoreFragment"
+        android:name="app.roaim.dtbazar.ui.home.AddStoreFragment"
+        android:label="Add New Store" />
 
 </navigation>

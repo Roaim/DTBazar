@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -16,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
-import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Status
@@ -44,8 +42,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     private var bindingComponent by autoCleared<DataBindingComponent>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    var addStoreBinding by autoCleared<ViewAddNewStoreBinding>()
-    var addStoreDialog by autoCleared<AlertDialog>()
     private var _storeAdapter: HomeStoreAdapter? = null
     private val storeAdapter get() = _storeAdapter!!
     private var _donationAdapter: HomeDonationAdapter? = null
@@ -99,7 +95,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
                 )
             }
         }
-        donationAdapter.setItemClickListener { donation: Donation?, itemView: View, longClick: Boolean ->
+        donationAdapter.setItemClickListener { donation: Donation?, itemView: View, _: Boolean ->
             navigateToStoreDetails(
                 itemView,
                 donation?.storeId!!,
@@ -125,11 +121,10 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
         homeViewModel.myDonations.observe(viewLifecycleOwner, Observer(donationAdapter::submitList))
 
-        initAddStoreDialog()
     }
 
     override fun onAddNewStoreClick() {
-        addStoreDialog.show()
+        findNavController().navigate(R.id.action_navigation_home_to_addStoreFragment)
     }
 
     override fun onMakeDonationClick() {

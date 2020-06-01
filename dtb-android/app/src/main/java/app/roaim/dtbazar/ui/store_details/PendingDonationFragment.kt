@@ -56,9 +56,9 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable {
             false,
             bindingComponent
         )
-        adapter = HomeDonationAdapter()
+        adapter = HomeDonationAdapter(true)
         binding.rvDonation.adapter = adapter
-        adapter.setItemClickListener { donation, _, isLongClick ->
+        adapter.setItemClickListener { donation, _, _ ->
             log("ItemClick: $donation")
             AlertDialog.Builder(binding.root.context)
                 .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")

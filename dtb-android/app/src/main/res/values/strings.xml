@@ -31,4 +31,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_add_store">Add Store</string>
+    <string name="hint_store_name">Store Name</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="hint_store_address">Store Address</string>
+    <string name="rb_donate">DONATE</string>
+    <string name="rb_sell">SELL</string>
+    <string name="rb_stock">Stock</string>
+    <string name="bt_cancel">Cancel</string>
 </resources>

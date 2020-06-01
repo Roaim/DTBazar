@@ -67,7 +67,7 @@
             app:layout_constraintStart_toStartOf="@+id/progressBar3"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <app.roaim.dtbazar.utils.FacebookLoginButton
+        <app.roaim.dtbazar.ui.login.FacebookLoginButton
             android:id="@+id/login_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

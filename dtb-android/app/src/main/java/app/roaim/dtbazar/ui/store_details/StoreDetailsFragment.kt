@@ -216,7 +216,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         val menuReload = menu.add("Reload").setIcon(R.drawable.ic_refresh)
-        menuReload.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        menuReload.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
         menuReload.setOnMenuItemClickListener {
             viewModel.onRetry()
             true
@@ -231,7 +231,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
                         true
                     }
                 }
-        menuPendingDonation.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
+        menuPendingDonation.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
 
     }
 

@@ -5,6 +5,7 @@ import app.roaim.dtbazar.data.repository.DonationRepository
 import app.roaim.dtbazar.data.repository.InfoRepository
 import app.roaim.dtbazar.data.repository.StoreRepository
 import app.roaim.dtbazar.model.*
+import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -55,13 +56,18 @@ class HomeViewModel @Inject constructor(
     }
 
 
-    fun saveStore(name: String, address: String, mobile: String): LiveData<Result<Store>> =
+    fun saveStore(
+        name: String,
+        address: String,
+        mobile: String,
+        target: LatLng
+    ): LiveData<Result<Store>> =
             storeRepository.saveStore(
                 StorePostBody(
                     name = name,
                     address = address,
                     mobile = mobile,
-                    location = listOf(ipInfo.value?.lat, ipInfo.value?.lon)
+                    location = listOf(target.latitude, target.longitude)
                 )
             )
 

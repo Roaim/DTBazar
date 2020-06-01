@@ -10,6 +10,10 @@
         <variable
             name="donation"
             type="Donation" />
+
+        <variable
+            name="isPending"
+            type="Boolean" />
     </data>
 
     <FrameLayout
@@ -84,7 +88,7 @@
                     android:layout_below="@id/tvName1"
                     android:layout_toEndOf="@id/iv1"
                     android:paddingTop="2dp"
-                    android:text="@{donation.storeName}"
+                    android:text="@{isPending ? donation.donorName : donation.storeName}"
                     android:textColor="@color/text_home_list_subtitle"
                     android:textSize="16sp"
                     tools:text="One Plus Store" />

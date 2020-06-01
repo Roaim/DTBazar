@@ -1,8 +1,9 @@
-package app.roaim.dtbazar.utils
+package app.roaim.dtbazar.ui.login
 
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import androidx.core.content.res.ResourcesCompat
 import app.roaim.dtbazar.R
 import com.facebook.login.widget.LoginButton
 
@@ -25,10 +26,12 @@ class FacebookLoginButton : LoginButton {
 
     private fun customizeFbLoginButton() {
         val fbIconScale = 1.45f
-        val drawable: Drawable = resources.getDrawable(
-            com.facebook.login.R.drawable.com_facebook_button_icon
+        val drawable: Drawable? = ResourcesCompat.getDrawable(
+            resources,
+            com.facebook.login.R.drawable.com_facebook_button_icon,
+            null
         )
-        drawable.setBounds(
+        drawable?.setBounds(
             0, 0, (drawable.intrinsicWidth * fbIconScale).toInt(),
             (drawable.intrinsicHeight * fbIconScale).toInt()
         )

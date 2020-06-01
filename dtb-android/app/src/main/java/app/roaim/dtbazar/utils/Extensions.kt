@@ -1,10 +1,12 @@
 package app.roaim.dtbazar.utils
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.net.toUri
 import app.roaim.dtbazar.model.StoreFood
 import com.google.android.material.snackbar.Snackbar
 
@@ -68,4 +70,11 @@ fun Loggable.log(msg: String, throwable: Throwable? = null, e: Boolean = false) 
     val tag = this::class.simpleName
     if (e) Log.e(tag, msg, throwable)
     else Log.d(tag, msg, throwable)
+}
+
+fun View.openInMap(lat: Double?, lon: Double?) {
+    val uri = "https://www.google.com/maps/search/?api=1&query=$lat,$lon".toUri()
+    Intent(Intent.ACTION_VIEW, uri).let {
+        context.startActivity(it)
+    }
 }

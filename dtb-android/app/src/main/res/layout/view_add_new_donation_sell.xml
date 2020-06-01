@@ -52,10 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:orientation="vertical"
-            android:paddingStart="16dp"
+            android:paddingStart="8dp"
             android:paddingTop="8dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp">
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp">
 
             <ProgressBar
                 android:layout_width="wrap_content"
@@ -79,25 +79,28 @@
                     android:id="@+id/rbDonation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:padding="4dp"
+                    android:layout_weight="1"
                     android:textSize="13sp"
-                    android:text="DONATE" />
+                    android:text="@string/rb_donate" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/rbSell"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="true"
-                    android:padding="8dp"
+                    android:padding="4dp"
                     android:textSize="13sp"
-                    android:text="SELL" />
+                    android:text="@string/rb_sell" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/rbStock"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="Stock In"
+                    android:padding="4dp"
+                    android:text="@string/rb_stock"
                     android:textSize="13sp" />
 
             </RadioGroup>
@@ -106,7 +109,7 @@
                 android:hint="@{@string/hint_donation_qty(storeFood.food.unit)}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:visibility="@{isSell || isAddStock ? View.GONE : View.VISIBLE}">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -123,7 +126,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:hint="Buyer Name"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
@@ -142,7 +145,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:hint="National ID no."
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
@@ -161,7 +164,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:hint="@{@string/hint_food_qty(storeFood.food.unit)}"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
@@ -179,7 +182,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:hint="@{@string/hint_food_qty(storeFood.food.unit)}"
                 android:visibility="@{(isAddStock &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
@@ -198,7 +201,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:hint="@{@string/hint_food_price(storeFood.food.unit, storeFood.food.currency)}"
                 android:visibility="@{(isAddStock &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
@@ -220,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{result.status != Status.LOADING}"
                 android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.sellQty(etQtySell, storeFood), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : isAddStock ? listener.onAddStockClick(ExtensionsKt.value(etQtyStock), ExtensionsKt.value(etUnitPrice)) : listener.onAddDonationClick(ExtensionsKt.donationQty(etAmount, storeFood))}"
@@ -231,17 +234,17 @@
                 style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:backgroundTint="#8FB1B5"
                 android:onClick="@{()->listener.onCancelClick()}"
-                android:text="Cancel" />
+                android:text="@string/bt_cancel" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="4dp"
                 android:gravity="center"
                 android:text="@{result.msg}"
                 android:textColor="@color/colorAccent" />

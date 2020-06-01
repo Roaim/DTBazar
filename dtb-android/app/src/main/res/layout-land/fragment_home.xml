@@ -188,9 +188,6 @@
                     android:text="Make a donation"
                     android:textColor="@color/text_home_button_text" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp" />
             </LinearLayout>
         </ScrollView>
 
