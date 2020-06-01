@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/progress"
                 android:layout_margin="8dp"
-                android:hint="Food Name">
+                android:hint="@string/hint_food_name">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etName"
@@ -63,7 +63,7 @@
                 android:layout_below="@id/til"
                 android:layout_margin="8dp"
                 android:padding="4dp"
-                android:text="Currency"
+                android:text="@string/text_currency"
                 android:textColor="@color/colorAccent"
                 android:textSize="13sp" />
 
@@ -83,14 +83,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="4dp"
-                    android:text="BDT" />
+                    android:text="@string/text_bdt" />
 
                 <com.google.android.material.radiobutton.MaterialRadioButton
                     android:id="@+id/rbUsd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="USD" />
+                    android:text="@string/text_usd" />
             </RadioGroup>
 
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_toEndOf="@id/progress"
                 android:padding="4dp"
-                android:text="Measure Unit"
+                android:text="@string/text_measure_unit"
                 android:textColor="@color/colorAccent"
                 android:textSize="13sp" />
 
@@ -132,7 +132,7 @@
                 android:layout_marginEnd="-8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toStartOf="@id/progress"
-                android:hint="Starting Price">
+                android:hint="@string/text_starting_price">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etStartPrice"
@@ -157,7 +157,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_toEndOf="@id/progress"
-                android:hint="Ending Price">
+                android:hint="@string/text_ending_price">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEndPrice"
@@ -195,7 +195,7 @@
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{food.status != Status.LOADING}"
                 android:onClick="@{()->listener.onAddFoodClick(ExtensionsKt.value(etEndPrice), ExtensionsKt.getCheckValue(rg), spinnerUnit.getSelectedItem().toString(), ExtensionsKt.value(etStartPrice), ExtensionsKt.value(etName))}"
-                android:text="Add Food" />
+                android:text="@string/bt_add_food" />
 
             <Button
                 android:id="@+id/btCancel"
@@ -211,7 +211,7 @@
                 android:layout_toStartOf="@id/progress"
                 android:backgroundTint="#8FB1B5"
                 android:onClick="@{()->listener.onCancelClick()}"
-                android:text="Cancel" />
+                android:text="@string/bt_cancel" />
 
             <TextView
                 android:layout_width="match_parent"

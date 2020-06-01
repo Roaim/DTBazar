@@ -127,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:hint="Buyer Name"
+                android:hint="@string/hint_buyer_name"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -146,7 +146,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
-                android:hint="National ID no."
+                android:hint="@string/hint_national_id_no"
                 android:visibility="@{(isSell &amp;&amp; isOwner) ? View.VISIBLE : View.GONE}">
 
                 <com.google.android.material.textfield.TextInputEditText
