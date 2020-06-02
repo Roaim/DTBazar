@@ -122,6 +122,7 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun onDonationItemClick(item: Donation?, itemView: View, isLongClick: Boolean) {
         navigateToStoreDetails(
             itemView,

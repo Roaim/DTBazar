@@ -15,10 +15,8 @@ import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.log
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import javax.inject.Inject
 
 class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonClickListener {
@@ -51,20 +49,12 @@ class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonCli
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
             log("IpInfo: $it")
-            moveCameraToPosition(it.lat, it.lon)
+            googleMap?.moveCameraToPosition(it)
         })
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync { map ->
             setGoogleMap(map)
-            homeViewModel.ipInfo.value?.apply {
-                moveCameraToPosition(lat, lon)
-            }
+            googleMap?.moveCameraToPosition(homeViewModel.ipInfo.value)
         }
-    }
-
-    private fun moveCameraToPosition(lat: Double?, lon: Double?) {
-        if (lat == null || lon == null) return
-        val latLng = LatLng(lat, lon)
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
     }
 
     private fun setGoogleMap(map: GoogleMap?) {

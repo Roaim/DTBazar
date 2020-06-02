@@ -68,4 +68,5 @@
     <string name="text_invoice_outstanding">Outstanding</string>
     <string name="text_failed_to_load">Failed To Load</string>
     <string name="bt_retry">Retry</string>
+    <string name="bt_filter">Filter</string>
 </resources>

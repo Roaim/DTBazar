@@ -1,9 +1,7 @@
 package app.roaim.dtbazar.ui.store
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingComponent
@@ -28,10 +26,10 @@ import javax.inject.Inject
 class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Store> {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    lateinit var glidePlaceHolder: RoundedBitmapDrawable
 
     @Inject
-    lateinit var glidePlaceHolder: RoundedBitmapDrawable
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val storeViewModel: StoreViewModel by viewModels { viewModelFactory }
 
@@ -40,6 +38,11 @@ class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<St
     private var bindingComponent by autoCleared<DataBindingComponent>()
     private var _storePagedAdapter: StorePagedAdapter? = null
     private val storePagedAdapter get() = _storePagedAdapter!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -99,5 +102,19 @@ class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<St
                 .navigate(actionNavigationHomeToStoreDetailsFragment, extras)
 
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.add(0, 474369, 1, "Filter")
+            .setIcon(R.drawable.ic_filter_list)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            474369 -> FilterStoreDialog().show(parentFragmentManager, null)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

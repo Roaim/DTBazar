@@ -6,7 +6,6 @@ import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import app.roaim.dtbazar.api.ApiService
 import app.roaim.dtbazar.api.getResult
-import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Result
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.utils.Constants.STORE_PAGE_LOAD_SIZE
@@ -31,15 +30,13 @@ class StoreDataSource @Inject constructor(private val apiService: ApiService) :
         this.coroutineScope = coroutineScope
     }
 
-    fun setLatLon(ipInfo: IpInfo) = setLatLon(ipInfo.lat, ipInfo.lon)
-
     fun retry() {
         val prevRetry = retry
         retry = null
         prevRetry?.invoke()
     }
 
-    private fun setLatLon(lat: Double?, lon: Double?) {
+    fun setLatLon(lat: Double?, lon: Double?) {
         if (lat != null) {
             this.lat = lat
         }
@@ -112,8 +109,8 @@ class StoreDataSourceFactory @Inject constructor(private val dataSource: StoreDa
         dataSource.setCoroutineScope(coroutineScope)
     }
 
-    fun setLatLon(ipInfo: IpInfo) {
-        dataSource.setLatLon(ipInfo)
+    fun setLatLon(lat: Double?, lon: Double?) {
+        dataSource.setLatLon(lat, lon)
     }
 
     fun retry() = dataSource.retry()

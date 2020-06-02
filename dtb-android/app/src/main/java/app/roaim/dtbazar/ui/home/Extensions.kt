@@ -10,10 +10,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.utils.log
 import app.roaim.dtbazar.utils.snackbar
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 
 fun navigateToStoreDetails(
     itemView: View,
@@ -75,4 +79,14 @@ fun Fragment.handleBackButtonEvent() {
         }
     }
     callback.isEnabled = true
+}
+
+fun GoogleMap.moveCameraToPosition(ipInfo: IpInfo?) = ipInfo?.run {
+    moveCameraToPosition(lat, lon)
+}
+
+fun GoogleMap.moveCameraToPosition(lat: Double?, lon: Double?) {
+    if (lat == null || lon == null) return
+    val latLng = LatLng(lat, lon)
+    moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
 }

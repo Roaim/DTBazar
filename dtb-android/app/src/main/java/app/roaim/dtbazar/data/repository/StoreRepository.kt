@@ -41,7 +41,7 @@ class StoreRepository @Inject constructor(
     fun getNearByStores(coroutineScope: CoroutineScope, ipInfo: IpInfo) = LivePagedListBuilder(
         storeDataSourceFactory.apply {
             setCoroutineScope(coroutineScope)
-            setLatLon(ipInfo)
+            setLatLon(ipInfo.lat, ipInfo.lon)
         }, pageConfig
     ).build()
 

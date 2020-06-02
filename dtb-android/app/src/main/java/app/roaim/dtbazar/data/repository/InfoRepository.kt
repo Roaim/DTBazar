@@ -59,6 +59,17 @@ class InfoRepository @Inject constructor(
         prefDataSource.saveIp(ipInfo.ip)
     }
 
+    fun updateIpLocation(lat: Double?, lon: Double?) {
+        if (lat == null || lon == null) return
+        _ipInfo.value?.apply {
+            val ipInfo = IpInfo(
+                zip, country, city, org, timezone, regionName, isp, ip, lon, mAs,
+                countryCode, region, lat, status
+            )
+            _ipInfo.postValue(ipInfo)
+        }
+    }
+
     fun getProfile(): LiveData<Result<Profile>> = prefDataSource.getUid()
         .takeIf { it.isNotEmpty() }
         ?.let { profileDao.findById(it) }
