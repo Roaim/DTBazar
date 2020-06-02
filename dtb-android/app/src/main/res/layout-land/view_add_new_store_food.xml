@@ -131,7 +131,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{storeFood.status != Status.LOADING}"
-                android:onClick="@{()->listener.onAddStoreFoodClick(ExtensionsKt.value(etStockQty), ExtensionsKt.value(etUnitPrice))}"
+                android:onClick="@{()->listener.onAddStoreFoodClick(ExtensionsKt.value(etStockQty), ExtensionsKt.foodUnitPrice(etUnitPrice, food))}"
                 android:text="@string/bt_add_food_to_store" />
 
         </LinearLayout>

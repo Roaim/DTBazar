@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.core.net.toUri
+import app.roaim.dtbazar.model.Food
 import app.roaim.dtbazar.model.StoreFood
 import com.google.android.material.snackbar.Snackbar
 
@@ -39,7 +40,7 @@ fun EditText.donationQty(storeFood: StoreFood): String =
             availableDonation.div(storeFood.unitPrice.times(storeFood.food?.subsidy ?: .8))
         storeFood.stockQty?.minus(donatedStock)?.takeIf { qty > it || qty <= 0 }?.let {
             error =
-                "Available stock: ${it.formatted()} ${storeFood.food?.unit}. Input a valid quantity or ask the store to add more stock"
+                "Max Quantity: ${it.toInt()} ${storeFood.food?.unit}. Input a valid quantity or ask the store to add more stock"
             requestFocus()
             ""
         } ?: text.toString()
@@ -57,6 +58,19 @@ fun EditText.sellQty(storeFood: StoreFood): String = if (text.isEmpty() || text.
     if (donatedStock < qty || qty <= 0) {
         error =
             "Available donation ${donatedStock.formatted()} ${storeFood.food?.unit}. Quantity must be less than ${donatedStock.formatted()} and greater than 0"
+        requestFocus()
+        ""
+    } else text.toString()
+}
+
+fun EditText.foodUnitPrice(food: Food): String = if (text.isEmpty() || text.toString() == ".") {
+    error = "Please enter valid $hint"
+    requestFocus()
+    ""
+} else {
+    val amount = text.toString().toDouble()
+    if (amount > food.endingPrice!!) {
+        error = "Unit Price must not be greater than ${food.currency} ${food.endingPrice}"
         requestFocus()
         ""
     } else text.toString()

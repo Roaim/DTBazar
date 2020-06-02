@@ -226,7 +226,7 @@
                 android:layout_margin="4dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:enabled="@{result.status != Status.LOADING}"
-                android:onClick="@{()-> isSell ? listener.onAddSellClick(ExtensionsKt.sellQty(etQtySell, storeFood), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : isAddStock ? listener.onAddStockClick(ExtensionsKt.value(etQtyStock), ExtensionsKt.value(etUnitPrice)) : listener.onAddDonationClick(ExtensionsKt.donationQty(etAmount, storeFood))}"
+                android:onClick="@{()-> isSell ? listener.onAddSellClick(storeFood, ExtensionsKt.sellQty(etQtySell, storeFood), ExtensionsKt.value(etNid), ExtensionsKt.value(etBuyerName)) : isAddStock ? listener.onAddStockClick(storeFood, ExtensionsKt.value(etQtyStock), ExtensionsKt.value(etUnitPrice)) : listener.onAddDonationClick(storeFood, ExtensionsKt.donationQty(etAmount, storeFood))}"
                 android:text="@{isSell ? `Sell` : isAddStock ? `Add Stock` : @string/bt_make_donation(storeFood.food.currency, quantity * storeFood.unitPrice * storeFood.food.subsidy)}"
                 tools:text="Make Donation" />
 
@@ -238,7 +238,7 @@
                 android:paddingTop="16dp"
                 android:paddingBottom="16dp"
                 android:backgroundTint="#8FB1B5"
-                android:onClick="@{()->listener.onCancelClick()}"
+                android:onClick="@{()->listener.onDialogCancelClick()}"
                 android:text="@string/bt_cancel" />
 
             <TextView

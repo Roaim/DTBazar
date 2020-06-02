@@ -29,7 +29,7 @@ import app.roaim.dtbazar.utils.snackbar
 import javax.inject.Inject
 
 class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickListener,
-    ListItemClickListener<StoreFood> {
+    ListItemClickListener<StoreFood>, ViewAddDonationSellClickListener {
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -131,64 +131,62 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         } else {
             addDonationSellDialog.show()
             addDonationSellBinding.storeFood = storeFood
-            addDonationSellBinding.listener = object : ViewAddDonationSellClickListener {
-                override fun onCancelClick() {
-                    addDonationSellDialog.dismiss()
-                    addDonationSellBinding.etBuyerName.requestFocus()
-                }
+            addDonationSellBinding.listener = this
+        }
+    }
 
-                override fun onAddDonationClick(quantity: String) {
-                    if (quantity.isNotEmpty() && storeFood != null) {
-                        viewModel.addDonation(
-                            storeFood.id,
-                            quantity.toDouble().times(storeFood.unitPrice)
-                                .times(storeFood.food?.subsidy ?: .8),
-                            storeFood.food?.currency!!
-                        ).observe(viewLifecycleOwner, Observer {
-                            log("ADD_DONATION: $it")
-                            addDonationSellBinding.result = it
-                            if (it.status == Status.SUCCESS) {
-                                if (viewModel.isOwnStore.value == false) {
-                                    AlertDialog.Builder(binding.root.context)
-                                        .setTitle("Donation Pending!")
-                                        .setMessage("Ask the store owner to accept your donation")
-                                        .setPositiveButton("Ok", null)
-                                        .show()
-                                }
-                                onCancelClick()
-                            }
-                        })
-                    }
-                }
+    override fun onDialogCancelClick() {
+        addDonationSellDialog.dismiss()
+        addDonationSellBinding.etBuyerName.requestFocus()
+    }
 
-                override fun onAddSellClick(qty: String, nid: String, name: String) {
-//                log("qty: $qty; nid: $nid; name: $name")
-                    if (qty.isNotEmpty() && nid.isNotEmpty() && name.isNotEmpty() && storeFood != null) {
-                        viewModel.sellFood(storeFood.id, name, nid, qty.toDouble())
-                            .observe(viewLifecycleOwner, Observer {
-                                log("FOOD_SELL: $it")
-                                addDonationSellBinding.result = it
-                                if (it.status == Status.SUCCESS) {
-                                    onCancelClick()
-                                    showInvoice(it.data!!, storeFood)
-                                }
-                            })
+    override fun onAddDonationClick(storeFood: StoreFood?, quantity: String) {
+        if (quantity.isNotEmpty() && storeFood != null) {
+            viewModel.addDonation(
+                storeFood.id,
+                quantity.toDouble().times(storeFood.unitPrice).times(storeFood.food?.subsidy ?: .8),
+                storeFood.food?.currency!!
+            ).observe(viewLifecycleOwner, Observer {
+                log("ADD_DONATION: $it")
+                addDonationSellBinding.result = it
+                if (it.status == Status.SUCCESS) {
+                    if (viewModel.isOwnStore.value == false) {
+                        AlertDialog.Builder(binding.root.context)
+                            .setTitle("Donation Pending!")
+                            .setMessage("Ask the store owner to accept your donation")
+                            .setPositiveButton("Ok", null)
+                            .show()
                     }
+                    onDialogCancelClick()
                 }
+            })
+        }
+    }
 
-                override fun onAddStockClick(qty: String, unitPrice: String) {
-                    if (qty.isNotEmpty() && unitPrice.isNotEmpty() && storeFood != null) {
-                        viewModel.addStock(storeFood.id, qty.toDouble(), unitPrice.toDouble())
-                            .observe(
-                                viewLifecycleOwner, Observer {
-                                    log("AddStock: $it")
-                                    addDonationSellBinding.result = it
-                                    if (it.status == Status.SUCCESS) onCancelClick()
-                                }
-                            )
+    override fun onAddSellClick(storeFood: StoreFood?, qty: String, nid: String, name: String) {
+        if (qty.isNotEmpty() && nid.isNotEmpty() && name.isNotEmpty() && storeFood != null) {
+            viewModel.sellFood(storeFood.id, name, nid, qty.toDouble())
+                .observe(viewLifecycleOwner, Observer {
+                    log("FOOD_SELL: $it")
+                    addDonationSellBinding.result = it
+                    if (it.status == Status.SUCCESS) {
+                        onDialogCancelClick()
+                        showInvoice(it.data!!, storeFood)
                     }
-                }
-            }
+                })
+        }
+    }
+
+    override fun onAddStockClick(storeFood: StoreFood?, qty: String, unitPrice: String) {
+        if (qty.isNotEmpty() && unitPrice.isNotEmpty() && storeFood != null) {
+            viewModel.addStock(storeFood.id, qty.toDouble(), unitPrice.toDouble())
+                .observe(
+                    viewLifecycleOwner, Observer {
+                        log("AddStock: $it")
+                        addDonationSellBinding.result = it
+                        if (it.status == Status.SUCCESS) onDialogCancelClick()
+                    }
+                )
         }
     }
 
