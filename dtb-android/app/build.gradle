@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -13,6 +15,14 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
 
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [
+                        "room.schemaLocation"  : "$projectDir/schemas".toString(),
+                        "room.incremental"     : "true",
+                        "room.expandProjection": "true"]
+            }
+        }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,6 +33,12 @@ android {
             storeFile file('C:\\Users\\roaim\\.android\\debug.keystore')
             storePassword 'android'
         }
+        play {
+            keyAlias DTBAZAR_KEY_ALIAS
+            keyPassword DTBAZAR_KEY_PASS
+            storeFile file(DTBAZAR_KEYSTORE_FILE)
+            storePassword DTBAZAR_KEYSTORE_PASS
+        }
     }
 
 
@@ -30,7 +46,7 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.demo
+            signingConfig signingConfigs.play
         }
     }
 
@@ -52,10 +68,10 @@ dependencies {
     implementation deps.dagger.values()
     implementation deps.misc.facebook
     implementation deps.misc.glide
+    implementation deps.firebase.values()
 
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
     kapt deps.kapt.values()
 
     testImplementation deps.javaTest.junit

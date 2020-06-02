@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.core.graphics.drawable.RoundedBitmapDrawable
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
@@ -16,11 +15,11 @@ import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
-import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
+import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
@@ -44,8 +43,6 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
     private var bindingComponent by autoCleared<DataBindingComponent>()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    var addStoreBinding by autoCleared<ViewAddNewStoreBinding>()
-    var addStoreDialog by autoCleared<AlertDialog>()
     private var _storeAdapter: HomeStoreAdapter? = null
     private val storeAdapter get() = _storeAdapter!!
     private var _donationAdapter: HomeDonationAdapter? = null
@@ -83,35 +80,8 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
         binding.listener = this
         _storeAdapter = HomeStoreAdapter(bindingComponent)
         _donationAdapter = HomeDonationAdapter()
-        storeAdapter.setItemClickListener { store: Store?, itemView: View, isLongClick: Boolean ->
-            if (store != null) {
-                if (isLongClick) deleteStore(store, itemView)
-                else navigateToStoreDetails(
-                    itemView,
-                    store.id,
-                    store.name,
-                    store.uid,
-                    store.proprietor,
-                    store.mobile,
-                    store.allFoodPrice?.toFloat(),
-                    store.totalDonation?.toFloat(),
-                    store.spentDonation?.toFloat()
-                )
-            }
-        }
-        donationAdapter.setItemClickListener { donation: Donation?, itemView: View, longClick: Boolean ->
-            navigateToStoreDetails(
-                itemView,
-                donation?.storeId!!,
-                donation.storeName,
-                "",
-                "",
-                "",
-                null,
-                null,
-                null
-            )
-        }
+        storeAdapter.setItemClickListener(ListItemClickListener(this::onStoreItemClick))
+        donationAdapter.setItemClickListener(ListItemClickListener(this::onDonationItemClick))
         binding.rvStore.adapter = storeAdapter
         binding.rvDonation.adapter = donationAdapter
 
@@ -125,15 +95,46 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
         homeViewModel.myDonations.observe(viewLifecycleOwner, Observer(donationAdapter::submitList))
 
-        initAddStoreDialog()
     }
 
     override fun onAddNewStoreClick() {
-        addStoreDialog.show()
+        findNavController().navigate(R.id.action_navigation_home_to_addStoreFragment)
     }
 
     override fun onMakeDonationClick() {
         findNavController().navigate(R.id.action_navigation_home_to_navigation_store)
+    }
+
+    private fun onStoreItemClick(item: Store?, itemView: View, isLongClick: Boolean) {
+        if (item != null) {
+            if (isLongClick) deleteStore(item, itemView)
+            else navigateToStoreDetails(
+                itemView,
+                item.id,
+                item.name,
+                item.uid,
+                item.proprietor,
+                item.mobile,
+                item.allFoodPrice?.toFloat(),
+                item.totalDonation?.toFloat(),
+                item.spentDonation?.toFloat()
+            )
+        }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onDonationItemClick(item: Donation?, itemView: View, isLongClick: Boolean) {
+        navigateToStoreDetails(
+            itemView,
+            item?.storeId!!,
+            item.storeName,
+            "",
+            "",
+            "",
+            null,
+            null,
+            null
+        )
     }
 
 }

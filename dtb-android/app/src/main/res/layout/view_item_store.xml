@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="app.roaim.dtbazar.utils.ExtensionsKt" />
+
         <import type="app.roaim.dtbazar.model.Store" />
 
         <variable
@@ -13,6 +15,8 @@
     </data>
 
     <FrameLayout
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
 
@@ -33,6 +37,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="@{(v)-> ExtensionsKt.openInMap(v, store.location[0], store.location[1])}"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_directions_dark" />
 
                 <ImageView
                     android:id="@+id/iv1"

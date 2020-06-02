@@ -7,7 +7,7 @@ import app.roaim.dtbazar.databinding.ViewItemDonationBinding
 import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.ui.BaseListAdapter
 
-class HomeDonationAdapter :
+class HomeDonationAdapter(private val isPending: Boolean = false) :
     BaseListAdapter<Donation, ViewItemDonationBinding>() {
 
     override fun onCreateBinding(
@@ -19,6 +19,7 @@ class HomeDonationAdapter :
 
     override fun bind(binding: ViewItemDonationBinding, item: Donation) {
         binding.donation = item
+        binding.isPending = isPending
     }
 
 }

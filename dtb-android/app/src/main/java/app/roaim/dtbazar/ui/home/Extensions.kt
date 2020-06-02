@@ -1,10 +1,8 @@
 package app.roaim.dtbazar.ui.home
 
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -12,37 +10,14 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
-import app.roaim.dtbazar.databinding.ViewAddNewStoreBinding
+import app.roaim.dtbazar.model.IpInfo
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.utils.log
 import app.roaim.dtbazar.utils.snackbar
-
-fun HomeFragment.initAddStoreDialog() {
-    addStoreBinding = ViewAddNewStoreBinding.inflate(LayoutInflater.from(requireContext()))
-    addStoreDialog = AlertDialog.Builder(requireContext())
-        .setView(addStoreBinding.root)
-        .create()
-    addStoreBinding.listener = object : ViewAddStoreButtonClickListener {
-        override fun onAddStoreClick(mobile: String, address: String, name: String) {
-            if (name.isNotEmpty() && address.isNotEmpty() && mobile.isNotEmpty()) {
-                homeViewModel.saveStore(name, address, mobile)
-                    .observe(viewLifecycleOwner, Observer {
-                    log("SAVE_STORE: $it")
-                    addStoreBinding.store = it
-                        if (it.status == Status.SUCCESS) {
-                            onCancelClick()
-                            addStoreBinding.etName.requestFocus()
-                        }
-                })
-            }
-        }
-
-        override fun onCancelClick() {
-            addStoreDialog.dismiss()
-        }
-    }
-}
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 
 fun navigateToStoreDetails(
     itemView: View,
@@ -104,4 +79,14 @@ fun Fragment.handleBackButtonEvent() {
         }
     }
     callback.isEnabled = true
+}
+
+fun GoogleMap.moveCameraToPosition(ipInfo: IpInfo?) = ipInfo?.run {
+    moveCameraToPosition(lat, lon)
+}
+
+fun GoogleMap.moveCameraToPosition(lat: Double?, lon: Double?) {
+    if (lat == null || lon == null) return
+    val latLng = LatLng(lat, lon)
+    moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12f))
 }

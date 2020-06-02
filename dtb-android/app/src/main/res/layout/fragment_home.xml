@@ -106,7 +106,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:padding="8dp"
-                    android:text="MY STORES"
+                    android:text="@string/title_my_stores"
                     android:textColor="@color/text_home_title"
                     android:textSize="@dimen/text_home_title"
                     android:textStyle="bold" />
@@ -140,7 +140,7 @@
                     android:layout_marginBottom="8dp"
                     android:foregroundTint="@color/colorAccent"
                     android:onClick="@{()-> listener.onAddNewStoreClick()}"
-                    android:text="Add New Store"
+                    android:text="@string/bt_add_new_store"
                     android:textColor="@color/text_home_button_text" />
 
                 <TextView
@@ -150,7 +150,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:padding="8dp"
-                    android:text="MY DONATIONS"
+                    android:text="@string/title_my_donations"
                     android:textColor="@color/text_home_title"
                     android:textSize="@dimen/text_home_title"
                     android:textStyle="bold" />
@@ -183,12 +183,9 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp"
                     android:onClick="@{()-> listener.onMakeDonationClick()}"
-                    android:text="Make a donation"
+                    android:text="@string/bt_make_a_donation"
                     android:textColor="@color/text_home_button_text" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp" />
             </LinearLayout>
         </ScrollView>
 

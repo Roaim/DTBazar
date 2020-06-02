@@ -40,7 +40,6 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:paddingBottom="64dp"
         android:layout_height="match_parent">
 
 
@@ -51,7 +50,7 @@
             <RelativeLayout
                 android:id="@+id/viewStore"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 tools:context="app.roaim.dtbazar.ui.store_details.StoreDetailsFragment">
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -154,7 +153,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
-                    android:text="Foods"
+                    android:text="@string/title_foods"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="18sp"
                     android:textStyle="bold" />

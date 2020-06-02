@@ -15,7 +15,9 @@ import androidx.navigation.fragment.navArgs
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentPendingDonationBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.ui.home.HomeDonationAdapter
 import app.roaim.dtbazar.utils.*
 import javax.inject.Inject
@@ -23,7 +25,7 @@ import javax.inject.Inject
 /**
  * A simple [Fragment] subclass.
  */
-class PendingDonationFragment : Fragment(), Injectable, Loggable {
+class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Donation> {
 
     @Inject
     lateinit var glidePlaceHolder: RoundedBitmapDrawable
@@ -56,18 +58,9 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable {
             false,
             bindingComponent
         )
-        adapter = HomeDonationAdapter()
+        adapter = HomeDonationAdapter(true)
         binding.rvDonation.adapter = adapter
-        adapter.setItemClickListener { donation, _, isLongClick ->
-            log("ItemClick: $donation")
-            AlertDialog.Builder(binding.root.context)
-                .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")
-                .setPositiveButton("Yes") { _, _ ->
-                    viewModel.approve(donation)
-                }
-                .setNegativeButton("No", null)
-                .show()
-        }
+        adapter.setItemClickListener(this)
         viewModel.setStoreId(navArgs.storeId)
         return binding.root
     }
@@ -101,6 +94,17 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable {
             viewModel.onRetry()
             true
         }
+    }
+
+    override fun onItemClick(donation: Donation?, itemView: View, isLongClick: Boolean) {
+        log("ItemClick: $donation")
+        AlertDialog.Builder(binding.root.context)
+            .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.approve(donation)
+            }
+            .setNegativeButton("No", null)
+            .show()
     }
 
 }

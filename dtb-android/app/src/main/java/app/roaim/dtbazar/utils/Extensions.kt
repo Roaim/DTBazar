@@ -1,10 +1,13 @@
 package app.roaim.dtbazar.utils
 
+import android.content.Intent
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.core.net.toUri
+import app.roaim.dtbazar.model.Food
 import app.roaim.dtbazar.model.StoreFood
 import com.google.android.material.snackbar.Snackbar
 
@@ -37,7 +40,7 @@ fun EditText.donationQty(storeFood: StoreFood): String =
             availableDonation.div(storeFood.unitPrice.times(storeFood.food?.subsidy ?: .8))
         storeFood.stockQty?.minus(donatedStock)?.takeIf { qty > it || qty <= 0 }?.let {
             error =
-                "Available stock: ${it.formatted()} ${storeFood.food?.unit}. Input a valid quantity or ask the store to add more stock"
+                "Max Quantity: ${it.toInt()} ${storeFood.food?.unit}. Input a valid quantity or ask the store to add more stock"
             requestFocus()
             ""
         } ?: text.toString()
@@ -60,6 +63,19 @@ fun EditText.sellQty(storeFood: StoreFood): String = if (text.isEmpty() || text.
     } else text.toString()
 }
 
+fun EditText.foodUnitPrice(food: Food): String = if (text.isEmpty() || text.toString() == ".") {
+    error = "Please enter valid $hint"
+    requestFocus()
+    ""
+} else {
+    val amount = text.toString().toDouble()
+    if (amount > food.endingPrice!!) {
+        error = "Unit Price must not be greater than ${food.currency} ${food.endingPrice}"
+        requestFocus()
+        ""
+    } else text.toString()
+}
+
 fun RadioGroup.getCheckValue() = findViewById<RadioButton>(checkedRadioButtonId).text
 
 fun Double.formatted() = "%.2f".format(this)
@@ -68,4 +84,11 @@ fun Loggable.log(msg: String, throwable: Throwable? = null, e: Boolean = false) 
     val tag = this::class.simpleName
     if (e) Log.e(tag, msg, throwable)
     else Log.d(tag, msg, throwable)
+}
+
+fun View.openInMap(lat: Double?, lon: Double?) {
+    val uri = "https://www.google.com/maps/search/?api=1&query=$lat,$lon".toUri()
+    Intent(Intent.ACTION_VIEW, uri).let {
+        context.startActivity(it)
+    }
 }

@@ -1,7 +1,7 @@
 ext.appName = 'DTBazar'
 ext.versionMajor = 1
 ext.versionMinor = 0
-ext.versionPatch = 0
+ext.versionPatch = 1
 ext.vars = [
         apiHost          : 'API_HOST',
         apiVersion       : 'API_VERSION',
@@ -39,6 +39,7 @@ android {
         buildConfigField(vars.types.str, vars.apiEndpointPrefix, API_ENDPOINT_PREFIX)
         resValue 'string', 'facebook_app_id', DTBAZAR_FB_ID
         resValue 'string', 'fb_login_protocol_scheme', DTBAZAR_FB_LOGIN_SCHEME
+        resValue 'string', 'google_maps_key', DTBAZAR_GOOGLE_MAPS_API_KEY
     }
 
     flavorDimensions 'apiServer', 'apiVersion'

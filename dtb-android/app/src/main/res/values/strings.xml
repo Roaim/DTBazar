@@ -31,4 +31,42 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_add_store">Add Store</string>
+    <string name="hint_store_name">Store Name</string>
+    <string name="hint_mobile_number">Mobile Number</string>
+    <string name="hint_store_address">Store Address</string>
+    <string name="rb_donate">DONATE</string>
+    <string name="rb_sell">SELL</string>
+    <string name="rb_stock">Stock</string>
+    <string name="bt_cancel">Cancel</string>
+    <string name="title_my_stores">MY STORES</string>
+    <string name="bt_add_new_store">Add New Store</string>
+    <string name="title_my_donations">MY DONATIONS</string>
+    <string name="bt_make_a_donation">Make a donation</string>
+    <string name="title_foods">Foods</string>
+    <string name="hint_buyer_name">Buyer Name</string>
+    <string name="hint_national_id_no">National ID no.</string>
+    <string name="hint_food_name">Food Name</string>
+    <string name="text_currency">Currency</string>
+    <string name="text_bdt">BDT</string>
+    <string name="text_usd">USD</string>
+    <string name="text_measure_unit">Measure Unit</string>
+    <string name="text_starting_price">Starting Price</string>
+    <string name="text_ending_price">Ending Price</string>
+    <string name="bt_add_food">Add Food</string>
+    <string name="title_select_food">Select Food</string>
+    <string name="bt_add_food_to_store">Add Food To Store</string>
+    <string name="title_invoice">INVOICE</string>
+    <string name="text_invoice_name">Name:</string>
+    <string name="text_invoice_date">Date:</string>
+    <string name="text_invoice_food">Food</string>
+    <string name="text_invoice_qty_x_rate">Qty x Rate</string>
+    <string name="text_invoice_amount">Amount</string>
+    <string name="text_invoice_total">Total</string>
+    <string name="text_invoice_donation">Donation</string>
+    <string name="text_invoice_less_80">less 80%</string>
+    <string name="text_invoice_outstanding">Outstanding</string>
+    <string name="text_failed_to_load">Failed To Load</string>
+    <string name="bt_retry">Retry</string>
+    <string name="bt_filter">Filter</string>
 </resources>

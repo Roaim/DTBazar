@@ -16,7 +16,7 @@ import app.roaim.dtbazar.model.*
         StoreFood::class
     ],
     version = 17,
-    exportSchema = false
+    exportSchema = true
 )
 @TypeConverters(LocationTypeConverter::class)
 abstract class CacheDb : RoomDatabase() {

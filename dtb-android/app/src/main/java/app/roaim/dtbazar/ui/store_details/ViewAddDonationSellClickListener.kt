@@ -1,8 +1,10 @@
 package app.roaim.dtbazar.ui.store_details
 
+import app.roaim.dtbazar.model.StoreFood
+
 interface ViewAddDonationSellClickListener {
-    fun onCancelClick()
-    fun onAddDonationClick(quantity: String)
-    fun onAddSellClick(qty: String, nid: String, name: String)
-    fun onAddStockClick(qty: String, unitPrice: String)
+    fun onDialogCancelClick()
+    fun onAddDonationClick(storeFood: StoreFood?, quantity: String)
+    fun onAddSellClick(storeFood: StoreFood?, qty: String, nid: String, name: String)
+    fun onAddStockClick(storeFood: StoreFood?, qty: String, unitPrice: String)
 }
