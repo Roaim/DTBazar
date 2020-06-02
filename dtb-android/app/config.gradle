@@ -1,6 +1,6 @@
 ext.appName = 'DTBazar'
 ext.versionMajor = 1
-ext.versionMinor = 0
+ext.versionMinor = 1
 ext.versionPatch = 1
 ext.vars = [
         apiHost          : 'API_HOST',
