@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(
         it
     }
 
-    val ipInfo = infoRepository.getIpInfo()
+    val ipInfo = infoRepository.ipInfo
 
     val myDonations: LiveData<List<Donation>> = _uid.switchMap { uid ->
         if (uid != null) _myDonations.addSource(donationRepository.getMyCachedDonations(uid)) {
@@ -60,14 +60,17 @@ class HomeViewModel @Inject constructor(
         name: String,
         address: String,
         mobile: String,
-        target: LatLng
+        target: LatLng?
     ): LiveData<Result<Store>> =
             storeRepository.saveStore(
                 StorePostBody(
                     name = name,
                     address = address,
                     mobile = mobile,
-                    location = listOf(target.latitude, target.longitude)
+                    location = listOf(
+                        target?.latitude ?: ipInfo.value?.lat,
+                        target?.longitude ?: ipInfo.value?.lon
+                    )
                 )
             )
 

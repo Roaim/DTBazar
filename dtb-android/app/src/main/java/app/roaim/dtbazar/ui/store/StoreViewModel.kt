@@ -15,12 +15,10 @@ class StoreViewModel @Inject constructor(
     private val storeRepository: StoreRepository
 ) : ViewModel(), RetryCallback {
 
-    private val ipInfo = infoRepository.getIpInfo()
-
     val nearByStoresResult = storeRepository.getNearByStoresResult()
 
     val nearbyStores: LiveData<PagedList<Store>> =
-        storeRepository.getNearByStores(viewModelScope, ipInfo.value!!)
+        storeRepository.getNearByStores(viewModelScope, infoRepository.ipInfo.value!!)
 
     override fun onRetry() {
         storeRepository.retryNearByStores()

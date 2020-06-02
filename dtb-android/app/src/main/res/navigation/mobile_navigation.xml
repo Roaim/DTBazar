@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_navigation_home_to_storeDetailsFragment"
-            app:destination="@id/navigation_store_details">
+            app:destination="@id/navigation_store_details"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
             <argument
                 android:name="storeId"
                 app:argType="string" />
@@ -44,7 +46,11 @@
         </action>
         <action
             android:id="@+id/action_navigation_home_to_navigation_store"
-            app:destination="@id/navigation_store" />
+            app:destination="@id/navigation_store"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_navigation_home_to_addStoreFragment"
             app:destination="@id/addStoreFragment"
@@ -61,7 +67,9 @@
         tools:layout="@layout/fragment_store">
         <action
             android:id="@+id/action_navigation_store_to_storeDetailsFragment"
-            app:destination="@id/navigation_store_details">
+            app:destination="@id/navigation_store_details"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out">
             <argument
                 android:name="storeId"
                 app:argType="string" />

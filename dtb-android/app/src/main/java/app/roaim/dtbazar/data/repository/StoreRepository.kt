@@ -30,7 +30,7 @@ class StoreRepository @Inject constructor(
     private val prefDataSource: PrefDataSource
 ) : Loggable {
 
-    val pageConfig = PagedList.Config.Builder()
+    private val pageConfig = PagedList.Config.Builder()
         .setInitialLoadSizeHint(STORE_PAGE_INITIAL_SIZE)
         .setPrefetchDistance(STORE_PAGE_PREFETCH)
         .setPageSize(STORE_PAGE_LOAD_SIZE)

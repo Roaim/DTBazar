@@ -29,8 +29,7 @@ class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonCli
 
     private var _binding: FragmentAddNewStoreBinding? = null
     private val binding get() = _binding!!
-    private var _googleMap: GoogleMap? = null
-    private val googleMap get() = _googleMap!!
+    private var googleMap: GoogleMap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,21 +41,34 @@ class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonCli
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        googleMap = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homeViewModel.ipInfo.observe(viewLifecycleOwner, Observer {
+            log("IpInfo: $it")
+            moveCameraToPosition(it.lat, it.lon)
+        })
         (childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment).getMapAsync { map ->
+            setGoogleMap(map)
             homeViewModel.ipInfo.value?.apply {
-                _googleMap = map
-                val latLng = LatLng(lat!!, lon!!)
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+                moveCameraToPosition(lat, lon)
             }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        _googleMap = null
+    private fun moveCameraToPosition(lat: Double?, lon: Double?) {
+        if (lat == null || lon == null) return
+        val latLng = LatLng(lat, lon)
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16f))
+    }
+
+    private fun setGoogleMap(map: GoogleMap?) {
+        googleMap = map
     }
 
     override fun onCancelClick() {
@@ -65,7 +77,7 @@ class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonCli
 
     override fun onAddStoreClick(mobile: String, address: String, name: String) {
         if (name.isNotEmpty() && address.isNotEmpty() && mobile.isNotEmpty()) {
-            homeViewModel.saveStore(name, address, mobile, googleMap.cameraPosition.target)
+            homeViewModel.saveStore(name, address, mobile, googleMap?.cameraPosition?.target)
                 .observe(viewLifecycleOwner, Observer {
                     log("SAVE_STORE: $it")
                     binding.store = it
@@ -74,6 +86,7 @@ class AddStoreFragment : Fragment(), Injectable, Loggable, ViewAddStoreButtonCli
                         binding.etName.requestFocus()
                     }
                 })
+
         }
     }
 }

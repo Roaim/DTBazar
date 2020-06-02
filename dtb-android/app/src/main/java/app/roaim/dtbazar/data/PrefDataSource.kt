@@ -1,6 +1,8 @@
 package app.roaim.dtbazar.data
 
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import app.roaim.dtbazar.model.ApiToken
 import app.roaim.dtbazar.utils.Constants.KEY_IP
 import app.roaim.dtbazar.utils.Constants.KEY_TOKEN
@@ -10,6 +12,12 @@ import app.roaim.dtbazar.utils.DateUtils
 import javax.inject.Inject
 
 class PrefDataSource @Inject constructor(private val preferences: SharedPreferences) {
+
+    private val _ip = MutableLiveData<String>().apply {
+        value = preferences.getString(KEY_IP, null) ?: "127.0.0.1"
+    }
+
+    val ip: LiveData<String> = _ip
 
     fun saveToken(apiToken: ApiToken) {
         val editor = preferences.edit()
@@ -34,9 +42,8 @@ class PrefDataSource @Inject constructor(private val preferences: SharedPreferen
 
     fun saveIp(ip: String) {
         preferences.edit().putString(KEY_IP, ip).apply()
+        if (_ip.value != ip) _ip.postValue(ip)
     }
-
-    fun getIp(): String? = preferences.getString(KEY_IP, null)
 
     fun saveUid(id: String) {
         preferences.edit().putString(KEY_UID, id).apply()
