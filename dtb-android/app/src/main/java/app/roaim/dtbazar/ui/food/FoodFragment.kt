@@ -14,13 +14,14 @@ import app.roaim.dtbazar.databinding.ViewAddNewFoodBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Food
 import app.roaim.dtbazar.model.Status
+import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
 import app.roaim.dtbazar.utils.log
 import app.roaim.dtbazar.utils.snackbar
 import javax.inject.Inject
 
-class FoodFragment : Fragment(), Injectable, Loggable {
+class FoodFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Food> {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -31,7 +32,6 @@ class FoodFragment : Fragment(), Injectable, Loggable {
     private var binding by autoCleared<FragmentFoodBinding>()
     var addFoodBinding by autoCleared<ViewAddNewFoodBinding>()
     var addFoodDialog by autoCleared<AlertDialog>()
-    private var foodItemClickListener by autoCleared<((Food?, View, Boolean) -> Unit)>()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -40,8 +40,7 @@ class FoodFragment : Fragment(), Injectable, Loggable {
     ): View? {
         binding = FragmentFoodBinding.inflate(layoutInflater, container, false)
         foodAdapter = FoodAdapter()
-        foodItemClickListener = onFoodItemClick()
-        foodAdapter.setItemClickListener(foodItemClickListener)
+        foodAdapter.setItemClickListener(this)
         return binding.root
     }
 
@@ -63,7 +62,7 @@ class FoodFragment : Fragment(), Injectable, Loggable {
         )
     }
 
-    private fun onFoodItemClick() = { food: Food?, itemView: View, isLongClick: Boolean ->
+    override fun onItemClick(food: Food?, itemView: View, isLongClick: Boolean) {
         if (isLongClick && food != null) {
             itemView.snackbar("Delete: ${food.name}?") {
                 foodViewModel.deleteFood(food).observe(viewLifecycleOwner, Observer {

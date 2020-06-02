@@ -18,13 +18,14 @@ import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentStoreBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Store
+import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
 import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 
-class StoreFragment : Fragment(), Injectable, Loggable {
+class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Store> {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -45,7 +46,6 @@ class StoreFragment : Fragment(), Injectable, Loggable {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-
         bindingComponent = FragmentDataBindingComponent(this, glidePlaceHolder)
         _binding = DataBindingUtil.inflate(
             inflater,
@@ -54,7 +54,6 @@ class StoreFragment : Fragment(), Injectable, Loggable {
             false,
             bindingComponent
         )
-        _storePagedAdapter = StorePagedAdapter(bindingComponent)
         return binding.root
     }
 
@@ -67,20 +66,19 @@ class StoreFragment : Fragment(), Injectable, Loggable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.retryCallback = storeViewModel
-        storePagedAdapter.setItemClickListener(storeItemClickListener)
+        _storePagedAdapter = StorePagedAdapter(bindingComponent)
+        storePagedAdapter.setItemClickListener(this)
         binding.rvStore.adapter = storePagedAdapter
-
         storeViewModel.nearbyStores.observe(
             viewLifecycleOwner, Observer(storePagedAdapter::submitList)
         )
-
         storeViewModel.nearByStoresResult.observe(viewLifecycleOwner, Observer {
             log("STORE_LIST: $it")
             binding.result = it
         })
     }
 
-    private val storeItemClickListener = { store: Store?, itemView: View, _: Boolean ->
+    override fun onItemClick(store: Store?, itemView: View, isLongClick: Boolean) {
         log("storeItemClick $store")
         if (store != null) {
             val actionNavigationHomeToStoreDetailsFragment =

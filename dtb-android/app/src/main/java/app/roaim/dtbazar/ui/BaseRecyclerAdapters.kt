@@ -1,7 +1,6 @@
 package app.roaim.dtbazar.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.ViewDataBinding
@@ -15,10 +14,9 @@ abstract class BasePagedListAdapter<T : ListItem, B : ViewDataBinding>(
     private val bindingComponent: DataBindingComponent? = null
 ) : PagedListAdapter<T, BaseListHolder<B>>(DiffItemCallback<T>()) {
 
-    private var itemClickListener:
-            ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)? = null
+    private var itemClickListener: ListItemClickListener<T>? = null
 
-    fun setItemClickListener(itemClickListener: ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)) {
+    fun setItemClickListener(itemClickListener: ListItemClickListener<T>) {
         this.itemClickListener = itemClickListener
     }
 
@@ -30,17 +28,7 @@ abstract class BasePagedListAdapter<T : ListItem, B : ViewDataBinding>(
                 parent,
                 viewType
             )
-        ).apply {
-            itemClickListener?.also { block ->
-                itemView.setOnClickListener {
-                    block(getItem(adapterPosition), it, false)
-                }
-                itemView.setOnLongClickListener {
-                    block(getItem(adapterPosition), it, true)
-                    true
-                }
-            }
-        }
+        ).attachClickListener(itemClickListener, this::getItem)
 
     override fun onBindViewHolder(holder: BaseListHolder<B>, position: Int) {
         bind(holder.binding, getItem(position))
@@ -61,10 +49,9 @@ abstract class BaseListAdapter<T : ListItem, B : ViewDataBinding>(
     private val bindingComponent: DataBindingComponent? = null
 ) : ListAdapter<T, BaseListHolder<B>>(DiffItemCallback<T>()) {
 
-    private var itemClickListener:
-            ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)? = null
+    private var itemClickListener: ListItemClickListener<T>? = null
 
-    fun setItemClickListener(itemClickListener: ((item: T?, itemView: View, isLongClick: Boolean) -> Unit)) {
+    fun setItemClickListener(itemClickListener: ListItemClickListener<T>) {
         this.itemClickListener = itemClickListener
     }
 
@@ -76,17 +63,7 @@ abstract class BaseListAdapter<T : ListItem, B : ViewDataBinding>(
                 parent,
                 viewType
             )
-        ).apply {
-            itemClickListener?.also { block ->
-                itemView.setOnClickListener {
-                    block(getItem(adapterPosition), it, false)
-                }
-                itemView.setOnLongClickListener {
-                    block(getItem(adapterPosition), it, true)
-                    true
-                }
-            }
-        }
+        ).attachClickListener(itemClickListener, this::getItem)
 
     abstract fun onCreateBinding(
         bindingComponent: DataBindingComponent?,
@@ -104,14 +81,27 @@ abstract class BaseListAdapter<T : ListItem, B : ViewDataBinding>(
 
 }
 
-class BaseListHolder<B : ViewDataBinding>(val binding: B) :
-    RecyclerView.ViewHolder(binding.root)
+class BaseListHolder<B : ViewDataBinding>(val binding: B) : RecyclerView.ViewHolder(binding.root)
 
 @Suppress("ReplaceCallWithBinaryOperator")
-class DiffItemCallback<T : ListItem> :
-    DiffUtil.ItemCallback<T>() {
+class DiffItemCallback<T : ListItem> : DiffUtil.ItemCallback<T>() {
     override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
         oldItem.getItemId() == newItem.getItemId()
 
     override fun areContentsTheSame(oldItem: T, newItem: T): Boolean = oldItem.equals(newItem)
+}
+
+fun <T, B : ViewDataBinding> BaseListHolder<B>.attachClickListener(
+    itemClickListener: ListItemClickListener<T>?,
+    getItem: (Int) -> T?
+) = apply {
+    itemClickListener?.apply {
+        itemView.setOnClickListener {
+            onItemClick(getItem(adapterPosition), it, false)
+        }
+        itemView.setOnLongClickListener {
+            onItemClick(getItem(adapterPosition), it, true)
+            true
+        }
+    }
 }
