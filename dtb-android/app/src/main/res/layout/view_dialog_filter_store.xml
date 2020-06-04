@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="16dp">
 
-        <androidx.fragment.app.FragmentContainerView
+        <fragment
             android:id="@+id/mapFilter"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
