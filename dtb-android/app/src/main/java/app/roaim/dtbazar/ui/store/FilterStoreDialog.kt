@@ -48,7 +48,7 @@ class FilterStoreDialog : DialogFragment(), Injectable, View.OnClickListener, Lo
             log("$it")
             map?.moveCameraToPosition(it)
         })
-        (childFragmentManager.findFragmentById(binding.mapFilter.id) as SupportMapFragment).getMapAsync {
+        (childFragmentManager.findFragmentById(R.id.mapFilter) as SupportMapFragment).getMapAsync {
             it.moveCameraToPosition(storeViewModel.ipInfo.value)
             map = it
         }
