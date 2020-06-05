@@ -1,0 +1,126 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="app.roaim.dtbazar.BuildConfig" />
+
+        <variable
+            name="listener"
+            type="app.roaim.dtbazar.ui.store_details.AboutFragmentClickListener" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="app.roaim.dtbazar.ui.AboutFragment">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/ic_launcher_foreground"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="serif"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/appCompatImageView" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/text_version(BuildConfig.VERSION_NAME)}"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="Version: 1.1.5" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/title_about_fragment"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:id="@+id/scrollView2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/textView22">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:text="@string/text_about_fragment"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:onClick="@{()-> listener.onOssLicencesClick()}"
+            android:text="@string/bt_open_source_licences"
+            android:textColor="@color/color_link"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{()-> listener.onPrivacyClick()}"
+            android:text="@string/bt_privacy_policy"
+            android:textColor="@color/color_link"
+            app:layout_constraintBottom_toTopOf="@+id/textView26"
+            app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:onClick="@{()-> listener.onTermsClick()}"
+            android:text="@string/bt_terms_of_service"
+            android:textColor="@color/color_link"
+            app:layout_constraintBottom_toTopOf="@+id/textView24"
+            app:layout_constraintEnd_toStartOf="@+id/scrollView2"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
