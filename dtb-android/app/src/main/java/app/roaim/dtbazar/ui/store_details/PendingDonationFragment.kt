@@ -98,13 +98,15 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
 
     override fun onItemClick(donation: Donation?, itemView: View, isLongClick: Boolean) {
         log("ItemClick: $donation")
-        AlertDialog.Builder(binding.root.context)
-            .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")
-            .setPositiveButton("Yes") { _, _ ->
-                viewModel.approve(donation)
-            }
-            .setNegativeButton("No", null)
-            .show()
+        if (navArgs.isOwner) {
+            AlertDialog.Builder(binding.root.context)
+                .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewModel.approve(donation)
+                }
+                .setNegativeButton("No", null)
+                .show()
+        }
     }
 
 }

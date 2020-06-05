@@ -1,12 +1,17 @@
 package app.roaim.dtbazar.utils
 
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import app.roaim.dtbazar.R
 import app.roaim.dtbazar.model.Food
 import app.roaim.dtbazar.model.StoreFood
 import com.google.android.material.snackbar.Snackbar
@@ -92,3 +97,12 @@ fun View.openInMap(lat: Double?, lon: Double?) {
         context.startActivity(it)
     }
 }
+
+fun String.openInCustomTab(context: Context) {
+    CustomTabsIntent.Builder()
+        .setToolbarColor(context.getColorCompat(R.color.colorPrimary))
+        .build()
+        .launchUrl(context, Uri.parse(this))
+}
+
+fun Context.getColorCompat(resId: Int): Int = ContextCompat.getColor(this, resId)

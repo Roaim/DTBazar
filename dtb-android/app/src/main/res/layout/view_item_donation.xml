@@ -36,6 +36,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <RelativeLayout
+                android:background="@{!isPending &amp;&amp; !donation.enabled ? @drawable/pending_donation : null}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp">

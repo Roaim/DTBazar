@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="app.roaim.dtbazar.BuildConfig" />
+
         <import type="androidx.lifecycle.LiveData" />
 
         <import type="app.roaim.dtbazar.model.Result" />
@@ -89,6 +91,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{@string/text_version(BuildConfig.VERSION_NAME)}"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="@+id/textView"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:text="Version: 1.1.5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

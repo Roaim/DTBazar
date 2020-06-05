@@ -5,6 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 android {
     compileSdkVersion 29
@@ -68,9 +69,10 @@ dependencies {
     implementation deps.dagger.values()
     implementation deps.misc.facebook
     implementation deps.misc.glide
+    implementation deps.misc.browserHelper
     implementation deps.firebase.values()
 
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation deps.playService.values()
 
     kapt deps.kapt.values()
 
@@ -78,5 +80,5 @@ dependencies {
 
     androidTestImplementation deps.androidTest.values()
 
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
+    debugImplementation deps.misc.leakcanary
 }

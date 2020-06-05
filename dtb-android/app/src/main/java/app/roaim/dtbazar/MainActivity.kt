@@ -6,6 +6,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
         navView.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.navigation_login) {
+            if (destination.id == R.id.navigation_login || destination.id == R.id.navigation_about) {
                 navView.visibility = View.GONE
             } else {
                 navView.visibility = View.VISIBLE
@@ -69,6 +70,16 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.menu_logout -> apiUtils.logout()
+        R.id.menu_about -> navController.navigate(
+            R.id.navigation_about,
+            null,
+            NavOptions.Builder().apply {
+                setEnterAnim(R.anim.fade_in)
+                setExitAnim(R.anim.fade_out)
+                setPopEnterAnim(R.anim.fade_in)
+                setPopExitAnim(R.anim.fade_out)
+            }.build()
+        ).run { true }
         else -> super.onOptionsItemSelected(item)
     }
 

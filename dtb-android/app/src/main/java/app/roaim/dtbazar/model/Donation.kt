@@ -35,7 +35,10 @@ data class Donation(
     val id: String,
 
     @field:SerializedName("storeId")
-    val storeId: String? = null
+    val storeId: String? = null,
+
+    @field:SerializedName("enabled")
+    val enabled: Boolean? = null
 ) : ListItem {
     @Ignore
     override fun getItemId(): String = id

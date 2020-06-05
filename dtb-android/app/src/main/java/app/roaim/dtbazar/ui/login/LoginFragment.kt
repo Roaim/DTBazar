@@ -114,11 +114,6 @@ class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginRe
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     override fun onSuccess(result: LoginResult?) {
         log("LoginSuccess: $result")
         val token = result?.accessToken?.token
@@ -135,6 +130,24 @@ class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginRe
     override fun onError(error: FacebookException?) {
         log("LoginError: ${error?.message}")
         binding.loginButton.show()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.add(0, 1, 0, "About").setIcon(R.drawable.ic_info)
+            .setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            1 -> {
+                // Navigate to AboutFragment
+                navController?.navigate(R.id.action_navigation_login_to_aboutFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 }
