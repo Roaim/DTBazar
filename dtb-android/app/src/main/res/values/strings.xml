@@ -86,4 +86,5 @@
     <string name="bt_privacy_policy">Privacy Policy</string>
     <string name="menu_reload">Reload</string>
     <string name="menu_pending_donation">Pending Donation</string>
+    <string name="cd_profile_picture">Profile Picture</string>
 </resources>
