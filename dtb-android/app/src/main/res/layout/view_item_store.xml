@@ -39,6 +39,7 @@
                 android:padding="12dp">
 
                 <ImageView
+                    android:id="@+id/ivMap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -63,6 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/iv1"
+                    android:layout_toStartOf="@id/ivMap"
                     android:paddingTop="4dp"
                     android:paddingBottom="2dp"
                     android:text="@{store.name}"
@@ -75,6 +77,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tvName1"
                     android:layout_toEndOf="@id/iv1"
+                    android:layout_toStartOf="@id/ivMap"
                     android:paddingTop="2dp"
                     android:text="@{store.address}"
                     android:textColor="@color/text_home_list_subtitle"

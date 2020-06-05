@@ -110,12 +110,19 @@
     <fragment
         android:id="@+id/navigation_login"
         android:name="app.roaim.dtbazar.ui.login.LoginFragment"
-        android:label="Login"
+        android:label="@string/title_fragment_login"
         tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_loginFragment_to_navigation_home"
             app:launchSingleTop="true"
             app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_login_to_aboutFragment"
+            app:destination="@id/navigation_about"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/navigation_store_details"
@@ -161,6 +168,9 @@
                 android:name="storeId"
                 app:argType="string"
                 app:nullable="false" />
+            <argument
+                android:name="isOwner"
+                app:argType="boolean" />
         </action>
     </fragment>
     <fragment
@@ -183,10 +193,19 @@
             android:name="storeId"
             app:argType="string"
             app:nullable="false" />
+        <argument
+            android:name="isOwner"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/addStoreFragment"
         android:name="app.roaim.dtbazar.ui.home.AddStoreFragment"
+        tools:layout="@layout/fragment_add_new_store"
         android:label="Add New Store" />
+    <fragment
+        android:id="@+id/navigation_about"
+        android:name="app.roaim.dtbazar.ui.AboutFragment"
+        android:label="@string/title_about_dtbazar"
+        tools:layout="@layout/fragment_about" />
 
 </navigation>

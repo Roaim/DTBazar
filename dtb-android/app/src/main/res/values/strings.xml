@@ -8,16 +8,16 @@
     <string name="store_details_spent_donation"> %.2f</string>
     <string name="store_food_donation"> %.2f</string>
     <string name="store_food_spent_donation"> %.2f</string>
-    <string name="store_food_item_price"><b>%s %.2f/%s</b> (%.2f)</string>
-    <string name="title_food_suggestion_spinner"><b>%s</b> (%s/%s)</string>
+    <string name="store_food_item_price"><b>%1$s %2$.2f/%3$s</b> (%4$.2f)</string>
+    <string name="title_food_suggestion_spinner"><b>%1$s</b> (%2$s/%3$s)</string>
     <string name="two_decimal">%.2f</string>
-    <string name="qty_rate">%.1f x %.2f</string>
-    <string name="pay_button">COLLECT %s %.2f</string>
-    <string name="home_donation_item">%s %.2f</string>
+    <string name="qty_rate">%1$.1f x %2$.2f</string>
+    <string name="pay_button">COLLECT %1$s %2$.2f</string>
+    <string name="home_donation_item">%1$s %2$.2f</string>
     <string name="hint_donation_qty">Donation Quantity (%s)</string>
     <string name="hint_food_qty">Quantity (%s)</string>
-    <string name="hint_food_price">1 %s Price (%s)</string>
-    <string name="bt_make_donation">Make Donation\n%s %.2f</string>
+    <string name="hint_food_price">1 %1$s Price (%2$s)</string>
+    <string name="bt_make_donation">Make Donation\n%1$s %2$.2f</string>
 
     <string-array name="food_unit">
         <item>KG</item>
@@ -29,8 +29,6 @@
         <item>OZ</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_add_store">Add Store</string>
     <string name="hint_store_name">Store Name</string>
     <string name="hint_mobile_number">Mobile Number</string>
@@ -69,4 +67,23 @@
     <string name="text_failed_to_load">Failed To Load</string>
     <string name="bt_retry">Retry</string>
     <string name="bt_filter">Filter</string>
+    <string name="title_fragment_login">Welcome to DT Bazar</string>
+    <string name="text_version">Version: %s</string>
+    <string name="title_about_dtbazar">About DT Bazar</string>
+    <string name="menu_logout">Logout</string>
+    <string name="menu_about">About</string>
+    <string name="title_about_fragment">DT Bazar (দশ টাকার বাজার or Ten Cent Market)</string>
+    <string name="text_about_fragment">A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types. However, if we include foods with price ~50 cent then people will be able to buy it for ~10 cent. So, we should primarily focus on some basic foods which are sold under USD 1.
+        \n
+        \nThe 3 simple steps:
+        \n
+        \n\u2022 Store owner creates store and adds food that will receive donation
+        \n\u2022 Donor finds a nearby store and donates to a food at that store
+        \n\u2022 Poor people buy food at a reduced rate by scanning their national id card at that store
+    </string>
+    <string name="bt_open_source_licences">Open Source Licences</string>
+    <string name="bt_terms_of_service">Terms of Service</string>
+    <string name="bt_privacy_policy">Privacy Policy</string>
+    <string name="menu_reload">Reload</string>
+    <string name="menu_pending_donation">Pending Donation</string>
 </resources>

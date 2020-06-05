@@ -13,4 +13,6 @@
     <color name="home_background">#0B2535</color>
     <color name="color_dark">#CD0F2A39</color>
     <color name="bt_cancel">#8FB1B5</color>
+    <color name="color_link">#1976D2</color>
+    <drawable name="pending_donation">#75ACBABC</drawable>
 </resources>

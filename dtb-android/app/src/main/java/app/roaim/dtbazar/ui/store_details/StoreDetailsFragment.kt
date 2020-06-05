@@ -212,24 +212,29 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        val menuReload = menu.add("Reload").setIcon(R.drawable.ic_refresh)
-        menuReload.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
-        menuReload.setOnMenuItemClickListener {
-            viewModel.onRetry()
-            true
-        }
-        val menuPendingDonation =
-            menu.add("Pending Donation").setIcon(R.drawable.ic_notifications)
-                .setOnMenuItemClickListener {
-                    StoreDetailsFragmentDirections.actionNavigationStoreDetailsToPendingDonationFragment(
-                        navArgs.storeId
-                    ).let {
-                        findNavController().navigate(it)
-                        true
-                    }
-                }
-        menuPendingDonation.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
+        inflater.inflate(R.menu.menu_store_details, menu)
+    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_reload -> onReloadClick()
+            R.id.menu_pending_donation -> onPendingDonationClick()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun onPendingDonationClick(): Boolean = true.apply {
+        viewModel.isOwnStore.observe(viewLifecycleOwner, Observer {
+            StoreDetailsFragmentDirections.actionNavigationStoreDetailsToPendingDonationFragment(
+                navArgs.storeId, it
+            ).let {
+                findNavController().navigate(it)
+            }
+        })
+    }
+
+    private fun onReloadClick(): Boolean = true.apply {
+        viewModel.onRetry()
     }
 
 }
