@@ -62,7 +62,7 @@
                     android:layout_marginTop="16dp"
                     android:nestedScrollingEnabled="false"
                     android:layout_marginEnd="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                     app:spanCount="2"
                     tools:itemCount="7"
                     tools:listitem="@layout/view_item_store_food" />
