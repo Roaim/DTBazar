@@ -72,7 +72,7 @@
     <string name="title_about_dtbazar">About DT Bazar</string>
     <string name="menu_logout">Logout</string>
     <string name="menu_about">About</string>
-    <string name="title_about_fragment">DT Bazar (দশ টাকার বাজার or Ten Cent Market)</string>
+    <string name="title_about_fragment">দশ টাকার বাজার or Ten Cent Market</string>
     <string name="text_about_fragment">A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types. However, if we include foods with price ~50 cent then people will be able to buy it for ~10 cent. So, we should primarily focus on some basic foods which are sold under USD 1.
         \n
         \nThe 3 simple steps:
@@ -87,4 +87,12 @@
     <string name="menu_reload">Reload</string>
     <string name="menu_pending_donation">Pending Donation</string>
     <string name="cd_profile_picture">Profile Picture</string>
+    <string name="et_facebook_access_token">Facebook Access Token</string>
+    <string name="cd_map_picker">Map Picker</string>
+    <string name="text_update">This version of DT Bazar is expired. Please update it from Play Store.</string>
+    <string name="bt_update">Update</string>
+    <string name="cd_app_icon">App Icon</string>
+    <string name="toast_try_agin">Please try again after sometime</string>
+    <string name="toast_approved">Approved</string>
+    <string name="toast_failed_to_approve">Failed to Approve. %s</string>
 </resources>
