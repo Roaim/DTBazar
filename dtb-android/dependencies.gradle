@@ -180,8 +180,9 @@ ext {
     deps.misc = miscDependencies
 
     firebaseDependencies = [
-            crashlytics:  'com.google.firebase:firebase-crashlytics:17.0.0',
-            analytics: 'com.google.firebase:firebase-analytics-ktx:17.4.2'
+            crashlytics :  'com.google.firebase:firebase-crashlytics:17.0.0',
+            remoteConfig: 'com.google.firebase:firebase-config-ktx:19.1.4',
+            analytics   : 'com.google.firebase:firebase-analytics-ktx:17.4.3'
     ]
 
     deps.firebase = firebaseDependencies

@@ -3,6 +3,7 @@ package app.roaim.dtbazar.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -11,18 +12,23 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.LoginFragmentBinding
+import app.roaim.dtbazar.databinding.ViewInputDialogBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.ui.home.handleBackButtonEvent
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.autoCleared
 import app.roaim.dtbazar.utils.log
+import app.roaim.dtbazar.utils.value
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.get
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import javax.inject.Inject
 
 
@@ -84,6 +90,36 @@ class LoginFragment : Fragment(), Injectable, Loggable, FacebookCallback<LoginRe
                 }
             }
             it
+        }
+
+        createLoginWithFbAccessTokenFeature()
+    }
+
+    /**
+     *  This is a hidden feature to bypass facebook login in robo test. It is enabled by tapping
+     *  the version text for 11 times. This feature should only be enabled in alpha releases
+     */
+    private fun createLoginWithFbAccessTokenFeature() {
+        var fbTokenInputDialogVisibiltyCountDown = 0
+        binding.textViewVersion.setOnClickListener {
+            if (fbTokenInputDialogVisibiltyCountDown < 10 ||
+                !Firebase.remoteConfig["enable_login_with_fb_access_token_feature"].asBoolean()
+            ) {
+                fbTokenInputDialogVisibiltyCountDown = fbTokenInputDialogVisibiltyCountDown.inc()
+                return@setOnClickListener
+            }
+            val inputFbTokenBinding =
+                ViewInputDialogBinding.inflate(LayoutInflater.from(requireContext()))
+            AlertDialog.Builder(requireContext())
+                .setView(inputFbTokenBinding.root)
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Submit") { _, _ ->
+                    val fbAccessToken =
+                        inputFbTokenBinding.editTextToken.value()
+                    if (fbAccessToken.isNotEmpty()) onGetFacebookAccessToken(fbAccessToken)
+                }
+                .show()
+            fbTokenInputDialogVisibiltyCountDown = 0
         }
     }
 

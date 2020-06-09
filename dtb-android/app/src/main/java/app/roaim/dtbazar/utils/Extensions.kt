@@ -11,6 +11,7 @@ import android.widget.RadioGroup
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import app.roaim.dtbazar.BuildConfig
 import app.roaim.dtbazar.R
 import app.roaim.dtbazar.model.Food
 import app.roaim.dtbazar.model.StoreFood
@@ -102,7 +103,17 @@ fun String.openInCustomTab(context: Context) {
     CustomTabsIntent.Builder()
         .setToolbarColor(context.getColorCompat(R.color.colorPrimary))
         .build()
-        .launchUrl(context, Uri.parse(this))
+        .launchUrl(context, toUri())
+}
+
+fun View.navigateToPlayStore() {
+    val intent = Intent(Intent.ACTION_VIEW).apply {
+        data = Uri.parse(
+            "https://play.google.com/store/apps/details?id=${BuildConfig.APPLICATION_ID}"
+        )
+        setPackage("com.android.vending")
+    }
+    context.startActivity(intent)
 }
 
 fun Context.getColorCompat(resId: Int): Int = ContextCompat.getColor(this, resId)

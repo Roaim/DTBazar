@@ -55,7 +55,8 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
-                    tools:src="@drawable/com_facebook_profile_picture_blank_square" />
+                    tools:src="@drawable/com_facebook_profile_picture_blank_square"
+                    android:contentDescription="@string/cd_profile_picture" />
 
                 <TextView
                     android:id="@+id/tvName"
@@ -126,7 +127,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                         app:spanCount="2"
                         tools:itemCount="2"
                         tools:listitem="@layout/view_item_store" />
@@ -171,7 +172,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:nestedScrollingEnabled="false"
-                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                         app:spanCount="2"
                         tools:itemCount="2"
                         tools:listitem="@layout/view_item_donation" />
