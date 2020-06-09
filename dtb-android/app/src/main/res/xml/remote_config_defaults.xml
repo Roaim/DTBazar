@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+    <entry>
+        <key>enable_login_with_fb_access_token_feature</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>oss_open_interval_second</key>
+        <value>300</value>
+    </entry>
+    <entry>
+        <key>force_update</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>

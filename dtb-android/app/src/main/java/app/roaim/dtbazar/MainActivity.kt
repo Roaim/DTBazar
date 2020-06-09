@@ -13,13 +13,19 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.roaim.dtbazar.api.ApiUtils
+import app.roaim.dtbazar.ui.ForceUpdateDialog
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector {
+class MainActivity : AppCompatActivity(), HasAndroidInjector, Loggable {
 
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -56,6 +62,20 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector {
             } else {
                 navView.visibility = View.VISIBLE
             }
+        }
+
+        val remoteConfig = Firebase.remoteConfig
+        val remoteConfigSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 1800
+        }
+        remoteConfig.setConfigSettingsAsync(remoteConfigSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        remoteConfig.fetchAndActivate().addOnCompleteListener {
+            log("RemoteConfig.Fetch: isSuccessful = ${it.isSuccessful}; result = ${it.result}")
+        }
+
+        if (remoteConfig.getBoolean("force_update")) {
+            ForceUpdateDialog().show(supportFragmentManager, null)
         }
     }
 

@@ -77,9 +77,17 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
                 val list = adapter.currentList.toMutableList()
                 list.remove(it.data)
                 adapter.submitList(list)
-                Toast.makeText(requireContext(), "Approved", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_approved),
+                    Toast.LENGTH_SHORT
+                ).show()
             } else if (it.status == Status.FAILED) {
-                Toast.makeText(requireContext(), "Failed to Approve. ${it.msg}", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.toast_failed_to_approve, it.msg),
+                    Toast.LENGTH_LONG
+                )
                     .show()
             }
         })

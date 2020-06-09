@@ -1,7 +1,8 @@
 ext.appName = 'DTBazar'
 ext.versionMajor = 1
-ext.versionMinor = 1
-ext.versionPatch = 5
+ext.versionMinor = 35
+ext.versionPatch = 36
+ext.versionSuffix = ''
 ext.vars = [
         apiHost          : 'API_HOST',
         apiVersion       : 'API_VERSION',
@@ -28,7 +29,7 @@ private Integer generateVersionCode() {
 
 @SuppressWarnings("GrMethodMayBeStatic")
 private String generateVersionName() {
-    return "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    return "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}${ext.versionSuffix}"
 }
 
 android {
