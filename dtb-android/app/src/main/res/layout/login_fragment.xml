@@ -93,7 +93,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView21"
+            android:id="@+id/textViewVersion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{@string/text_version(BuildConfig.VERSION_NAME)}"

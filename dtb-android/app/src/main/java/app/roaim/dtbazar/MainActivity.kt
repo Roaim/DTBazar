@@ -13,6 +13,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import app.roaim.dtbazar.api.ApiUtils
+import app.roaim.dtbazar.ui.ForceUpdateDialog
 import app.roaim.dtbazar.utils.Loggable
 import app.roaim.dtbazar.utils.log
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, Loggable {
         }
 
         if (remoteConfig.getBoolean("force_update")) {
-//            ForceUpdateDialog().show(supportFragmentManager, null)
+            ForceUpdateDialog().show(supportFragmentManager, null)
         }
     }
 
