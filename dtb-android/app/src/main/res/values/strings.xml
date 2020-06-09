@@ -92,4 +92,7 @@
     <string name="text_update">This version of DT Bazar is expired. Please update it from Play Store.</string>
     <string name="bt_update">Update</string>
     <string name="cd_app_icon">App Icon</string>
+    <string name="toast_try_agin">Please try again after sometime</string>
+    <string name="toast_approved">Approved</string>
+    <string name="toast_failed_to_approve">Failed to Approve. %s</string>
 </resources>

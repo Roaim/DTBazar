@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, Loggable {
 
         val remoteConfig = Firebase.remoteConfig
         val remoteConfigSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 36
+            minimumFetchIntervalInSeconds = 1800
         }
         remoteConfig.setConfigSettingsAsync(remoteConfigSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)

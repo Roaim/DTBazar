@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import app.roaim.dtbazar.BuildConfig
+import app.roaim.dtbazar.R
 import app.roaim.dtbazar.databinding.FragmentAboutBinding
 import app.roaim.dtbazar.ui.store_details.AboutFragmentClickListener
 import app.roaim.dtbazar.utils.openInCustomTab
@@ -59,7 +60,7 @@ class AboutFragment : Fragment(), AboutFragmentClickListener {
         ) {
             Toast.makeText(
                 requireContext(),
-                "Please try after sometime",
+                getString(R.string.toast_try_agin),
                 Toast.LENGTH_SHORT
             ).show()
             return
