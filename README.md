@@ -32,7 +32,7 @@ The **API** is developed using **Spring Boot** (Java) and **Micro
 Services** architecture. 
 * Click on, [dtb-api](dtb-api) folder, to know details about **API project**.
 ##### API Documentation: 
-https://vm03.hidayahsmart.solutions/dtbazar
+[https://vm03.hidayahsmart.solutions/dtbazar](https://vm03.hidayahsmart.solutions/dtbazar)
 ##### Preview
 ![API Doc Preview](preview/api_doc_preview.gif)
 
