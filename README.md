@@ -1,6 +1,6 @@
-<img width="100" height="100" src="icon/dtbazar-icon.png">
+[<img height="72" src="icon/DTB_banner.png">](https://roaim.github.io/DTBazar)
 
-# DT Bazar (দশ টাকার বাজার or Ten Cent Market) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
+# দশ টাকার বাজার or Ten Cent Market [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types. However, if we include foods with price ~50 cent then people will be able to buy it for ~10 cent. So, we should primarily focus on some basic foods which are sold under USD 1. 
 
 ### The 3 simple steps:
@@ -20,20 +20,24 @@ card at that store
 The **Android** project is developed with android's **native** 
 framework using **Kotlin** and **Jetpack-Android**.
 * Click on, [dtb-android](dtb-android) folder, to know more about **android project**.
-* Click on, [release](https://github.com/Roaim/DTBazar/releases) to know find latest **releases**.
+* Click on, [release](https://github.com/Roaim/DTBazar/releases) to find the latest **releases**.
 ##### Preview
 ![Android app preview](preview/android/scs.png)
+
+##### Install Beta Test Version
+[<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/apps/testing/app.roaim.dtbazar.demo)
 
 ### API Overview
 The **API** is developed using **Spring Boot** (Java) and **Micro 
 Services** architecture. 
 * Click on, [dtb-api](dtb-api) folder, to know details about **API project**.
-##### API Documentation: https://vm03.hidayahsmart.solutions/dtbazar
+##### API Documentation: 
+https://vm03.hidayahsmart.solutions/dtbazar
 ##### Preview
 ![API Doc Preview](preview/api_doc_preview.gif)
 
 ## Contribution
-Everyone is wellcome to contribute to any platform of this project. 
+Everyone is welcome to contribute to any platform of this project. Just make sure you [create an issue](https://github.com/Roaim/DTBazar/issues/new/choose) explaining briefly what you are gonna supposed to do before you start working.
 Platform wise contribution guidelines can be found in their individual 
 **README.md**.
 
