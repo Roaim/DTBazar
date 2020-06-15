@@ -1,4 +1,4 @@
-[<img height="72" src="icon/DTB_banner.png">](https://roaim.github.io/DTBazar)
+[<img height="64" src="icon/DTB_banner.png">](https://roaim.github.io/DTBazar)
 
 # দশ টাকার বাজার or Ten Cent Market [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 A virtual market where people can directly donate to a specific food at a specific shop so that poor people can buy that food at a cheap rate. Initially, the donation will cover 80% of the actual price though the project name suggest a fixed price i.e. ten cent but practically is not possible for a wide variety of food types. However, if we include foods with price ~50 cent then people will be able to buy it for ~10 cent. So, we should primarily focus on some basic foods which are sold under USD 1. 
@@ -56,7 +56,7 @@ created from **readme**
 should be modified in the **readme** branch and merged directly to 
 **master**.
 
-#### Naming Convension
+#### Naming Convention
 * Platform's branch name should be same as platform name. *Ex. `android`*
 * Platform's folder name pattern should be, **"dtb-{platform_name}"**. *Ex. `dtb-android`*
 * Feature branch's name pattern should be, **"{platform_name}-{feature_name}"**. *Ex. `android-login`*
@@ -64,3 +64,9 @@ should be modified in the **readme** branch and merged directly to
 #### Commit Message Pattern
 * In general ***(except for api)*** commit message pattern should be, **"{platform_name}: {commit_message}"**. *Ex. `android: fix crash due to internet permission`*
 * For **api**, commit message pattern should be, **"#{service_name}-service# {commit_message}"**. *Ex. `#auth-service# integrate facebook login`*. This will help git **post-receive** hook to restart that particular service. If your commit is not intend for restarting any service then the commit message should start with **`api: `** instead.
+
+#### Android Version Convention
+* Android app versioning followed [semantic versioning.](https://semver.org)
+* **Major** is determined by api version
+* **Minor**  is the [issue](https://github.com/Roaim/DTBazar/issues) number of a new feature
+* **Patch** is the [issue](https://github.com/Roaim/DTBazar/issues) number of a bug or enhancement
