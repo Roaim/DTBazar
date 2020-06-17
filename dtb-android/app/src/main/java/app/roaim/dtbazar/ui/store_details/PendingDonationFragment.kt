@@ -19,7 +19,10 @@ import app.roaim.dtbazar.model.Donation
 import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.ui.home.HomeDonationAdapter
-import app.roaim.dtbazar.utils.*
+import app.roaim.dtbazar.utils.FragmentDataBindingComponent
+import app.roaim.dtbazar.utils.Loggable
+import app.roaim.dtbazar.utils.autoCleared
+import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 
 /**
@@ -74,9 +77,7 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
         viewModel.approve.observe(viewLifecycleOwner, Observer {
             log("ApproveDonation: $it")
             if (it.status == Status.SUCCESS) {
-                val list = adapter.currentList.toMutableList()
-                list.remove(it.data)
-                adapter.submitList(list)
+                viewModel.onRetry()
                 Toast.makeText(
                     requireContext(),
                     getString(R.string.toast_approved),
@@ -95,7 +96,7 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        val menuReload = menu.add("Reload")
+        val menuReload = menu.add(getString(R.string.menu_reload))
         menuReload.setIcon(R.drawable.ic_refresh)
         menuReload.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM)
         menuReload.setOnMenuItemClickListener {
@@ -108,7 +109,15 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
         log("ItemClick: $donation")
         if (navArgs.isOwner) {
             AlertDialog.Builder(binding.root.context)
-                .setMessage("Accept donation ${donation?.currency} ${donation?.amount?.formatted()} to ${donation?.foodName} from ${donation?.donorName}")
+                .setMessage(
+                    getString(
+                        R.string.accept_pending_donation,
+                        donation?.currency,
+                        donation?.amount,
+                        donation?.foodName,
+                        donation?.donorName
+                    )
+                )
                 .setPositiveButton("Yes") { _, _ ->
                     viewModel.approve(donation)
                 }
