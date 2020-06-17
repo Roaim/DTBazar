@@ -3,14 +3,15 @@
 # DT Bazar Android [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](../LICENSE)
 The DT Bazar **Android** is developed using **Native-Android** framework using **Kotlin** language.
 
-#### Releases
-[releases](https://github.com/Roaim/DTBazar/releases) can be found [here](https://github.com/Roaim/DTBazar/releases)
+### Releases
+[Releases](https://github.com/Roaim/DTBazar/releases) can be found [here](https://github.com/Roaim/DTBazar/releases)
 
 #### Join Alpha Program
 Join Alpha test program by joining [this group](https://groups.google.com/d/forum/alpha-testers-of-dt-bazar). 
 
 #### Beta Version
 Install the beta version from the following link:
+
 [<img height="72" src="../preview/android/google-play-badge.png">](https://play.google.com/apps/testing/app.roaim.dtbazar.demo)
 
 #### App Preview
