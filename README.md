@@ -28,7 +28,9 @@ framework using **Kotlin** and **Jetpack-Android**.
 #### Preview
 ![Android app preview](preview/android/scs.png)
 
-##### Install Beta Test Version
+#### Install Test Version
+If you are not a tester, become a tester by joining [alpha-testers-of-dt-bazar](https://groups.google.com/d/forum/alpha-testers-of-dt-bazar) group.
+
 [<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/apps/testing/app.roaim.dtbazar.demo)
 
 ### API Overview
