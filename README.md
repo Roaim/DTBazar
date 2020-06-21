@@ -21,19 +21,20 @@ The **Android** project is developed with android's **native**
 framework using **Kotlin** and **Jetpack-Android**.
 * Click on, [dtb-android](dtb-android) folder, to know more about **android project**.
 * Click on, [release](https://github.com/Roaim/DTBazar/releases) to find the latest **releases**.
-##### Preview
-![Android app preview](preview/android/scs.png)
 
-##### Install Beta Test Version
-[<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/apps/testing/app.roaim.dtbazar.demo)
+#### Install Demo Version
+[<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/store/apps/details?id=app.roaim.dtbazar.demo)
+
+#### Preview
+![Android app preview](preview/android/scs.png)
 
 ### API Overview
 The **API** is developed using **Spring Boot** (Java) and **Micro 
 Services** architecture. 
 * Click on, [dtb-api](dtb-api) folder, to know details about **API project**.
-##### API Documentation: 
+#### API Documentation: 
 [https://vm03.hidayahsmart.solutions/dtbazar](https://vm03.hidayahsmart.solutions/dtbazar)
-##### Preview
+#### Preview
 ![API Doc Preview](preview/api_doc_preview.gif)
 
 ## Contribution
