@@ -21,12 +21,11 @@ The **Android** project is developed with android's **native**
 framework using **Kotlin** and **Jetpack-Android**.
 * Click on, [dtb-android](dtb-android) folder, to know more about **android project**.
 * Click on, [release](https://github.com/Roaim/DTBazar/releases) to find the latest **releases**.
-
-#### Install Demo Version
-[<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/store/apps/details?id=app.roaim.dtbazar.demo)
-
-#### Preview
+##### Preview
 ![Android app preview](preview/android/scs.png)
+
+##### Install Beta Test Version
+[<img height="72" src="preview/android/google-play-badge.png">](https://play.google.com/apps/testing/app.roaim.dtbazar.demo)
 
 ### API Overview
 The **API** is developed using **Spring Boot** (Java) and **Micro 
