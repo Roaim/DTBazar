@@ -3,7 +3,6 @@ package app.roaim.dtbazar.utils
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
@@ -85,12 +84,6 @@ fun EditText.foodUnitPrice(food: Food): String = if (text.isEmpty() || text.toSt
 fun RadioGroup.getCheckValue() = findViewById<RadioButton>(checkedRadioButtonId).text
 
 fun Double.formatted() = "%.2f".format(this)
-
-fun Loggable.log(msg: String, throwable: Throwable? = null, e: Boolean = false) {
-    val tag = this::class.simpleName
-    if (e) Log.e(tag, msg, throwable)
-    else Log.d(tag, msg, throwable)
-}
 
 fun View.openInMap(lat: Double?, lon: Double?) {
     val uri = "https://www.google.com/maps/search/?api=1&query=$lat,$lon".toUri()
