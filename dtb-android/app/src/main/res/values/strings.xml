@@ -95,4 +95,5 @@
     <string name="toast_try_agin">Please try again after sometime</string>
     <string name="toast_approved">Approved</string>
     <string name="toast_failed_to_approve">Failed to Approve. %s</string>
+    <string name="accept_pending_donation">Accept donation %1$s %2$.2f to %3$s from %4$s</string>
 </resources>

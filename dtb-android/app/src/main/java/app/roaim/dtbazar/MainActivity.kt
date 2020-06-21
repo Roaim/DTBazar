@@ -71,7 +71,12 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector, Loggable {
         remoteConfig.setConfigSettingsAsync(remoteConfigSettings)
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         remoteConfig.fetchAndActivate().addOnCompleteListener {
-            log("RemoteConfig.Fetch: isSuccessful = ${it.isSuccessful}; result = ${it.result}")
+            val result = try {
+                it.result
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            log("RemoteConfig.Fetch: isSuccessful = ${it.isSuccessful}; result = $result")
         }
 
         if (remoteConfig.getBoolean("force_update")) {
