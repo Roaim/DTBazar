@@ -17,7 +17,6 @@ import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentHomeBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Donation
-import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
@@ -87,13 +86,16 @@ class HomeFragment : Fragment(), Injectable, Loggable, HomeButtonClickListener {
 
         homeViewModel.profile.observe(viewLifecycleOwner, Observer {
             log("PROFILE: $it")
-            if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.profile = it
         })
 
         homeViewModel.myStores.observe(viewLifecycleOwner, Observer(storeAdapter::submitList))
 
         homeViewModel.myDonations.observe(viewLifecycleOwner, Observer(donationAdapter::submitList))
+
+        homeViewModel.logout.observe(viewLifecycleOwner, Observer {
+            if (it) apiUtils.logout()
+        })
 
     }
 
