@@ -13,8 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentStoreBinding
 import app.roaim.dtbazar.di.Injectable
+import app.roaim.dtbazar.model.Status
 import app.roaim.dtbazar.model.Store
 import app.roaim.dtbazar.ui.ListItemClickListener
 import app.roaim.dtbazar.utils.FragmentDataBindingComponent
@@ -24,6 +26,9 @@ import app.roaim.dtbazar.utils.log
 import javax.inject.Inject
 
 class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Store> {
+
+    @Inject
+    lateinit var apiUtils: ApiUtils
 
     @Inject
     lateinit var glidePlaceHolder: RoundedBitmapDrawable
@@ -77,6 +82,7 @@ class StoreFragment : Fragment(), Injectable, Loggable, ListItemClickListener<St
         )
         storeViewModel.nearByStoresResult.observe(viewLifecycleOwner, Observer {
             log("STORE_LIST: $it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.result = it
         })
     }
