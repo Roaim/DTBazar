@@ -57,8 +57,7 @@ class FilterStoreDialog : DialogFragment(), Injectable, View.OnClickListener, Lo
     override fun onStart() {
         super.onStart()
         val matchParent = ViewGroup.LayoutParams.MATCH_PARENT
-        val wrapContent = ViewGroup.LayoutParams.MATCH_PARENT
-        dialog?.window?.setLayout(matchParent, wrapContent)
+        dialog?.window?.setLayout(matchParent, matchParent)
     }
 
     override fun onDestroyView() {
