@@ -17,9 +17,29 @@ card at that store
 * [ ] **Web** (Frontend)
 
 ### Android Overview
-The **Android** project is developed with android's **native** 
-framework using **Kotlin** and **Jetpack-Android**.
-* Click on, [dtb-android](dtb-android) folder, to know more about **android project**.
+The **Android** app lets you:
+1. One click login into the app using your facebook account
+2. Browse nearby stores
+3. View available donation in a particular store
+4. View available food stock in a particular store
+5. Create food definitation
+
+##### If you are a store owner it lets you:
+1. Create stores
+2. Add foods to store which will receive donation
+3. Approve donation which is given by a donor
+4. Add food stock
+5. Sell donated foods
+
+##### If you are a donor it lets you:
+1. Find a nearby store
+2. Donate to a food at a nearby store
+
+##### Important: The buyers don't necessary have to be a user of the app in order to purchase. All they need to do is bring their national id card to make the store owner able to scan it to reduce fraud purchases.
+
+#### Technical Details
+
+* Click on, [dtb-android](dtb-android) folder, to know the technical details about **android project**.
 * Click on, [release](https://github.com/Roaim/DTBazar/releases) to find the latest **releases**.
 
 #### Install Demo Version
