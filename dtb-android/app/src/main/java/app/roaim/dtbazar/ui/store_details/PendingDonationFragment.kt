@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentPendingDonationBinding
 import app.roaim.dtbazar.di.Injectable
 import app.roaim.dtbazar.model.Donation
@@ -29,6 +30,9 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Donation> {
+
+    @Inject
+    lateinit var apiUtils: ApiUtils
 
     @Inject
     lateinit var glidePlaceHolder: RoundedBitmapDrawable
@@ -72,6 +76,7 @@ class PendingDonationFragment : Fragment(), Injectable, Loggable, ListItemClickL
         super.onViewCreated(view, savedInstanceState)
         viewModel.pendingDonation.observe(viewLifecycleOwner, Observer {
             log("PendingDonation: $it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
             if (it.status == Status.SUCCESS) adapter.submitList(it.data)
         })
         viewModel.approve.observe(viewLifecycleOwner, Observer {
