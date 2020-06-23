@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentFoodBinding
 import app.roaim.dtbazar.databinding.ViewAddNewFoodBinding
 import app.roaim.dtbazar.di.Injectable
@@ -22,6 +23,9 @@ import app.roaim.dtbazar.utils.snackbar
 import javax.inject.Inject
 
 class FoodFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Food> {
+
+    @Inject
+    lateinit var apiUtils: ApiUtils
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -54,6 +58,7 @@ class FoodFragment : Fragment(), Injectable, Loggable, ListItemClickListener<Foo
         binding.rvFood.adapter = foodAdapter
         foodViewModel.foodList.observe(viewLifecycleOwner, Observer {
             log("FOOD_LIST: $it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.result = it
         })
         foodViewModel.cachedFoods.observe(

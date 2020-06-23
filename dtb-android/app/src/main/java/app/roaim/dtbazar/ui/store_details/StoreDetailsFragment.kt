@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import app.roaim.dtbazar.R
+import app.roaim.dtbazar.api.ApiUtils
 import app.roaim.dtbazar.databinding.FragmentStoreDetailsBinding
 import app.roaim.dtbazar.databinding.ViewAddNewDonationSellBinding
 import app.roaim.dtbazar.databinding.ViewAddNewStoreFoodBinding
@@ -30,6 +31,9 @@ import javax.inject.Inject
 
 class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickListener,
     ListItemClickListener<StoreFood>, ViewAddDonationSellClickListener {
+
+    @Inject
+    lateinit var apiUtils: ApiUtils
 
     @Inject
     lateinit var vmFactory: ViewModelProvider.Factory
@@ -64,6 +68,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         binding.args = navArgs
         viewModel.store.observe(viewLifecycleOwner, Observer {
             log("STORE: $it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.store = it
             it.data?.apply {
                 viewModel.init(uid, id)
@@ -114,6 +119,7 @@ class StoreDetailsFragment : Fragment(), Injectable, Loggable, StoreFoodClickLis
         viewModel.cachedStoreFoods.observe(viewLifecycleOwner, Observer(adapter::submitList))
         viewModel.storeFoods.observe(viewLifecycleOwner, Observer {
             log("STORE_FOODS: $it")
+            if (it.status == Status.LOGOUT) apiUtils.logout()
             binding.result = it
             if (it.status == Status.SUCCESS) adapter.submitList(it.data)
         })
